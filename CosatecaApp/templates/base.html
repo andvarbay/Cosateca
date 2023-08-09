@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        {% block title %}{% endblock title %}
+</head>
+<body>
+    {% include 'header.html' %}
+{% block body_data %}{% endblock body_data %}
+
+{% block custom_js %}{% endblock custom_js %}
+</body>
+</html>
