@@ -1,7 +1,16 @@
 body {
-  background-color: lightgreen;
+    background-color: #F5FFE9;
+    font-size: large;
 }
-  
+nav {
+    background-color: #107F0E;
+}
+.nav-link {
+    color: #CCFF61;
+}
+
+
 #titulo-cosateca {
-  font-size: large;
-}
+    font-size: smaller;
+    background-color: rgb(143, 143, 237);
+    }
