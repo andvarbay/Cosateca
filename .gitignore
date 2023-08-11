@@ -7,3 +7,4 @@ cosateca/static
 /models.py
 *.log
 .env
+CosatecaApp/static/inicio.js
