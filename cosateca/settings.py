@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import json
+
+with open('cosateca/config.json') as f:
+    SECRETS = json.load(f)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x7dq2=%+$=(nk97d_9(nf)ehj&c!^ej+bn_p^654e0$gc&hx*x'
+SECRET_KEY = SECRETS['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
-    'CosatecaApp',
+    'CosatecaApp'
 ]
 
 MIDDLEWARE = [
@@ -72,13 +76,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cosateca.wsgi.application'
 
 
-# Database
+# Databases
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': SECRETS['ENGINE'],
+        'NAME': SECRETS['NAME'],
+        'USER': SECRETS['USER'],
+        'PASSWORD': SECRETS['PASSWORD'],
+        'HOST': SECRETS['HOST'],
+        'PORT': SECRETS['PORT'],
+        'OPTIONS': {
+            "use_pure": True
+        }
     }
 }
 
@@ -117,6 +128,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+import os.path  
+import sys
+
+PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = 'static/'
 
 # Default primary key field type
