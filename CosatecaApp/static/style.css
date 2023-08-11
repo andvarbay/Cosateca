@@ -6,11 +6,12 @@ nav {
     background-color: #107F0E;
 }
 .nav-link {
-    color: #CCFF61;
+    color: #CCFF61 !important;
 }
-
 
 #titulo-cosateca {
     font-size: smaller;
     background-color: rgb(143, 143, 237);
     }
+
+    
