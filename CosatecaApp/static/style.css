@@ -1,6 +1,7 @@
 body {
     background-color: #F5FFE9;
     font-size: large;
+    line-height: inherit;
 }
 nav {
     background-color: #107F0E;
@@ -14,4 +15,17 @@ nav {
     background-color: rgb(143, 143, 237);
     }
 
-    
+.footer-icons a i {
+    color: #CCFF61;
+    width: auto;
+    font-size: 30px;
+    padding-top: 5%;
+}
+
+.nav-link.text-center {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
