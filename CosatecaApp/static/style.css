@@ -3,18 +3,27 @@ body {
     font-size: large;
     line-height: inherit;
 }
+body.body-login-register{
+    background-color: #107F0E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
 nav {
     background-color: #107F0E;
 }
 .nav-link {
     color: #CCFF61 !important;
 }
-
+/* ============================================== */
 #titulo-cosateca {
     font-size: smaller;
     background-color: rgb(143, 143, 237);
     }
-
+/* ===================================== BORRAR DESPUES */
 .footer-icons a i {
     color: #CCFF61;
     width: auto;
@@ -23,9 +32,58 @@ nav {
 }
 
 .nav-link.text-center {
-
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.container-login-register {
+    display: table-cell;
+    background-color: #58A623;
+    border: 3px solid #CCFF61;
+    border-radius: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 10px;
+}
+
+.image-login-register {
+    width: 250px;
+    height: 90px;
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translate(-50%,-50%  );
+}
+
+.title-login-register {
+    text-align: center;
+    /* font-size: 45px; */
+    font-family: 'Lato', sans-serif;
+    color: #065104;
+}
+
+.text-login-register {
+    font-family: 'Lato', sans-serif;
+    color: #065104;
+    font-weight: 600;
+}
+.input-login-register {
+    background-color: #A8F5A4;
+    font-weight: 500;
+}
+
+.button-login-register {
+    color: #CCFF61;
+    background-color: #065104;
+    border-radius: 35px;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+    font-size: 42px;
+}
+/* 
+ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
+este texto, una vez sea css definito, pásalo arriba.
+*/
+
