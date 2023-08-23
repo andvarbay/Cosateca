@@ -150,7 +150,7 @@ class Producto(models.Model):
     disponibilidad = models.IntegerField()
     idPropietario = models.ForeignKey('Usuario', models.CASCADE, db_column='idPropietario') 
     # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
-    idCategorias = models.ManyToManyField(Categoria)
+    # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
 
     class Meta:
@@ -174,7 +174,7 @@ class CategoriaProducto(models.Model):
         db_table = 'categoriaProducto'
 
     def __str__(self):
-        return 'cat: '+ str(self.idCategoria) + ' prod: ' + str(self.idProducto)
+        return 'cat: '+ str(self.idCategoria.nombre) + ' prod: ' + str(self.idProducto.nombre)
 
 
 class Reporte(models.Model):
