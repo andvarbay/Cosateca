@@ -164,7 +164,7 @@ class Producto(models.Model):
     def getTodosProductos():
         return Producto.objects.all()
 
-class CategoriaProducto(models.Modeal):
+class CategoriaProducto(models.Model):
     idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)
     idCategoria = models.ForeignKey(Categoria, models.CASCADE, db_column='idCategoria')
     idProducto = models.ForeignKey(Producto, models.CASCADE, db_column='idProducto')
