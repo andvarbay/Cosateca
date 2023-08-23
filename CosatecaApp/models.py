@@ -208,3 +208,15 @@ class Valoracion(models.Model):
 
     def __str__(self):
         return 'De: ' + str(self.idEmisor) + ' para ' + str(self.idReceptor)
+    
+class CategoriaProducto(models.Model):
+    idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)
+    idCategoria = models.ForeignKey(Categoria, models.CASCADE, db_column='idCategoria')
+    idProducto = models.ForeignKey(Producto, models.CASCADE, db_column='idProducto')
+
+    class Meta:
+        managed = False
+        db_table = 'categoriaproducto'
+
+    def __str__(self):
+        return 'cat: '+ str(self.idCategoria) + ' prod: ' + str(self.idProducto) 
