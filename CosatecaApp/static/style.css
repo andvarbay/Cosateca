@@ -18,16 +18,11 @@ nav {
 .nav-link {
     color: #CCFF61 !important;
 }
-/* ============================================== */
-#titulo-cosateca {
-    font-size: smaller;
-    background-color: rgb(143, 143, 237);
-    }
-/* ===================================== BORRAR DESPUES */
+
 .footer-icons a i {
     color: #CCFF61;
     width: auto;
-    font-size: 30px;
+    font-size: 45px;
     padding-top: 5%;
 }
 
@@ -87,3 +82,18 @@ ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo
 este texto, una vez sea css definito, pásalo arriba.
 */
 
+.product-card {
+    background-color: #FFFFFF;
+    border: 2px solid #03650A;
+    border-radius: 10px;
+    margin-top: 5%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.card-img-top { 
+    border: 2px solid #03650A;
+    border-radius: 10px;
+    margin-top: 2.5%;
+    width: 288px;
+    height: auto;
+}
