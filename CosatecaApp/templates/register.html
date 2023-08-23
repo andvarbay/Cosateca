@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    <title>Iniciar sesión</title>
+</head>
+<body class="body-login-register">
+    <div class="row justify-content-center align-items-center" style="width: 100%;margin-top: 10%;">
+        <div clas="col-12">
+            <a class="nav-link" href="/#" style="display: table-row;"><img src="{% static 'LOGO.jpg' %}" class=" image-login-register"></a>
+        </div>
+        <div class="col-12" style="display: contents;">
+            <div class="container-login-register col-lg-8 rounded mx-auto">
+                <div class="text-center col">
+                
+                    <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >NUEVO USUARIO</h3>
+                    <br>
+                    <br>
+                </div>
+                <form action="/login/" method="POST">
+                    
+                    {% csrf_token %}
+    
+                    {% if error%}
+                    <div class="alert alert-danger" role="alert">
+                        {{error}}
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
+                        <input required name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
+                        class="input-login-register form-control-sm form-control" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-login-register">APELLIDOS</label>
+                        <input required name="apellidos" id="" value="{{values.nombreUsuario}}" 
+                        class="input-login-register form-control-sm form-control" placeholder="Apellidos">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-login-register">CORREO ELECTRÓNICO</label>
+                        <input required name="email" id="" value="{{values.nombreUsuario}}" 
+                        class="input-login-register form-control-sm form-control" placeholder="usuario@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-login-register">UBICACIÓN</label>
+                        <input required name="ubicacion" id="" value="{{values.nombreUsuario}}" 
+                        class="input-login-register form-control-sm form-control" placeholder="Ubicación">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
+                        <input required name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
+                        class="input-login-register form-control-sm form-control" placeholder="Nombre de usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="text-login-register">CONTRASEÑA</label>
+                        <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="" class="text-login-register">REPITE CONTRASEÑA</label>
+                        <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña">
+                    </div>
+    
+                    <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">REGISTRARSE</button>
+    
+    
+                    
+                </form>
+            </div>
+        </div>
+    </div>        
+    
+</body>

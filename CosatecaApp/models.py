@@ -149,7 +149,8 @@ class Producto(models.Model):
     descripcion = models.CharField(blank=True, null=True, max_length=300)
     disponibilidad = models.IntegerField()
     idPropietario = models.ForeignKey('Usuario', models.CASCADE, db_column='idPropietario') 
-    idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
+    # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
+    # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
 
     class Meta:
@@ -158,6 +159,22 @@ class Producto(models.Model):
 
     def __str__(self):
         return str(self.idProducto) + ': ' + self.nombre
+    
+    @staticmethod
+    def getTodosProductos():
+        return Producto.objects.all()
+
+class CategoriaProducto(models.Model):
+    idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)
+    idCategoria = models.ForeignKey(Categoria, models.CASCADE, db_column='idCategoria')
+    idProducto = models.ForeignKey(Producto, models.CASCADE, db_column='idProducto')
+    
+    class Meta:
+        managed = False
+        db_table = 'categoriaProducto'
+
+    def __str__(self):
+        return 'cat: '+ str(self.idCategoria.nombre) + ' prod: ' + str(self.idProducto.nombre)
 
 
 class Reporte(models.Model):
@@ -182,8 +199,8 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=80)
     nombreUsuario = models.CharField(db_column='nombreUsuario', unique=True, max_length=20) 
     ubicacion = models.CharField(blank=True, null=True, max_length=20)
-    idProductosFavoritos = models.CharField(db_column='idProductosFavoritos', blank=True, null=True, max_length=30) 
-    idUsuariosFavoritos = models.CharField(db_column='idUsuariosFavoritos', blank=True, null=True, max_length=30) 
+    # idProductosFavoritos = models.CharField(db_column='idProductosFavoritos', blank=True, null=True, max_length=30) 
+    # idUsuariosFavoritos = models.CharField(db_column='idUsuariosFavoritos', blank=True, null=True, max_length=30) 
     rol = models.CharField(blank=True, null=True, max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
 
     class Meta:

@@ -3,5 +3,25 @@
   <title id="titulo-cosateca">Cosateca</title>
 {% endblock title %}
 {% block body_data %}
-  <a id="titulo-cosateca"> hola jeje god </a>
+{% load static %}
+  <!-- <a> Aquí irá el catálogo. </a> -->
+  <!-- <div id='productos' class="col-lg-12"> -->
+    <div class="row justify-content-center" style="margin-bottom: 7.5%;" id="game-cards">
+      {% for producto in productos %}
+        {% for product in productos %}
+          <div class="col-3 product-card">      
+            <div producto="card mx-productos mb-3" id={{producto.idProducto}} style="width: 18rem;">
+              <img class="card-img-top" src="{% static 'LOGO.jpg' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+              <div class="card-body">
+                <a href="/#">
+                  <p class="card-title">{{producto.nombre}}</p>
+                </a>
+                <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+  <!-- </div> -->
 {% endblock body_data %}

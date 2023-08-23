@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Include Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"> -->
-    <title>Your Page Title</title>
+    <title>This is the Header</title>
 </head>
 <body>
 
@@ -15,7 +14,7 @@
         {% load static %}
         <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
     </a>
-    <a class="nav-link" href="/cat">Anónimo</a>
+    <a class="nav-link" href="/#">Anónimo</a>
 
     <!-- Add the necessary data-toggle and data-target attributes for collapse -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,12 +22,12 @@
     </button>
 
     <!-- Move the collapsible content outside of the form -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto" style="display: contents;">
             <li class="nav-item active">
-                <a class="nav-link" href="/cat">Catálogo<span class="sr-only">(current)</span></a>
+                <a class="nav-link text-center" href="/#"><img class="mx-auto d-block" src="{% static 'LOGO.jpg' %}" style="width:250px;height:90px;"><span class="sr-only">(current)</span></a>
             </li>
-            <li id="search-bar" class="col-lg-12" style="padding: 0;">
+            <li id="search-bar" class="col-lg-2" style="padding: 0;">
                 <input type="search" name="searchbar" class="form-control" placeholder="Buscar producto"/>
             </li>
             <li id="search-button">
@@ -46,7 +45,7 @@
                 </li>
             {% else %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="/signup" style="color: #CCFF61;">Registro</a>
+                    <a class="nav-link" href="/register" style="color: #CCFF61;">Registro</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/login" style="color: #CCFF61;">Iniciar sesión</a>
