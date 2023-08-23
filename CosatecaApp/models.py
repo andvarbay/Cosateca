@@ -171,7 +171,7 @@ class CategoriaProducto(models.Model):
     
     class Meta:
         managed = False
-        db_table = 'categoriaProducto'
+        db_table = 'categoriaproducto'
 
     def __str__(self):
         return 'cat: '+ str(self.idCategoria.nombre) + ' prod: ' + str(self.idProducto.nombre)
