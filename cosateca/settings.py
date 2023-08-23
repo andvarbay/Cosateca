@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap4',
-    'CosatecaApp'
+    'CosatecaApp',
+    'django_minio_backend',
+    #'django_minio_backend.apps.DjangoMinioBackendConfig'
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,52 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cosateca.wsgi.application'
 
+#Configuracion MinIO
+MINIO_CONSISTENCY_CHECK_ON_START = False
+from datetime import timedelta
+from typing import List, Tuple
+
+MINIO_ENDPOINT = SECRETS['MINIO_ENDPOINT']
+MINIO_EXTERNAL_ENDPOINT = SECRETS['MINIO_EXTERNAL_ENDPOINT']
+MINIO_EXTERNAL_ENDPOINT_USE_HTTPS = False  # Default is same as MINIO_USE_HTTPS
+MINIO_REGION = 'us-east-1'  # Default is set to None
+MINIO_ACCESS_KEY = SECRETS['MINIO_ACCESS_KEY']
+MINIO_SECRET_KEY = SECRETS['MINIO_SECRET_KEY']
+MINIO_USE_HTTPS = False
+MINIO_URL_EXPIRY_HOURS = timedelta(days=7)  # Default is 7 days (longest) if not defined
+MINIO_PRIVATE_BUCKETS = [
+   'django-backend-dev-private',
+]
+MINIO_PUBLIC_BUCKETS = [
+   'django-backend-dev-public',
+]
+MINIO_POLICY_HOOKS: List[Tuple[str, dict]] = []
+MINIO_MEDIA_FILES_BUCKET = 'my-media-files-bucket'  # replacement for MEDIA_ROOT
+# MINIO_STATIC_FILES_BUCKET = 'my-static-files-bucket'  # replacement for STATIC_ROOT
+MINIO_BUCKET_CHECK_ON_SAVE = True  # Default: True // Creates bucket if missing, then save
+
+# Custom HTTP Client (OPTIONAL)
+import os
+import certifi
+import urllib3
+timeout = timedelta(minutes=5).seconds
+ca_certs = os.environ.get('SSL_CERT_FILE') or certifi.where()
+MINIO_HTTP_CLIENT: urllib3.poolmanager.PoolManager = urllib3.PoolManager(
+    timeout=urllib3.util.Timeout(connect=timeout, read=timeout),
+    maxsize=10,
+    cert_reqs='CERT_REQUIRED',
+    ca_certs=ca_certs,
+    retries=urllib3.Retry(
+        total=5,
+        backoff_factor=0.2,
+        status_forcelist=[500, 502, 503, 504]
+    )
+)
+
+DEFAULT_FILE_STORAGE = 'django_minio_backend.models.MinioBackend'
+MINIO_MEDIA_FILES_BUCKET = 'my-media-files-bucket'
+MINIO_PUBLIC_BUCKETS.append(MINIO_MEDIA_FILES_BUCKET)
+MEDIA_URL = ''
 
 # Databases
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
