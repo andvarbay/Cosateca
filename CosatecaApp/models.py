@@ -195,13 +195,13 @@ class Usuario(models.Model):
     idUsuario = models.AutoField(db_column='idUsuario', primary_key=True) 
     nombre = models.CharField(blank=True, null=True, max_length=20)
     apellidos = models.CharField(blank=True, null=True, max_length=50)
-    correo = models.CharField(unique=True, max_length=80)
+    correo = models.EmailField(unique=True, max_length=80)
     contrasena = models.CharField(max_length=80)
     nombreUsuario = models.CharField(db_column='nombreUsuario', unique=True, max_length=20) 
     ubicacion = models.CharField(blank=True, null=True, max_length=20)
     # idProductosFavoritos = models.CharField(db_column='idProductosFavoritos', blank=True, null=True, max_length=30) 
     # idUsuariosFavoritos = models.CharField(db_column='idUsuariosFavoritos', blank=True, null=True, max_length=30) 
-    rol = models.CharField(blank=True, null=True, max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
+    rol = models.CharField(max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
 
     class Meta:
         managed = False
@@ -209,6 +209,29 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.rol + ': ' + self.nombreUsuario
+    
+    def registro(self):
+        self.save()
+
+
+    @staticmethod
+    def getUsuarioPorNombreUsuario(nombreUsuario):
+        try:
+            return Usuario.objects.get(nombreUsuario=nombreUsuario)
+        except:
+            return False
+    
+    def existe(self):
+        if Usuario.objects.filter(nombreUsuario=self.nombreUsuario):
+            return True
+        return False
+    @staticmethod
+    def existeCorreo(correo):
+        if Usuario.objects.filter(correo=correo):
+            return True
+        return False
+    
+
 
 
 class Valoracion(models.Model):

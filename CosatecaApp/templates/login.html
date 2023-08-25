@@ -38,16 +38,17 @@
                         {% endif %}
                         <div class="form-group">
                             <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
-                            <input required name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
+                            <input required name="nombreUsuario" value="{{values.nombreUsuario}}" 
                             class="input-login-register form-control-sm form-control" placeholder="Nombre de usuario">
                         </div>
         
                         <div class="form-group">
                             <label for="" class="text-login-register">CONTRASEÑA</label>
-                            <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña">
+                            <input required name="contrasena" value="{{values.contrasena}}" placeholder="Contraseña"
+                            class="input-login-register form-control form-control-sm" type="password" >
                         </div>
         
-                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">ENTRAR</button>
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-md-5">ENTRAR</button>
         
         
                         
