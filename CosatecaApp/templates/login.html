@@ -15,42 +15,44 @@
 </head>
 <body class="body-login-register">
     <div class="row justify-content-center align-items-center" style="width: 100%;">
-        <div clas="col-12">
+        <div class="col-12">
             <a class="nav-link" href="/#" style="display: table-row;"><img src="{% static 'LOGO.jpg' %}" class=" image-login-register"></a>
         </div>
-        <div class="col-6">
-            <div class="container-login-register col-lg-8 rounded mx-auto">
-                <div class="text-center col">
-                
-                    <h3 class="title-login-register" style="text-align:center;font-size: 52px;" >INICIAR SESIÓN</h3>
-                    <br>
-                    <br>
+        <div class="col-8" style="margin-top: 150px;">
+            <div class="row justify-content-center align-items-center">
+                <div class="container-login-register">
+                    <div class="text-center col">
+                    
+                        <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >INICIAR SESIÓN</h3>
+                        <br>
+                        <br>
+                    </div>
+                    <form action="/login/" method="POST">
+                        
+                        {% csrf_token %}
+        
+                        {% if error%}
+                        <div class="alert alert-danger" role="alert">
+                            {{error}}
+                        </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
+                            <input required name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
+                            class="input-login-register form-control-sm form-control" placeholder="Nombre de usuario">
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="" class="text-login-register">CONTRASEÑA</label>
+                            <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña">
+                        </div>
+        
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">ENTRAR</button>
+        
+        
+                        
+                    </form>
                 </div>
-                <form action="/login/" method="POST">
-                    
-                    {% csrf_token %}
-    
-                    {% if error%}
-                    <div class="alert alert-danger" role="alert">
-                        {{error}}
-                    </div>
-                    {% endif %}
-                    <div class="form-group">
-                        <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
-                        <input required name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
-                        class="input-login-register form-control-sm form-control" placeholder="Nombre de usuario">
-                    </div>
-    
-                    <div class="form-group">
-                        <label for="" class="text-login-register">CONTRASEÑA</label>
-                        <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña">
-                    </div>
-    
-                    <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">ENTRAR</button>
-    
-    
-                    
-                </form>
             </div>
         </div>
         <div class="col-12">

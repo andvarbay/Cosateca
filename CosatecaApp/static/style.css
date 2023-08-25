@@ -38,25 +38,17 @@ nav {
     background-color: #58A623;
     border: 3px solid #CCFF61;
     border-radius: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px;
     margin: 10px;
+    width: 100%;
 }
 
 .image-login-register {
-    width: 250px;
     height: 90px;
-    position: absolute;
-    top: 8%;
+    position: fixed;
+    top: 0%;
     left: 50%;
-    transform: translate(-50%,-50%  );
-}
-
-.title-login-register {
-    text-align: center;
-    /* font-size: 45px; */
-    font-family: 'Lato', sans-serif;
-    color: #065104;
+    transform: translate(-50%,0%  );
 }
 
 .text-login-register {
