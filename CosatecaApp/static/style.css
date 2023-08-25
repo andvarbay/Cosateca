@@ -77,10 +77,6 @@ nav {
     padding-bottom: 2.5%;
     font-size: 42px;
 }
-/* 
-ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
-este texto, una vez sea css definito, pásalo arriba.
-*/
 
 .product-card {
     background-color: #FFFFFF;
@@ -89,11 +85,19 @@ este texto, una vez sea css definito, pásalo arriba.
     margin-top: 5%;
     margin-left: 2%;
     margin-right: 2%;
+    max-width:70%;
+
 }
+
 .card-img-top { 
     border: 2px solid #03650A;
     border-radius: 10px;
-    margin-top: 2.5%;
-    width: 288px;
+    margin-top: 5%;
     height: auto;
 }
+/* 
+ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
+este texto, una vez sea css definito, pásalo arriba.
+*/
+
+
