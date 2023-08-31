@@ -25,7 +25,7 @@ class Chat(models.Model):
         db_table = 'chat'
     
     def __str__(self):
-        return 'Chat ' + str(self.idChat)
+        return 'CHAT ' + str(self.idChat) + '. USUARIOS: ' + str(self.idUsuarioArrendador.nombreUsuario) + ' y ' + str(self.idUsuarioArrendatario.nombreUsuario) + '. PRODUCTO: ' + str(self.idProducto.nombre)
 
 
 class Estadistica(models.Model):
@@ -52,7 +52,7 @@ class EstadisticaUsuario(models.Model):
         db_table = 'estadisticausuario'
 
     def __str__(self):
-        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' - ' + str(self.idUsuario)
+        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' de ' + str(self.idUsuario.nombreUsuario)
 
 
 class Listado(models.Model):
@@ -93,12 +93,12 @@ class LogroUsuario(models.Model):
         db_table = 'logrousuario'
 
     def __str__(self):
-        return str(self.idLogroUsuario) + ': ' + str(self.idLogro) + ' - ' + str(self.idUsuario)
+        return str(self.idLogroUsuario) + ': ' + str(self.idLogro) + ' - ' + str(self.idUsuario.nombreUsuario)
 
 
 class Mensaje(models.Model):
     idMensaje = models.AutoField(db_column='idMensaje', primary_key=True)  
-    idEmisor = models.IntegerField(db_column='idEmisor')  
+    idEmisor = models.ForeignKey('Usuario', models.CASCADE, db_column='idEmisor')  
     fechaHora = models.DateTimeField(db_column='fechaHora') 
     texto = models.CharField(blank=True, null=True, max_length=200)
     idChat = models.ForeignKey(Chat, models.CASCADE, db_column='idChat')
@@ -108,7 +108,7 @@ class Mensaje(models.Model):
         db_table = 'mensaje'
 
     def __str__(self):
-        return str(self.idMensaje) + ': ' + str(self.idEmisor) + ' a ' + str(self.fechaHora)
+        return str(self.idMensaje) + ': ' + str(self.idEmisor.nombreUsuario) + ' a ' + str(self.fechaHora) + ' en ' + str(self.idChat)
 
 
 class Notificacion(models.Model):
@@ -122,7 +122,7 @@ class Notificacion(models.Model):
         db_table = 'notificacion'
 
     def __str__(self):
-        return str(self.idNotificacion) + ': ' + str(self.idUsuario) + ' a ' + str(self.fechaHora)
+        return str(self.idNotificacion) + ': ' + str(self.idUsuario.nombreUsuario) + ' a ' + str(self.fechaHora)
 
 
 class Prestamo(models.Model):
@@ -174,7 +174,7 @@ class CategoriaProducto(models.Model):
         db_table = 'categoriaProducto'
 
     def __str__(self):
-        return 'cat: '+ str(self.idCategoria.nombre) + ' prod: ' + str(self.idProducto.nombre)
+        return str(self.idCategoria.nombre) + ' - ' + str(self.idProducto.nombre)
 
 
 class Reporte(models.Model):
@@ -208,7 +208,7 @@ class Usuario(models.Model):
         db_table = 'usuario'
 
     def __str__(self):
-        return self.nombreUsuario + ' ' + self.rol
+        return self.rol + ': ' + self.nombreUsuario
 
 
 class Valoracion(models.Model):
@@ -224,4 +224,4 @@ class Valoracion(models.Model):
         db_table = 'valoracion'
 
     def __str__(self):
-        return 'De: ' + str(self.idEmisor) + ' para ' + str(self.idReceptor)
+        return 'DE: ' + str(self.idEmisor.nombreUsuario) + ' A: ' + str(self.idReceptor.nombreUsuario)
