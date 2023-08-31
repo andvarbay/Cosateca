@@ -38,25 +38,17 @@ nav {
     background-color: #58A623;
     border: 3px solid #CCFF61;
     border-radius: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px;
     margin: 10px;
+    width: 100%;
 }
 
 .image-login-register {
-    width: 250px;
     height: 90px;
-    position: absolute;
-    top: 8%;
+    position: fixed;
+    top: 0%;
     left: 50%;
-    transform: translate(-50%,-50%  );
-}
-
-.title-login-register {
-    text-align: center;
-    /* font-size: 45px; */
-    font-family: 'Lato', sans-serif;
-    color: #065104;
+    transform: translate(-50%,0%  );
 }
 
 .text-login-register {
@@ -77,10 +69,6 @@ nav {
     padding-bottom: 2.5%;
     font-size: 42px;
 }
-/* 
-ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
-este texto, una vez sea css definito, pásalo arriba.
-*/
 
 .product-card {
     background-color: #FFFFFF;
@@ -89,11 +77,19 @@ este texto, una vez sea css definito, pásalo arriba.
     margin-top: 5%;
     margin-left: 2%;
     margin-right: 2%;
+    max-width:70%;
+
 }
+
 .card-img-top { 
     border: 2px solid #03650A;
     border-radius: 10px;
-    margin-top: 2.5%;
-    width: 288px;
+    margin-top: 5%;
     height: auto;
 }
+/* 
+ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
+este texto, una vez sea css definito, pásalo arriba.
+*/
+
+

@@ -14,7 +14,11 @@
         {% load static %}
         <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
     </a>
-    <a class="nav-link" href="/#">Anónimo</a>
+    {% if request.session.usuario %}
+        <a class="nav-link" href="/#">{{request.session.usuario}}</a>
+    {% else %}
+        <a class="nav-link" href="/#">Invitado</a>
+    {% endif %}
 
     <!-- Add the necessary data-toggle and data-target attributes for collapse -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,9 +40,9 @@
         </ul>
 
         <ul class="navbar-nav my-2 my-lg-0">
-            {% if request.session.cliente %}
+            {% if request.session.usuario %}
                 <li class="nav-item active ">
-                    <a class="nav-link" href="/perfil/{{request.session.cliente}}">Mi perfil</a>
+                    <a class="nav-link" href="/perfil/{{request.session.usuario}}">Mi perfil</a>
                 </li>
                 <li class="nav-item active ">
                     <a class="nav-link" href="/logout" style="color: #CCFF61;">Cerrar sesión</a>

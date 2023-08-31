@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from CosatecaApp import views
+from CosatecaApp.login import Login, logout
+from CosatecaApp.register import Register
 
 from django.conf.urls.static import static
 from django.conf import settings
@@ -24,6 +26,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicio, name='catalogo'),
-    path('login/', views.login),
-    path('register/', views.register),
+    path('login/', Login.as_view(), name='login'),
+    path('register/', Register.as_view(), name='register'),
+    path('logout/', logout , name='logout'),
 ]

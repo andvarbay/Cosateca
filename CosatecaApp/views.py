@@ -5,7 +5,6 @@ from CosatecaApp.models import *
 
 def inicio(request):
     productos = Producto.getTodosProductos()
-
     data= {}
     data['productos'] = productos
     return render(request, 'inicio.html', data)
