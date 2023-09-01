@@ -14,3 +14,12 @@ def login(request):
 
 def register(request):
     return render(request, 'register.html')
+
+def perfil(request, nombreUsuario):
+    data= {}
+    usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+    productos = Producto.getProductosDeUsuario(usuario)
+    data['usuario'] = usuario
+    data['productos'] = productos
+
+    return render (request, 'perfil.html', data)
