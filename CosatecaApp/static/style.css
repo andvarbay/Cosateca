@@ -87,9 +87,38 @@ nav {
     margin-top: 5%;
     height: auto;
 }
+
+.card-text {
+    color: black
+}
+
+
+.profile-card {
+    background-color: #FFFFFF;
+    border: 2px solid #03650A;
+    border-radius: 10px;
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 2%;
+    justify-content: space-between;
+    font-size: 23px;
+  }
+
+  .profile-button {
+    background-color: #065104;
+    border-radius: 35px;
+    color: #CCFF61;
+  }
+
+  .delete-profile-button {
+    background-color: black;
+    border-radius: 35px;
+    color: #CCFF61;
+}
+
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.
 */
-
-
