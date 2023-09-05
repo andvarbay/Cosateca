@@ -43,9 +43,7 @@ class Register (View):
         if not listaErrors:
             usuario.registro()
             # return redirect('catalogo')
-            print(nombreUsuario, contrasena)
             user = authenticate(nombreUsuario=nombreUsuario, password=contrasena)
-            print('AAAAAAAAAAAAAAAAA',user)
             login(request, user)
                 
             return redirect('catalogo')  # O cualquier otra página a la que desees redirigir
@@ -69,7 +67,6 @@ class Register (View):
         if len(contrasena) < 5:
             listaErrores.append("La contraseña debe tener al menos 5 caracteres.")
         if contrasena != contrasena2:
-            print(contrasena, contrasena2)
             listaErrores.append("Las contraseñas deben ser iguales.")
         if usuario.correo:
             if len(usuario.correo) < 5:
