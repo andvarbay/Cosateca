@@ -40,6 +40,7 @@ class Register (View):
             rol='usuario')
         listaErrors = self.validarusuario(usuario, contrasena, contrasena2)
 
+
         if not listaErrors:                
             return redirect('login')
         else:
@@ -62,7 +63,6 @@ class Register (View):
         if len(contrasena) < 5:
             listaErrores.append("La contraseña debe tener al menos 5 caracteres.")
         if contrasena != contrasena2:
-            print(contrasena, contrasena2)
             listaErrores.append("Las contraseñas deben ser iguales.")
         if usuario.correo:
             if len(usuario.correo) < 5:
