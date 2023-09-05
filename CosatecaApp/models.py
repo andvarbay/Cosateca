@@ -169,6 +169,10 @@ class Producto(models.Model):
     @staticmethod
     def getTodosProductos():
         return Producto.objects.all()
+    
+    @staticmethod
+    def getProductosDeUsuario(nombreUsuario):
+        return Producto.objects.filter(idPropietario = nombreUsuario)
 
 class CategoriaProducto(models.Model):
     idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)

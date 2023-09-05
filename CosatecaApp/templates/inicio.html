@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}
-  <title id="titulo-cosateca">Cosateca</title>
+  <title>Cosateca</title>
 {% endblock title %}
 {% block body_data %}
 {% load static %}
     <div class="row justify-content-center" style="margin-bottom: 7.5%;width:100%" id="game-cards">
       {% for producto in productos %}
-        {% for product in productos %}
-          <div class="col-lg-3 col-md-5 col-sm-11 product-card">      
-            <div producto="card mx-productos mb-3" id={{producto.idProducto}}>
-              <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
-              <div class="card-body">
-                <a href="/#">
-                  <p class="card-title">{{producto.nombre}}</p>
-                </a>
+        <div class="col-lg-3 col-md-5 col-sm-11 product-card">      
+          <div producto="card mx-productos mb-3" id={{producto.idProducto}}>
+            <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+            <div class="card-body">
+              <a href="/#">
+                <p class="card-text">{{producto.nombre}}</p>
+              </a>
+              <br>
+              <a href="/perfil/{{producto.idPropietario.nombreUsuario}}">
                 <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
-                <p class="card-text">{{producto.idPropietario.nombreUsuario}}</p>                
-              </div>
+              </a>
+              <p class="card-text">{{producto.idPropietario.ubicacion}}</p>
+              {% if producto.disponibilidad %}                
+                <p class="card-text">DISPONIBLE</p> 
+              {% else %}
+                <p class="card-text">EN PRÉSTAMO</p> 
+              {% endif %}
             </div>
           </div>
-          {% endfor %}
-        {% endfor %}
+        </div>
+      {% endfor %}
       </div>
   <!-- </div> -->
 {% endblock body_data %}

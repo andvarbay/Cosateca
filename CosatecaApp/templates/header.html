@@ -10,13 +10,15 @@
 <body>
 
 <nav class="one-edge-shadow navbar navbar-light sticky-top navbar-expand-lg text-white">
-    <a class="navbar-brand ms-3 text-dark" href="/">
-        {% load static %}
-        <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
+    {% load static %}
     </a>
     {% if request.session.usuario %}
-        <a class="nav-link" href="/#">{{request.session.usuario}}</a>
+        <a class="navbar-brand ms-3 text-dark" href="/perfil/{{request.session.usuario}}">
+        <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
+        <a class="nav-link" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
     {% else %}
+        <a class="navbar-brand ms-3 text-dark" href="/#">
+        <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
         <a class="nav-link" href="/#">Invitado</a>
     {% endif %}
 

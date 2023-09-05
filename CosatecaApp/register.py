@@ -40,13 +40,9 @@ class Register (View):
             rol='usuario')
         listaErrors = self.validarusuario(usuario, contrasena, contrasena2)
 
-        if not listaErrors:
-            usuario.registro()
-            # return redirect('catalogo')
-            user = authenticate(nombreUsuario=nombreUsuario, password=contrasena)
-            login(request, user)
-                
-            return redirect('catalogo')  # O cualquier otra página a la que desees redirigir
+
+        if not listaErrors:                
+            return redirect('login')
         else:
             data = {
                 'errors': listaErrors,

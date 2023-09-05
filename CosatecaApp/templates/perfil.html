@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Perfil</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row profile-card">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+            <div class="d-flex flex-column align-items-center">
+
+                <img src="{% static 'Default_profile_pic.png' %}" style="width:150px;height:150px;">
+                <p class="text-center" style="font-size: 30px;">{{usuario.nombreUsuario}}</p>
+
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12" style="align-self: center;">
+            <!-- <ul> -->
+                <p><strong>Nombre:</strong> {{usuario.nombre}}</p>
+                <p><strong>Apellidos:</strong> {{usuario.apellidos}}</p>
+                <p><strong>Correo:</strong> {{usuario.correo}}</p>
+                <p><strong>Ubicación:</strong> {{usuario.ubicacion}}</p>
+            <!-- </ul> -->
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12" style="align-self: center;">
+            {% if request.session.usuario == usuario.nombreUsuario %}
+                <div class="d-flex flex-column">
+                    <a href="" class="btn profile-button mb-2">EDITAR PERFIL</a>
+                    <a href="" class="btn profile-button mb-2">SOLICITUDES DE PRÉSTAMO</a>
+                    <a href="" class="btn profile-button mb-4">REGISTRO DE PRÉSTAMOS</a>
+                    <a href="" class="btn delete-profile-button">ELIMINAR CUENTA</a>
+                </div>
+            {% else %}
+                <div class="d-flex flex-column">
+                    <div class="row" style="justify-content:space-between;margin-left: 5%;margin-right: 5%;margin-bottom: 5%;">
+                        <a href=""><i class="fa-solid fa-trophy" style="font-size: 40px;"></i></a>
+                        <i class="fa-regular fa-heart" style="font-size: 40px;"></i>
+                    </div>
+                    <a href="" class="btn profile-button mb-4" >VALORAR</a>
+                    <a href="" class="btn delete-profile-button" >REPORTAR</a>    
+                </div>
+            {% endif %}
+        </div>
+        
+    </div>
+    <h1 style="text-transform: uppercase;color: #03650A; text-align: center;"> PRODUCTOS DE {{usuario.nombreUsuario}}</h1>
+    <div class="row justify-content-center" style="margin-bottom: 7.5%;width:100%" id="game-cards">
+        {% for producto in productos %}
+            <div class="col-lg-3 col-md-5 col-sm-11 product-card">      
+                <div producto="card mx-productos mb-3" id={{producto.idProducto}}>
+                <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                <div class="card-body">
+                    <a href="/#">
+                    <p class="card-title">{{producto.nombre}}</p>
+                    </a>
+                    <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
+                    <p class="card-text">{{producto.idPropietario.nombreUsuario}}</p>                
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+  <!-- </div> -->
+{% endblock body_data %}
