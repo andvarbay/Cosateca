@@ -1,6 +1,12 @@
 from django.db import models
+from django_minio_backend import MinioBackend, iso_date_prefix
 
 # Create your models here.
+
+class PrivateAttachment(models.Model):   
+    file = models.FileField(verbose_name="Object Upload",
+                            storage=MinioBackend(bucket_name='django-backend-dev-private'),
+                            upload_to=iso_date_prefix,)
 
 class Categoria(models.Model):
     idCategoria = models.AutoField(db_column='idCategoria', primary_key=True)  
@@ -215,6 +221,7 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=80)
     nombreUsuario = models.CharField(db_column='nombreUsuario', unique=True, max_length=20) 
     ubicacion = models.CharField(blank=True, null=True, max_length=20)
+    fotoPerfil = models.ForeignKey(PrivateAttachment, models.CASCADE, db_column='fotoPerfil', null=True, blank=True)
     # idProductosFavoritos = models.CharField(db_column='idProductosFavoritos', blank=True, null=True, max_length=30) 
     # idUsuariosFavoritos = models.CharField(db_column='idUsuariosFavoritos', blank=True, null=True, max_length=30) 
     rol = models.CharField(max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
