@@ -118,6 +118,10 @@ nav {
     color: #CCFF61;
 }
 
+#fotoPerfilInput {
+    padding-left: 0;
+    height: auto;
+}
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.

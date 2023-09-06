@@ -14,7 +14,7 @@
     </a>
     {% if request.session.usuario %}
         <a class="navbar-brand ms-3 text-dark" href="/perfil/{{request.session.usuario}}">
-        <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
+        <img src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" style="width:90px;height:90px;">
         <a class="nav-link" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
     {% else %}
         <a class="navbar-brand ms-3 text-dark" href="/#">
