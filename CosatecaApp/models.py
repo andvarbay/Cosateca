@@ -27,6 +27,18 @@ class Chat(models.Model):
     def __str__(self):
         return 'CHAT ' + str(self.idChat) + '. USUARIOS: ' + str(self.idUsuarioArrendador.nombreUsuario) + ' y ' + str(self.idUsuarioArrendatario.nombreUsuario) + '. PRODUCTO: ' + str(self.idProducto.nombre)
 
+    @staticmethod
+    def getChatsPorUsuario(idUsuario):
+        try:
+            chatsArrendador =  Chat.objects.filter(idUsuarioArrendador=idUsuario)
+            try: 
+                chatsArrendatario = Chat.objects.filter(idUsuarioArrendatario=idUsuario)
+                return chatsArrendador + chatsArrendatario
+            except:
+                return chatsArrendador
+        except:
+            return []
+
 
 class Estadistica(models.Model):
     idEstadistica = models.AutoField(db_column='idEstadistica', primary_key=True) 
@@ -229,15 +241,13 @@ class Usuario(models.Model):
         if Usuario.objects.filter(nombreUsuario=self.nombreUsuario):
             return True
         return False
+    
     @staticmethod
     def existeCorreo(correo):
         if Usuario.objects.filter(correo=correo):
             return True
         return False
     
-
-
-
 class Valoracion(models.Model):
     idValoracion = models.AutoField(db_column='idValoracion', primary_key=True) 
     idEmisor = models.ForeignKey(Usuario, models.CASCADE, db_column='idEmisor')  

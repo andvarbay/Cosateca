@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Cosateca</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="margin-bottom: 7.5%;width:100%">
+        <h1 id="titulo-listado-chats">MENSAJES</h1>
+    </div>
+    <div class="row justify-content-center" style="margin-bottom: 7.5%;width:100%" id="game-cards">
+    {% if chats.count > 1 %}   
+      <div class="cuadro">
+        {% for chat in chats %}
+          <div class="elemento">{{ chat }}</div>      
+        {% endfor %}
+      </div>
+    {% elif chats.count == 1 %}
+      <div class="cuadro row justify-content-center">
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div>{{ chats.get.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center;">
+          <a href="/chat/{{ chats.get.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+      </div>
+    {% else %}
+      <h2>Ups... no has hablado con nadie aun</h1>
+    {% endif %}  
+      </div>
+    </div>
+{% endblock body_data %}

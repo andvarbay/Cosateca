@@ -23,3 +23,13 @@ def perfil(request, nombreUsuario):
     data['productos'] = productos
 
     return render (request, 'perfil.html', data)
+
+def listadoChats(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+    listado = Chat.getChatsPorUsuario(usuario.idUsuario)
+    print(listado)
+    data['chats'] = listado
+    
+    return render (request, 'listadoChats.html', data)

@@ -30,4 +30,5 @@ urlpatterns = [
     path('register/', Register.as_view(), name='register'),
     path('logout/', logout , name='logout'),
     path('perfil/<nombreUsuario>', views.perfil , name='perfil'),
+    path('listado-chats/', views.listadoChats , name='listadoChats'),
 ]
