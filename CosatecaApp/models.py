@@ -257,6 +257,14 @@ class Usuario(models.Model):
         except:
             return False
     
+    @staticmethod
+    def getUsuarioPorId(idUsuario):
+        try:
+            return Usuario.objects.get(idUsuario=idUsuario)
+        except:
+            return False
+
+
     def existe(self):
         if Usuario.objects.filter(nombreUsuario=self.nombreUsuario):
             return True
@@ -267,16 +275,6 @@ class Usuario(models.Model):
         if Usuario.objects.filter(correo=correo):
             return True
         return False
-    
-    # @staticmethod
-    # def getFotoPerfilPorNombreUsuario(nombreUsuario):
-    #     usuario = Usuario.objects.get(nombreUsuario=nombreUsuario)
-    #     print(usuario)
-    #     file = usuario.fotoPerfil.file
-    #     print(file)
-    #     url = client.get_presigned_url("GET","django-backend-dev-public",file)
-    #     return file
-
 
 
 class Valoracion(models.Model):

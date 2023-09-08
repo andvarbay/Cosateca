@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    <title>Editar perfil</title>
+</head>
+<body class="body-login-register">
+    <div class="row justify-content-center align-items-center" style="width: 100%;">
+        <div clas="col-12">
+            <a class="nav-link" href="/#" style="display: table-row;"><img src="{% static 'LOGO.jpg' %}" class=" image-login-register"></a>
+        </div>
+        <div class="col-8" style="margin-top: 150px;">
+            <div class="row justify-content-center align-items-center">
+                <div class="container-login-register ">
+                    <div class="text-center col">
+                    
+                        <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >EDITAR PERFIL</h3>
+                        <br>
+                        <br>
+                    </div>
+                    <form action="/editarPerfil/{{request.session.usuario}}" method="POST" enctype="multipart/form-data">
+                        
+                        {% csrf_token %}
+        
+                        {% if errors%}
+                            {% for error in errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="" class="text-login-register">NOMBRE</label>
+                            <input name="nombre" id="" value="{{values.nombre}}" 
+                            class="input-login-register form-control-sm form-control" placeholder="Nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">APELLIDOS</label>
+                            <input name="apellidos" id="" value="{{values.apellidos}}" 
+                            class="input-login-register form-control-sm form-control" placeholder="Apellidos">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">CORREO ELECTRÓNICO</label>
+                            <input type="email" name="correo" id="" value="{{values.correo}}" 
+                            class="input-login-register form-control-sm form-control" placeholder="usuario@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">UBICACIÓN</label>
+                            <input name="ubicacion" id="" value="{{values.ubicacion}}" 
+                            class="input-login-register form-control-sm form-control" placeholder="Ubicación">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
+                            <input name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
+                            class="input-login-register form-control-sm form-control" placeholder="Nombre de usuario">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">CONTRASEÑA ACTUAL</label>
+                            <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña Actual">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">CONTRASEÑA NUEVA</label>
+                            <input type="password" name="contrasenaNueva" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasenaNueva}}" placeholder="Nueva Contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">REPITE CONTRASEÑA NUEVA</label>
+                            <input type="password" name="contrasenaNueva2" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasenaNueva2}}" placeholder="Repite Nueva Contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">FOTO DE PERFIL</label>
+                            <input type="file" name="fotoPerfil" id="fotoPerfilInput" class="input-login-register form-control form-control-sm" value="{{values.fotoPerfil}}" placeholder="Sube tu foto">
+                        </div>
+        
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">EDITAR PERFIL</button>
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5" style="background-color: black;">ELIMINAR PERFIL</button>
+                               
+                    </form>
+                </div>
+            </div> 
+        </div>
+    </div>        
+    
+</body>
