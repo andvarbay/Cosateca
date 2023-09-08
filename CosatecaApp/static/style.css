@@ -122,6 +122,19 @@ nav {
     padding-left: 0;
     height: auto;
 }
+
+.image-container {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%; /* Esto hará que el contenedor sea redondeado */
+    overflow: hidden; /* Esto recortará la imagen que se extiende más allá del contenedor redondeado */
+}
+
+.rounded-image {
+    width: 100%; /* Asegura que la imagen llene todo el contenedor redondeado */
+    height: auto; /* Mantén la relación de aspecto original de la imagen */
+}
+
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.
