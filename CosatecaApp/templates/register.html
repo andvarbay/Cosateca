@@ -27,7 +27,7 @@
                         <br>
                         <br>
                     </div>
-                    <form action="/register/" method="POST">
+                    <form action="/register/" method="POST" enctype="multipart/form-data">
                         
                         {% csrf_token %}
         
@@ -71,6 +71,10 @@
                         <div class="form-group">
                             <label for="" class="text-login-register">REPITE CONTRASEÑA</label>
                             <input required type="password" name="contrasena2" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena2}}" placeholder="Contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">FOTO DE PERFIL</label>
+                            <input type="file" name="fotoPerfil" id="fotoPerfilInput" class="input-login-register form-control form-control-sm" value="{{values.fotoPerfil}}" placeholder="Sube tu foto">
                         </div>
         
                         <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">REGISTRARSE</button>

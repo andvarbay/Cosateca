@@ -6,6 +6,7 @@ from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
+
 class Register (View):
     def get(self, request):
         return render(request, 'register.html')
@@ -19,14 +20,19 @@ class Register (View):
         contrasena = postData.get('contrasena')
         contrasena2 = postData.get('contrasena2')
         nombreUsuario = postData.get('nombreUsuario')
+        fotoPerfil = request.FILES.get('fotoPerfil')
         # validation
         values = {
             'nombre': nombre,
             'apellidos': apellidos,
             'ubicacion': ubicacion,
             'correo': correo,
-            'nombreUsuario': nombreUsuario
+            'nombreUsuario': nombreUsuario,
         }
+        foto = PrivateAttachment(
+            file = fotoPerfil
+        )
+        PrivateAttachment.nuevaFoto(foto)
         
         listaErrors = None
   
@@ -37,10 +43,13 @@ class Register (View):
             contrasena=hashlib.md5(contrasena.encode()).hexdigest(),
             nombreUsuario=nombreUsuario,
             ubicacion=ubicacion,
-            rol='usuario')
+            rol='usuario',
+            fotoPerfil=foto)
         listaErrors = self.validarusuario(usuario, contrasena, contrasena2)
 
-        if not listaErrors:                
+
+        if not listaErrors:
+            Usuario.registro(usuario)
             return redirect('login')
         else:
             data = {
@@ -62,7 +71,6 @@ class Register (View):
         if len(contrasena) < 5:
             listaErrores.append("La contraseña debe tener al menos 5 caracteres.")
         if contrasena != contrasena2:
-            print(contrasena, contrasena2)
             listaErrores.append("Las contraseñas deben ser iguales.")
         if usuario.correo:
             if len(usuario.correo) < 5:
