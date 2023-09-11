@@ -84,8 +84,6 @@ class EditarPerfil (View):
             listaErrores.append("Los apellidos deben tener al menos 3 caracteres.")
         if ((contrasenaActual != '') | (contrasenaNueva!= '') | (contrasenaNueva2!='')):
             contrasena_md5 = hashlib.md5(contrasenaActual.encode()).hexdigest()
-            print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO' + current.contrasena)
-            print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO' + contrasena_md5)
             if contrasena_md5 != current.contrasena:
                 listaErrores.append("Contraseña actual incorrecta")
             if len(contrasenaNueva) < 5:
