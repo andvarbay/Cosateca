@@ -1,12 +1,37 @@
+import json
 from django.db import models
 from django_minio_backend import MinioBackend, iso_date_prefix
+from minio import Minio
+
+from cosateca.settings import SECRETS
 
 # Create your models here.
+client = Minio(
+                SECRETS['MINIO_ENDPOINT'],
+                access_key = SECRETS['MINIO_ACCESS_KEY'],
+                secret_key = SECRETS['MINIO_SECRET_KEY']
+            )
 
-class PrivateAttachment(models.Model):   
+class PrivateAttachment(models.Model):
     file = models.FileField(verbose_name="Object Upload",
-                            storage=MinioBackend(bucket_name='django-backend-dev-private'),
+                            storage=MinioBackend(bucket_name='django-backend-dev-public'),
                             upload_to=iso_date_prefix,)
+    
+
+    def __str__(self):
+        return str(self.file)
+        
+    def nuevaFoto(self):
+        self.save()
+
+    @staticmethod
+    def getFoto(file):
+        try:
+            return PrivateAttachment.objects.get(file = file)
+        except:
+            return False
+
+
 
 class Categoria(models.Model):
     idCategoria = models.AutoField(db_column='idCategoria', primary_key=True)  
@@ -221,7 +246,7 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=80)
     nombreUsuario = models.CharField(db_column='nombreUsuario', unique=True, max_length=20) 
     ubicacion = models.CharField(blank=True, null=True, max_length=20)
-    fotoPerfil = models.ForeignKey(PrivateAttachment, models.CASCADE, db_column='fotoPerfil', null=True, blank=True)
+    fotoPerfil = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoPerfil', null=True, blank=True)
     # idProductosFavoritos = models.CharField(db_column='idProductosFavoritos', blank=True, null=True, max_length=30) 
     # idUsuariosFavoritos = models.CharField(db_column='idUsuariosFavoritos', blank=True, null=True, max_length=30) 
     rol = models.CharField(max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
@@ -249,12 +274,24 @@ class Usuario(models.Model):
             return True
         return False
     
+    
     @staticmethod
     def existeCorreo(correo):
         if Usuario.objects.filter(correo=correo):
             return True
         return False
     
+    # @staticmethod
+    # def getFotoPerfilPorNombreUsuario(nombreUsuario):
+    #     usuario = Usuario.objects.get(nombreUsuario=nombreUsuario)
+    #     print(usuario)
+    #     file = usuario.fotoPerfil.file
+    #     print(file)
+    #     url = client.get_presigned_url("GET","django-backend-dev-public",file)
+    #     return file
+
+
+
 class Valoracion(models.Model):
     idValoracion = models.AutoField(db_column='idValoracion', primary_key=True) 
     idEmisor = models.ForeignKey(Usuario, models.CASCADE, db_column='idEmisor')  
