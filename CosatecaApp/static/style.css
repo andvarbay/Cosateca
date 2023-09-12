@@ -136,7 +136,41 @@ nav {
     object-fit: cover;
 }
 
+.cuadro {
+    /* width: 60%; */
+    /* height: 60%; */
+    border: 1px solid #065104;
+    background-color: #FFFFFF;
+    overflow: auto;
+  }
+
+@media screen and (max-width: 630px) {
+    #container-listado-chats {
+        overflow: auto;
+        height: 500px;
+    }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 630px) {
+    #container-listado-chats {
+        overflow: auto;
+        height: 800px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    #container-listado-chats {
+        overflow: auto;
+        height: 450px;
+    }
+}
+
+/* .elemento-lista-chats {
+    border: 1px solid #065104;
+  } */
+
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.
 */
+
