@@ -23,6 +23,8 @@ from CosatecaApp.register import Register
 from django.conf.urls.static import static
 from django.conf import settings
 
+from CosatecaApp.templates.editarPerfil import EditarPerfil
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicio, name='catalogo'),
@@ -31,4 +33,5 @@ urlpatterns = [
     path('logout/', logout , name='logout'),
     path('perfil/<nombreUsuario>', views.perfil , name='perfil'),
     path('listado-chats/', views.listadoChats , name='listadoChats'),
+    path('editarPerfil/<idUsuario>', EditarPerfil.as_view() , name='editarPerfil'),
 ]

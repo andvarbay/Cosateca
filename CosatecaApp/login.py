@@ -22,7 +22,6 @@ class Login(View):
             if contrasena_md5 == usuario.contrasena:
                 request.session['usuario'] = usuario.nombreUsuario
                 request.session['usuarioFoto'] = str(usuario.fotoPerfil.file)
-
                 if Login.return_url:
                     return HttpResponseRedirect(Login.return_url)
                 else:
