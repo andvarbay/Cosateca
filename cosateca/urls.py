@@ -23,7 +23,7 @@ from CosatecaApp.register import Register
 from django.conf.urls.static import static
 from django.conf import settings
 
-from CosatecaApp.templates.editarPerfil import EditarPerfil
+from CosatecaApp.editarPerfil import EditarPerfil
 
 urlpatterns = [
     path('admin/', admin.site.urls),
