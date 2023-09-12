@@ -8,18 +8,16 @@
         <div class="col-lg-2 col-md-4 col-sm-6 col-12">
             <div class="d-flex flex-column align-items-center">
 
-                <img src="http://127.0.0.1:9000/django-backend-dev-public/{{usuario.fotoPerfil}}" style="width:150px;height:150px;">
+                <img src="http://127.0.0.1:9000/django-backend-dev-public/{{usuario.fotoPerfil}}" style="width:150px;height:auto;">
                 <p class="text-center" style="font-size: 30px;">{{usuario.nombreUsuario}}</p>
                 
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-12" style="align-self: center;">
-            <!-- <ul> -->
                 <p><strong>Nombre:</strong> {{usuario.nombre}}</p>
                 <p><strong>Apellidos:</strong> {{usuario.apellidos}}</p>
                 <p><strong>Correo:</strong> {{usuario.correo}}</p>
                 <p><strong>Ubicación:</strong> {{usuario.ubicacion}}</p>
-            <!-- </ul> -->
 
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-12" style="align-self: center;">
@@ -60,5 +58,4 @@
             </div>
         {% endfor %}
     </div>
-  <!-- </div> -->
 {% endblock body_data %}

@@ -43,7 +43,7 @@ nav {
     width: 100%;
 }
 
-.image-login-register {
+.logo-header {
     height: 90px;
     position: fixed;
     top: 0%;
@@ -126,13 +126,14 @@ nav {
 .image-container {
     width: 90px;
     height: 90px;
-    border-radius: 50%; /* Esto hará que el contenedor sea redondeado */
-    overflow: hidden; /* Esto recortará la imagen que se extiende más allá del contenedor redondeado */
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .rounded-image {
-    width: 100%; /* Asegura que la imagen llene todo el contenedor redondeado */
-    height: auto; /* Mantén la relación de aspecto original de la imagen */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 /* 
