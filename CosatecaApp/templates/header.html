@@ -14,7 +14,7 @@
             <div class="col-6" style="display: flex;">
                 <a class="navbar-brand ms-3 text-dark" href="/perfil/{{request.session.usuario}}">
                 <div class="image-container">
-                    <img src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" style="width:90px;height:90px;">
+                    <img class="rounded-image" src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" style="width:90px;height:90px;">
                 </div>
                 <a class="nav-link" style="align-self: center;" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
             </div>
