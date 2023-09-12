@@ -58,16 +58,15 @@ class EditarPerfil (View):
             current.apellidos = apellidos
             current.correo = correo
             current.ubicacion = ubicacion
-            current.contrasena = contrasenaNueva
             current.nombreUsuario = nombreUsuario
             if fotoPerfil != None:
-                # print('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ      ' + str(current.fotoPerfil.file))
-                # client.remove_object("django-backend-dev-public", str(current.fotoPerfil.file))
                 current.fotoPerfil= foto
-            current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
+            if contrasenaNueva != '':
+                current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
             Usuario.registro(current)
             request.session['usuario'] = current.nombreUsuario
-            request.session['usuarioFoto'] = str(current.fotoPerfil.file)
+            if current.fotoPerfil != None:
+                request.session['usuarioFoto'] = str(current.fotoPerfil.file)
             return redirect('perfil', current.nombreUsuario)
         else:
             data = {

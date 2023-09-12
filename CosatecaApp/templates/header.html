@@ -14,7 +14,11 @@
             <div class="col-6" style="display: flex;">
                 <a class="navbar-brand ms-3 text-dark" href="/perfil/{{request.session.usuario}}">
                 <div class="image-container">
-                    <img class="rounded-image" src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" style="width:90px;height:90px;">
+                    {% if request.session.usuarioFoto == None %}
+                    <img src="{% static 'default_profile_pic.png' %}" class="rounded-image">                    
+                {% else %}
+                    <img src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" class="rounded-image"">
+                {% endif %}
                 </div>
                 <a class="nav-link" style="align-self: center;" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
             </div>

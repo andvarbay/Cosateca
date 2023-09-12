@@ -128,12 +128,14 @@ nav {
     height: 90px;
     border-radius: 50%;
     overflow: hidden;
+    display: flex;
 }
 
 .rounded-image {
     width: 100%;
     height: auto;
     object-fit: cover;
+    object-position: center center;
 }
 
 .cuadro {
@@ -163,6 +165,16 @@ nav {
         overflow: auto;
         height: 450px;
     }
+}
+
+.container-detalles {
+    background-color: #FFFFFF;
+    border: 2px solid #03650A;
+    border-radius: 10px;
+    width: 1243px;
+    height: 696px;
+    margin: auto;
+    margin-top: 2.5%;
 }
 
 /* .elemento-lista-chats {
