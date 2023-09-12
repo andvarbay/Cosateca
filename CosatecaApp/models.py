@@ -64,7 +64,7 @@ class Chat(models.Model):
             chatsArrendador =  Chat.objects.filter(idUsuarioArrendador=idUsuario)
             try: 
                 chatsArrendatario = Chat.objects.filter(idUsuarioArrendatario=idUsuario)
-                return chatsArrendador + chatsArrendatario
+                return chatsArrendador | chatsArrendatario
             except:
                 return chatsArrendador
         except:

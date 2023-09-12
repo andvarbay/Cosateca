@@ -29,7 +29,6 @@ def listadoChats(request):
     nombreUsuario = request.session.get('usuario')
     usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
     listado = Chat.getChatsPorUsuario(usuario.idUsuario)
-    print(listado)
     data['chats'] = listado
     
     return render (request, 'listadoChats.html', data)

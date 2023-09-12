@@ -1,6 +1,6 @@
 CosatecaApp/migrations/
 CosatecaApp/__pycache__/
-cosateca/__pycache__/
+cosateca/__pycache__/*
 cosateca/config.json
 cosateca/static
 /models_file.py
