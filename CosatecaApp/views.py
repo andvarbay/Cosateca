@@ -16,13 +16,21 @@ def register(request):
     return render(request, 'register.html')
 
 def perfil(request, nombreUsuario):
-    data= {}
+    data = {}
     usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
     productos = Producto.getProductosDeUsuario(usuario)
     data['usuario'] = usuario
     data['productos'] = productos
-
     return render (request, 'perfil.html', data)
+
+def detallesProducto(request, idProducto):
+    data = {}
+    producto = Producto.getProductoPorId(idProducto)
+    cat= Producto.getCategoriasDeProducto(idProducto)
+    categorias = ", ".join([str(c.idCategoria.nombre) for c in cat if c])
+    data['producto'] = producto
+    data['categorias'] = categorias
+    return render (request, 'detallesProducto.html', data)
 
 def listadoChats(request):
     data = {}

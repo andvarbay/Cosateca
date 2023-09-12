@@ -195,6 +195,8 @@ class Producto(models.Model):
     # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
     # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
+    fotoProducto = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoProducto', null=True, blank=True)
+    
 
     class Meta:
         managed = False
@@ -210,6 +212,17 @@ class Producto(models.Model):
     @staticmethod
     def getProductosDeUsuario(nombreUsuario):
         return Producto.objects.filter(idPropietario = nombreUsuario)
+
+    @staticmethod
+    def getProductoPorId(idProducto):
+        return Producto.objects.get(idProducto = idProducto)
+    
+    @staticmethod
+    def getCategoriasDeProducto(idProducto):
+        try:
+            return CategoriaProducto.objects.filter(idProducto = idProducto)
+        except:
+            return False
 
 class CategoriaProducto(models.Model):
     idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)

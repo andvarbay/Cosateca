@@ -34,4 +34,5 @@ urlpatterns = [
     path('perfil/<nombreUsuario>', views.perfil , name='perfil'),
     path('listado-chats/', views.listadoChats , name='listadoChats'),
     path('editarPerfil/<idUsuario>', EditarPerfil.as_view() , name='editarPerfil'),
+    path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
 ]
