@@ -4,10 +4,10 @@
 {% endblock title %}
 {% block body_data %}
 {% load static %}
-    <div class="row justify-content-center" style="margin-bottom: 2%;width:100%; top-bottom: 2%">
+    <div class="row justify-content-center" style="width:100%;">
         <h1 id="titulo-listado-chats">MENSAJES</h1>
     </div>
-    <div class="container" id="container-listado-chats" style="margin-bottom: 7.5%;width:100%; text-align: center;">
+    <div class="container" id="container-listado-chats" style="margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;overflow: auto; resize: none;">
     {% if chats.count > 1 %}   
       <div class="cuadro row justify-content-center">
         {% for chat in chats %}
@@ -17,6 +17,73 @@
         <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
           <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
         </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+        </div>
+        
         {% endfor %}
       </div>
     {% elif chats.count == 1 %}

@@ -44,11 +44,13 @@ nav {
 }
 
 .logo-header {
-    height: 90px;
     position: fixed;
     top: 0%;
     left: 50%;
     transform: translate(-50%,0%  );
+    width:250px;
+    height:90px;
+    margin-top: 15px;
 }
 
 .text-login-register {
@@ -141,28 +143,38 @@ nav {
 .cuadro {
     /* width: 60%; */
     /* height: 60%; */
-    border: 1px solid #065104;
     background-color: #FFFFFF;
     overflow: auto;
   }
 
 @media screen and (max-width: 630px) {
     #container-listado-chats {
-        overflow: auto;
         height: 500px;
+    }
+    .image-container {
+        width: 45px;
+        height: 45px;
+    }
+    .logo-header {
+        margin-top: 5px;
+        width: 150px;
+        height: auto;
+    }
+    .nombreUsuario-header {
+        display: none;
     }
 }
 
-@media screen and (max-width: 1000px) and (min-width: 630px) {
+@media screen and (max-width: 1030px) and (min-width: 630px) {
     #container-listado-chats {
-        overflow: auto;
+        /* overflow: auto; */
         height: 800px;
     }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1030px) {
     #container-listado-chats {
-        overflow: auto;
+        /* overflow: auto; */
         height: 450px;
     }
 }
@@ -177,9 +189,11 @@ nav {
     margin-bottom: 5%;
 }
 
-/* .elemento-lista-chats {
-    border: 1px solid #065104;
-  } */
+.texto-detalles {
+    font-size: large;
+    font-weight: bold;
+}
+
 
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
