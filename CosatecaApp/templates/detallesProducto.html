@@ -15,14 +15,22 @@
         </div>
         <div class="col-5 detallesProducto-izquierda text-center" style="margin-left: 10px;">
             {% if producto.fotoProducto != None %}
-              <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+              <img class="card-img-top" style="margin-top: 0;" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
             {% else %}
-              <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+              <img class="card-img-top" style="margin-top: 0;" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
             {% endif %}
             <b style="font-size: 40px;">{{producto.nombre}}</b>
-            <p>producto.valoracion</p>
-            <p>Categoría/s: {{ categorias }}</p>
+            <p class="texto-detalles">producto.valoracion</p>
+            <p class="texto-detalles">CATEGORÍA/S: {{ categorias }}</p>
             <a href="" class="btn profile-button mb-4" >VALORAR</a>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5 detallesProducto-derecha text-left" style="margin-right: 10px;">
+            <p class="texto-detalles"> DE: {{producto.idPropietario.nombreUsuario}}</p>   
+            <hr> 
+            <p class="texto-detalles"> DESCRIPCIÓN:</p>
+            <textarea spellcheck="false" style="width: 100%;height: 150px;vertical-align: top;resize: none;">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA{{producto.descripcion}}</textarea>
+            <p class="texto-detalles"> UBICACIÓN: {{producto.idPropietario.ubicacion}}</p>
         </div>
     </div>
 
