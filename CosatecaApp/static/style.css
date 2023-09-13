@@ -149,7 +149,7 @@ nav {
 
 @media screen and (max-width: 630px) {
     #container-listado-chats {
-        height: 500px;
+        max-height: 500px;
     }
     .image-container {
         width: 45px;
@@ -168,14 +168,14 @@ nav {
 @media screen and (max-width: 1030px) and (min-width: 630px) {
     #container-listado-chats {
         /* overflow: auto; */
-        height: 800px;
+        max-height: 800px;
     }
 }
 
 @media screen and (min-width: 1030px) {
     #container-listado-chats {
         /* overflow: auto; */
-        height: 450px;
+        max-height: 450px;
     }
 }
 
