@@ -27,9 +27,13 @@ def detallesProducto(request, idProducto):
     data = {}
     producto = Producto.getProductoPorId(idProducto)
     cat= Producto.getCategoriasDeProducto(idProducto)
+    valoraciones = Valoracion.getValoracionesDeProducto(idProducto)
+    puntuacion = Valoracion.getPuntuaciónProducto(idProducto)
     categorias = ", ".join([str(c.idCategoria.nombre) for c in cat if c])
     data['producto'] = producto
     data['categorias'] = categorias
+    data['valoraciones'] = valoraciones
+    data['puntuacion'] = puntuacion
     return render (request, 'detallesProducto.html', data)
 
 def listadoChats(request):

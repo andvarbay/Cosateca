@@ -133,16 +133,24 @@ nav {
     display: flex;
 }
 
+.image-container-valoracion {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+}
+
 .rounded-image {
     width: 100%;
     height: auto;
     object-fit: cover;
     object-position: center center;
+    border: 2px solid #065104;
+    border-radius: 50%;
 }
 
 .cuadro {
-    /* width: 60%; */
-    /* height: 60%; */
     background-color: #FFFFFF;
     overflow: auto;
   }
@@ -194,7 +202,15 @@ nav {
     font-weight: bold;
 }
 
+.detalle-valoracion {
+    margin:0;
+}
 
+.valoracion {
+    border: 2px solid #03650A;
+    padding-right: 0;
+    background-color: #F5FFE9;
+}
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.
