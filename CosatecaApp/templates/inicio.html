@@ -4,6 +4,11 @@
 {% endblock title %}
 {% block body_data %}
 {% load static %}
+<style>
+  .verde {color: #107F0E;}
+  .rojo {color: #980707;}
+</style>
+
     <div class="row justify-content-center" style="margin-bottom: 7.5%;width:100%" id="game-cards">
       {% for producto in productos %}
         <div class="col-lg-3 col-md-5 col-sm-11 product-card">      
@@ -19,18 +24,15 @@
             {% endif %}
             <div class="card-body">
               <a href="/detallesProducto/{{producto.idProducto}}">
-                <p class="card-text">{{producto.nombre}}</p>
+                <p class="card-text" style="font-size: 25px;">{{producto.nombre}}</p>
               </a>
               <br>
               <a href="/perfil/{{producto.idPropietario.nombreUsuario}}">
                 <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
               </a>
               <p class="card-text">{{producto.idPropietario.ubicacion}}</p>
-              {% if producto.disponibilidad %}                
-                <p class="card-text">DISPONIBLE</p> 
-              {% else %}
-                <p class="card-text">EN PRÉSTAMO</p> 
-              {% endif %}
+              <p class="texto-detalles {% if producto.disponibilidad %}verde{% else %}rojo{% endif %}">{% if producto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>
+
             </div>
           </div>
         </div>

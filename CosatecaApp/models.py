@@ -2,6 +2,7 @@ import json
 from django.db import models
 from django_minio_backend import MinioBackend, iso_date_prefix
 from minio import Minio
+from django.db.models import Avg
 
 from cosateca.settings import SECRETS
 
@@ -317,3 +318,18 @@ class Valoracion(models.Model):
 
     def __str__(self):
         return 'DE: ' + str(self.idEmisor.nombreUsuario) + ' A: ' + str(self.idReceptor.nombreUsuario)
+    
+    @staticmethod
+    def getValoracionesDeProducto(idProducto):
+        try:
+            return Valoracion.objects.filter(idProducto = idProducto )
+        except:
+            return False
+        
+    @staticmethod
+    def getPuntuaciónProducto(idProducto):
+        try:
+            media = Valoracion.objects.filter(idProducto = idProducto).aggregate(media=Avg('puntuacion'))['media']
+            return media
+        except:
+            return '-'
