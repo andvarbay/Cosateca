@@ -58,15 +58,15 @@ class EditarPerfil (View):
             current.apellidos = apellidos
             current.correo = correo
             current.ubicacion = ubicacion
-            current.contrasena = contrasenaNueva
             current.nombreUsuario = nombreUsuario
             if fotoPerfil != None:
                 current.fotoPerfil= foto
-            current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
+            if contrasenaNueva != '':
+                current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
             Usuario.registro(current)
             request.session['usuario'] = current.nombreUsuario
             if current.fotoPerfil != None:
-                    request.session['usuarioFoto'] = str(current.fotoPerfil.file)
+                request.session['usuarioFoto'] = str(current.fotoPerfil.file)
             return redirect('perfil', current.nombreUsuario)
         else:
             data = {

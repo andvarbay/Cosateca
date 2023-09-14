@@ -4,10 +4,10 @@
 {% endblock title %}
 {% block body_data %}
 {% load static %}
-    <div class="row justify-content-center" style="margin-bottom: 2%;width:100%; top-bottom: 2%">
+    <div class="row justify-content-center" style="width:100%;">
         <h1 id="titulo-listado-chats">MENSAJES</h1>
     </div>
-    <div class="container" id="container-listado-chats" style="margin-bottom: 7.5%;width:100%; text-align: center;">
+    <div class="container" id="container-listado-chats" style="margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;overflow: auto; resize: none;">
     {% if chats.count > 1 %}   
       <div class="cuadro row justify-content-center">
         {% for chat in chats %}

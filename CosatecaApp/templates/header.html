@@ -10,20 +10,26 @@
 <nav class="one-edge-shadow navbar navbar-light sticky-top navbar-expand-lg text-white">
     {% load static %}
     {% if request.session.usuario %}
-        <div class="row" style="padding-left: 16px;">
-            <div class="col-6" style="display: flex;">
-                <a class="navbar-brand ms-3 text-dark" href="/perfil/{{request.session.usuario}}">
-                <div class="image-container">
-                    <img class="rounded-image" src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" style="width:90px;height:90px;">
-                </div>
-                <a class="nav-link" style="align-self: center;" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
+    <div class="row">
+        <div class="col-6" style="display: flex;padding: 0%;">
+          <a class="navbar-brand ms-3 text-dark" style="margin-right: 0; padding-left: 5px;" href="/perfil/{{request.session.usuario}}">
+            <div class="image-container">
+              {% if request.session.usuarioFoto == None %}
+                <img src="{% static 'default_profile_pic.png' %}" class="rounded-image">
+              {% else %}
+                <img src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" class="rounded-image">
+              {% endif %}
             </div>
-            <div class ="col-6">
-                <div class="nav-item actived-none d-lg-inline">
-                    <a class=" text-center " href="/#"><img class="mx-auto d-block logo-header" src="{% static 'LOGO.jpg' %}" style="width:250px;height:90px;margin-top: 15px;"><span class="sr-only">(current)</span></a>
-                </div>    
-            </div>
+          </a>
         </div>
+        <div class="col-6" style="display: flex;padding: 0%;">
+            <a class="nav-link nombreUsuario-header" style="align-self: center;" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
+        </div>
+        <div class="col-6">
+          <a class=" text-center" href="/"><img class="mx-auto d-block logo-header" src="{% static 'LOGO.jpg' %}"><span class="sr-only">(current)</span></a>
+        </div>
+      </div>
+      
     {% else %}
     <div class="row" style="padding-left: 16px;">
         <div class="col-6" style="display: flex;">
