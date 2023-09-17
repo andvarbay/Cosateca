@@ -32,6 +32,15 @@ class FormularioValoración(View):
             usuario = Usuario.getUsuarioPorId(idUsuario)
             data['valorado'] = 'usuario'
             data['usuario'] = usuario
+            idEmisor = Usuario.getUsuarioPorNombreUsuario(request.session.get('usuario')).idUsuario
+            if Valoracion.existeValoracionUsuario(idEmisor,usuario.idUsuario):
+                valoracion = Valoracion.getValoracionUsuario(idEmisor, usuario.idUsuario)
+                values = {
+                    'puntuacion':valoracion.puntuacion,
+                    'comentario': valoracion.comentario,
+                }
+                data['values'] = values
+
         return render(request, 'formularioValoracion.html', data)
     
     def post(self, request):
@@ -66,6 +75,19 @@ class FormularioValoración(View):
             partes = idPrefijo.split("_")
             idUsuario = partes[1]
             usuario = Usuario.getUsuarioPorId(idUsuario)
+            valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,usuario.idUsuario)
+            if valoracion == False:
+                valoracion = Valoracion(
+                    idEmisor = emisor,
+                    idReceptor = usuario,
+                    puntuacion = puntuacion,
+                    comentario = comentario,
+                )
+            else:
+                valoracion.puntuacion = puntuacion
+                valoracion.comentario = comentario
+            valoracion.guardarValoracion()
+
         response_html = """
             <html>
             <head>

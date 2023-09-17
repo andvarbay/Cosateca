@@ -67,6 +67,49 @@
             </div>
         {% endfor %}
     </div>
+    <br>
+    <br>
+    {% if valoraciones.count != 0 %}
+        <div style="display: flex; justify-content: center;">
+            <h1>OPINIONES SOBRE {{usuario.nombreUsuario}}</h1>
+        </div>
+    {% endif %}
+
+    <div class="cuadro row justify-content-center" style="margin: 3px;margin-bottom: 5px;">
+        {% for valoracion in valoraciones %}
+            <div class="col-11 valoracion ">
+                <div class="row detalle-valoracion">
+                    <div class="col-3" style="padding-top: 5px;padding-bottom: 5px;">
+                        <div class="row detalle-valoracion">
+                            <div class="col-6">
+                                <a href="/perfil/{{valoracion.idEmisor.nombreUsuario}}">
+                                    <div class="image-container-valoracion">
+                                        {% if valoracion.idEmisor.fotoPerfil == None %}
+                                          <img src="{% static 'default_profile_pic.png' %}" class="rounded-image">
+                                        {% else %}
+                                          <img src="http://127.0.0.1:9000/django-backend-dev-public/{{valoracion.idEmisor.fotoPerfil}}" class="rounded-image">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-6" style="align-self: center;">
+                                    <p style="align-self: center;margin: 0; font-size: larger;font-weight: 500;color:black">{{valoracion.idEmisor.nombreUsuario}}</p>
+                                    </div>
+                                </a>    
+                            </div>
+                            <div class="col-6" style="display: flex;justify-content: center;">
+                                <p style="font-size: xx-large;align-self: center;font-weight: 500;">{{valoracion.puntuacion}}/5</p>
+                            </div>
+                        </div>
+                        <div class="row detalle-valoracion">
+                            
+                        </div>
+                    </div>
+                    <div class="col-9" style="padding-right: 0;">
+                        <textarea spellcheck="false" style="width: 100%;height: -webkit-fill-available;vertical-align: top;resize: none;border-right:2px solid #03650A;border-left:2px solid #03650A;">{{valoracion.comentario}}</textarea>
+                    </div>
+                </div>                
+            </div>
+        {% endfor %}
+    </div>    
 
     <script>
         document.getElementById('valorarUsuario').addEventListener('click', function () {
