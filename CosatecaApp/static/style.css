@@ -155,10 +155,19 @@ nav {
     overflow: auto;
   }
 
+.cuadro-registro-prestamos {
+    background-color: #FFFFFF;
+  }
+
 @media screen and (max-width: 630px) {
     #container-listado-chats {
         max-height: 500px;
     }
+
+    #container-registro-prestamos {
+        max-height: 500px;
+    }
+
     .image-container {
         width: 45px;
         height: 45px;
@@ -178,10 +187,20 @@ nav {
         /* overflow: auto; */
         max-height: 800px;
     }
+
+    #container-registro-prestamos {
+        /* overflow: auto; */
+        max-height: 800px;
+    }
 }
 
 @media screen and (min-width: 1030px) {
     #container-listado-chats {
+        /* overflow: auto; */
+        max-height: 450px;
+    }
+
+    #container-registro-prestamos {
         /* overflow: auto; */
         max-height: 450px;
     }
