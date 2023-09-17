@@ -37,4 +37,5 @@ urlpatterns = [
     path('editarPerfil/<idUsuario>', EditarPerfil.as_view(), name='editarPerfil'),
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
     path('realizarValoracion/',FormularioValoración.as_view(), name='realizarValoracion'),
+    path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
 ]

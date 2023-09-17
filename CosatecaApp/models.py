@@ -186,6 +186,18 @@ class Prestamo(models.Model):
 
     def __str__(self):
         return str(self.idPrestamo) + ': ' + self.estado
+    
+    @staticmethod
+    def getPrestamosPorUsuario(idUsuario):
+        try:
+            prestamosArrendador =  Prestamo.objects.filter(idArrendador=idUsuario)
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario)
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
 
 
 class Producto(models.Model):
