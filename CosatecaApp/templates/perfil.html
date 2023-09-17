@@ -37,7 +37,7 @@
                         <a href=""><i class="fa-solid fa-trophy" style="font-size: 40px;"></i></a>
                         <i class="fa-regular fa-heart" style="font-size: 40px;"></i>
                     </div>
-                    <a href="" class="btn profile-button mb-4" >VALORAR</a>
+                    <a id='valorarUsuario' class="btn profile-button mb-4" >VALORAR</a>
                     <a href="" class="btn delete-profile-button" >REPORTAR</a>    
                 </div>
             {% endif %}
@@ -67,4 +67,10 @@
             </div>
         {% endfor %}
     </div>
+
+    <script>
+        document.getElementById('valorarUsuario').addEventListener('click', function () {
+            window.open('/realizarValoracion/?id=u_{{usuario.idUsuario}}', 'formulariovaloracion.html', 'width=500,height=500');
+        });
+    </script>
 {% endblock body_data %}

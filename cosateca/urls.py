@@ -36,5 +36,5 @@ urlpatterns = [
     path('listado-chats/', views.listadoChats, name='listadoChats'),
     path('editarPerfil/<idUsuario>', EditarPerfil.as_view(), name='editarPerfil'),
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
-    path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
+    path('realizarValoracion/',FormularioValoración.as_view(), name='realizarValoracion'),
 ]

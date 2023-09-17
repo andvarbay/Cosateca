@@ -39,16 +39,27 @@ class FormularioValoración(View):
         puntuacion = postData.get('puntuacion')
         comentario = postData.get('comentario')
         userNameEmisor = postData.get('idEmisor')
-        idEmisor = Usuario.getUsuarioPorNombreUsuario(userNameEmisor).idUsuario
-        print('puntuacion:',puntuacion, 'comentario:',comentario,'userNameEmisor:',userNameEmisor, 'idEmisor:',idEmisor)
+        emisor = Usuario.getUsuarioPorNombreUsuario(userNameEmisor)
         idPrefijo = request.GET.get('id')
         if idPrefijo.startswith('p_'):
             partes = idPrefijo.split("_")
-            idProducto = partes[1]
-            valoracion = Valoracion.getValoracionProducto(idEmisor,idProducto)
-            valoracion.puntuacion = puntuacion
-            valoracion.comentario = comentario
+            idProducto = partes[1] 
+            valoracion = Valoracion.getValoracionProducto(emisor.idUsuario,idProducto)   
+            if valoracion == False:
+                producto = Producto.getProductoPorId(idProducto)
+                receptor = Usuario.getUsuarioPorId(producto.idProducto)
+                valoracion = Valoracion(
+                    idEmisor = emisor,
+                    idReceptor = receptor,
+                    puntuacion = puntuacion,
+                    comentario = comentario,
+                    idProducto = producto
+                )
+            else:
+                valoracion.puntuacion = puntuacion
+                valoracion.comentario = comentario
             valoracion.guardarValoracion()
+            
 
 
         else:
