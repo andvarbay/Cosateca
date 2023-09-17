@@ -29,6 +29,8 @@ def detallesProducto(request, idProducto):
     cat= Producto.getCategoriasDeProducto(idProducto)
     valoraciones = Valoracion.getValoracionesDeProducto(idProducto)
     puntuacion = Valoracion.getPuntuaciónProducto(idProducto)
+    if puntuacion == None:
+        puntuacion = '-'
     categorias = ", ".join([str(c.idCategoria.nombre) for c in cat if c])
     data['producto'] = producto
     data['categorias'] = categorias
@@ -59,3 +61,4 @@ def registroPrestamos(request):
         return render (request, 'registroPrestamos.html', data)
     else:
         return render (request, 'login.html')
+
