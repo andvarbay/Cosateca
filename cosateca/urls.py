@@ -35,4 +35,5 @@ urlpatterns = [
     path('listado-chats/', views.listadoChats , name='listadoChats'),
     path('editarPerfil/<idUsuario>', EditarPerfil.as_view() , name='editarPerfil'),
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
+    path('registroPrestamos', views.registroPrestamos, name='registroPrestamos')
 ]
