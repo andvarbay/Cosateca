@@ -19,6 +19,7 @@ from django.urls import path
 from CosatecaApp import views
 from CosatecaApp.login import Login, logout
 from CosatecaApp.register import Register
+from CosatecaApp.formularioValoracion import FormularioValoración
 
 from django.conf.urls.static import static
 from django.conf import settings
@@ -31,8 +32,9 @@ urlpatterns = [
     path('login/', Login.as_view(), name='login'),
     path('register/', Register.as_view(), name='register'),
     path('logout/', logout , name='logout'),
-    path('perfil/<nombreUsuario>', views.perfil , name='perfil'),
-    path('listado-chats/', views.listadoChats , name='listadoChats'),
-    path('editarPerfil/<idUsuario>', EditarPerfil.as_view() , name='editarPerfil'),
+    path('perfil/<nombreUsuario>', views.perfil, name='perfil'),
+    path('listado-chats/', views.listadoChats, name='listadoChats'),
+    path('editarPerfil/<idUsuario>', EditarPerfil.as_view(), name='editarPerfil'),
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
+    path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
 ]
