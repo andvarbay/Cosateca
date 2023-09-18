@@ -29,6 +29,8 @@ def detallesProducto(request, idProducto):
     cat= Producto.getCategoriasDeProducto(idProducto)
     valoraciones = Valoracion.getValoracionesDeProducto(idProducto)
     puntuacion = Valoracion.getPuntuaciónProducto(idProducto)
+    if puntuacion == None:
+        puntuacion = '-'
     categorias = ", ".join([str(c.idCategoria.nombre) for c in cat if c])
     data['producto'] = producto
     data['categorias'] = categorias
@@ -39,8 +41,24 @@ def detallesProducto(request, idProducto):
 def listadoChats(request):
     data = {}
     nombreUsuario = request.session.get('usuario')
-    usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
-    listado = Chat.getChatsPorUsuario(usuario.idUsuario)
-    data['chats'] = listado
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listado = Chat.getChatsPorUsuario(usuario.idUsuario)
+        data['chats'] = listado
     
-    return render (request, 'listadoChats.html', data)
+        return render (request, 'listadoChats.html', data)
+    else:
+        return render (request, 'login.html')
+
+def registroPrestamos(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        prestamos = Prestamo.getPrestamosPorUsuario(usuario.idUsuario)
+        data['prestamos'] = prestamos
+    
+        return render (request, 'registroPrestamos.html', data)
+    else:
+        return render (request, 'login.html')
+

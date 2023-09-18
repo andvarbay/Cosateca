@@ -3,6 +3,7 @@ from django.db import models
 from django_minio_backend import MinioBackend, iso_date_prefix
 from minio import Minio
 from django.db.models import Avg
+from django.db.models import Q
 
 from cosateca.settings import SECRETS
 
@@ -185,6 +186,18 @@ class Prestamo(models.Model):
 
     def __str__(self):
         return str(self.idPrestamo) + ': ' + self.estado
+    
+    @staticmethod
+    def getPrestamosPorUsuario(idUsuario):
+        try:
+            prestamosArrendador =  Prestamo.objects.filter(idArrendador=idUsuario)
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario)
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
 
 
 class Producto(models.Model):
@@ -319,6 +332,9 @@ class Valoracion(models.Model):
     def __str__(self):
         return 'DE: ' + str(self.idEmisor.nombreUsuario) + ' A: ' + str(self.idReceptor.nombreUsuario)
     
+    def guardarValoracion(self):
+        self.save()
+
     @staticmethod
     def getValoracionesDeProducto(idProducto):
         try:
@@ -333,3 +349,15 @@ class Valoracion(models.Model):
             return media
         except:
             return '-'
+        
+    @staticmethod
+    def existeValoracionProducto(idEmisor,idProducto):
+        if Valoracion.objects.filter(idEmisor = idEmisor, idProducto = idProducto):
+            return True
+        return False
+    @staticmethod
+    def getValoracionProducto(idEmisor, idProducto):
+        if Valoracion.existeValoracionProducto(idEmisor, idProducto):
+            return Valoracion.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        return False
+    
