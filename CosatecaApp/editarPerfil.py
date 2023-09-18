@@ -67,6 +67,8 @@ class EditarPerfil (View):
             request.session['usuario'] = current.nombreUsuario
             if current.fotoPerfil != None:
                 request.session['usuarioFoto'] = str(current.fotoPerfil.file)
+            else:
+                request.session['usuarioFoto'] = None
             return redirect('perfil', current.nombreUsuario)
         else:
             data = {

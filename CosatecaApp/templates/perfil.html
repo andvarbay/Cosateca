@@ -8,7 +8,7 @@
         <div class="col-lg-2 col-md-4 col-sm-6 col-12">
             <div class="d-flex flex-column align-items-center">
                 {% if usuario.fotoPerfil == None %}
-                    <img src="{% static 'default_profile_pic.png' %}" style="width:150px;height:auto;">                    
+                    <img src="{% static 'Default_profile_pic.png' %}" style="width:150px;height:auto;">                    
                 {% else %}
                 <img src="http://127.0.0.1:9000/django-backend-dev-public/{{usuario.fotoPerfil}}" style="width:150px;height:auto;">
                 {% endif %}
@@ -55,7 +55,7 @@
                     </a>
                     {% else %}
                     <a href="/detallesProducto/{{producto.idProducto}}">            
-                        <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                        <img class="card-img-top" src="{% static 'Default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
                     </a>
                     {% endif %}
                       <div class="card-body">

@@ -230,6 +230,20 @@ nav {
     padding-right: 0;
     background-color: #F5FFE9;
 }
+
+.scrollable-options {
+    max-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    background-color: #A8F5A4;
+    padding: 5px;
+}
+
+.scrollable-options li {
+    display: flex;
+    align-items: center;
+}
+
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.
