@@ -61,4 +61,5 @@ def registroPrestamos(request):
         return render (request, 'registroPrestamos.html', data)
     else:
         return render (request, 'login.html')
-
+    
+    

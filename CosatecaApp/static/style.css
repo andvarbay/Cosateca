@@ -184,24 +184,20 @@ nav {
 
 @media screen and (max-width: 1030px) and (min-width: 630px) {
     #container-listado-chats {
-        /* overflow: auto; */
         max-height: 800px;
     }
 
     #container-registro-prestamos {
-        /* overflow: auto; */
         max-height: 800px;
     }
 }
 
 @media screen and (min-width: 1030px) {
     #container-listado-chats {
-        /* overflow: auto; */
         max-height: 450px;
     }
 
     #container-registro-prestamos {
-        /* overflow: auto; */
         max-height: 450px;
     }
 }

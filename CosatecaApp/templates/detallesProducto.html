@@ -48,7 +48,7 @@
             <br>
             <div style="display: flex;flex-direction: column;">
                 {% if producto.disponibilidad %}
-                    <a href="" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
+                    <a href=""id="pedir-prestamo" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
                 {% endif %}
                 <div class="row">
                     <div class="col-6">
@@ -110,7 +110,12 @@
 </div>
 <script>
     document.getElementById('valorar-producto').addEventListener('click', function () {
-        window.open('/valorarProducto/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=400,height=400');
+        window.open('/valorarProducto/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=500,height=500');
+    });
+</script>
+<script>
+    document.getElementById('pedir-prestamo').addEventListener('click', function () {
+        window.open('/pedirPrestamo/?id=p_{{producto.idProducto}}', 'solicitarProducto.html', 'width=500,height=500');
     });
 </script>
 {% endblock body_data %}

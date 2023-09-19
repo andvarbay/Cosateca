@@ -187,6 +187,9 @@ class Prestamo(models.Model):
     def __str__(self):
         return str(self.idPrestamo) + ': ' + self.estado
     
+    def guardarPrestamo(self):
+        self.save()
+    
     @staticmethod
     def getPrestamosPorUsuario(idUsuario):
         try:
@@ -198,7 +201,12 @@ class Prestamo(models.Model):
                 return prestamosArrendador
         except:
             return []
-
+    @staticmethod
+    def existePrestamoPendiente(idArrendatario, idProducto):
+        try:
+            return Prestamo.objects.get(idArrendatario = idArrendatario, idProducto = idProducto)
+        except:
+            return False
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)
