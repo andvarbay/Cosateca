@@ -33,7 +33,6 @@ class EditarProducto(View):
         categorias = request.POST.getlist('categorias')
         fotoProducto = request.FILES.get('fotoProducto')
         idProducto = postData.get('idProducto')
-        print('CATEGORIAS::::::', categorias)
 
         if fotoProducto:
             foto = PrivateAttachment(
