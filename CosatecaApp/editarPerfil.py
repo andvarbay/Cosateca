@@ -13,9 +13,10 @@ client = Minio(
             )
 
 class EditarPerfil (View):
-    def get(self, request, idUsuario):
+    def get(self, request):
         data = {}
-        current = Usuario.getUsuarioPorId(idUsuario)
+        currentNombreUsuario = request.session.get('usuario')
+        current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
         values = {
             'nombre': current.nombre,
             'apellidos': current.apellidos,
@@ -26,7 +27,7 @@ class EditarPerfil (View):
         data['values'] = values
         return render(request, 'editarPerfil.html', data)
     
-    def post(self,request, idUsuario):
+    def post(self,request):
         postData = request.POST
         nombre = postData.get('nombre')
         apellidos = postData.get('apellidos')
@@ -51,8 +52,10 @@ class EditarPerfil (View):
         PrivateAttachment.nuevaFoto(foto)
         
         listaErrores = None
-        current = Usuario.getUsuarioPorNombreUsuario(idUsuario)
-        listaErrores = self.validarUsuario(idUsuario, nombre, apellidos, correo, nombreUsuario, contrasena, contrasenaNueva, contrasenaNueva2)
+        currentNombreUsuario = request.session.get('usuario')
+        
+        current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
+        listaErrores = self.validarUsuario(currentNombreUsuario, nombre, apellidos, correo, nombreUsuario, contrasena, contrasenaNueva, contrasenaNueva2)
         if not listaErrores:
             current.nombre = nombre
             current.apellidos = apellidos
@@ -61,8 +64,6 @@ class EditarPerfil (View):
             current.contrasena = contrasenaNueva
             current.nombreUsuario = nombreUsuario
             if fotoPerfil != None:
-                # print('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ      ' + str(current.fotoPerfil.file))
-                # client.remove_object("django-backend-dev-public", str(current.fotoPerfil.file))
                 current.fotoPerfil= foto
             current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
             Usuario.registro(current)
@@ -75,9 +76,9 @@ class EditarPerfil (View):
                 'values' : values
             }
             return render(request, 'editarPerfil.html',data)
-    def validarUsuario(self, idUsuario, nombre, apellidos, correo, nombreUsuario, contrasenaActual, contrasenaNueva , contrasenaNueva2):
+    def validarUsuario(self, currentNombreUsuario, nombre, apellidos, correo, nombreUsuario, contrasenaActual, contrasenaNueva , contrasenaNueva2):
         listaErrores=[]
-        current = Usuario.getUsuarioPorNombreUsuario(idUsuario)
+        current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
         if len(nombre) < 3:
             listaErrores.append("El nombre debe tener al menos 3 caracteres.")
         if len(apellidos) < 3:
