@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+    <title>Confirmar Finalizar Prestamo</title>
+    <style>
+        body {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+            background-color: #b6e5ac;
+        }
+        .formulario-container {
+            background-color: #107F0E;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #CCFF61;
+            border-radius: 10px;
+
+        }
+        .formulario-container h2 {
+            text-align: center;
+        }
+        .formulario-container label {
+            margin-bottom: 8px;
+        }
+        .formulario-container input[type="range"] {
+            width: 100%;
+        }
+        .formulario-container textarea {
+            resize: none; 
+            overflow-y: auto; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .formulario-container button {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="formulario-container">
+        {% if errors %}
+            {% for error in errors %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            {% endfor %}
+        {% endif %}
+    
+            <h2 style="color: #CCFF61;">¿Estás seguro?</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div style="display: flex;flex-direction: column;border: 2px solid #CCFF61;border-radius: 10px;padding: 15px;">
+                <p style="color: #CCFF61;font-size: small;text-align: justify;">Estás a punto de dar por finalizado el préstamo de tu {{prestamo.idProducto.nombre}} con {{prestamo.idArrendatario.nombreUsuario}}. Asegúrate de hacerlo una vez el producto esté en tu propiedad.</p>                            
+            </div>                        
+            <div class="row" style="display: flex; justify-content: center; justify-content: space-between;">
+                <!-- <button class="button-login-register btn btn-sm btn-success col-md-5" type="submit" style="width: 80%;margin-top: 10px;">Enviar</button> -->
+                    <button type="submit" name="respuesta" value="confirmar" class="button-login-register btn btn-sm btn-success" >Finalizar préstamo</button>
+                    <button type="submit" name="respuesta" value="cancelar" class="button-login-register btn btn-sm btn-success" style="background-color: #980707;">Cancelar</button> 
+
+            </div>        
+        </form>
+    </div>
+</body>
+</html>

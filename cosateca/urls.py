@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from CosatecaApp import views
+from CosatecaApp.finalizarPrestamo import FinalizarPrestamo
 from CosatecaApp.login import Login, logout
 from CosatecaApp.pedirPrestamo import PedirPrestamo
 from CosatecaApp.register import Register
@@ -26,6 +27,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from CosatecaApp.editarPerfil import EditarPerfil
+from CosatecaApp.solicitudesPrestamo import SolicitudesPrestamo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,5 +41,7 @@ urlpatterns = [
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
     path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
-    path('pedirPrestamo/',PedirPrestamo.as_view(), name = 'pedirPrestamo')
+    path('pedirPrestamo/',PedirPrestamo.as_view(), name = 'pedirPrestamo'),
+    path('solicitudesPrestamo/',SolicitudesPrestamo.as_view(), name = 'solicitudesPrestamo'),
+    path('finalizarPrestamo/',FinalizarPrestamo.as_view(), name = 'finalizarPrestamo')
 ]

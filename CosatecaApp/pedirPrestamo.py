@@ -69,15 +69,10 @@ class PedirPrestamo(View):
             }
             return render(request, 'pedirPrestamo.html', data)
         else:
-            prestamo = Prestamo(
-                fechaInicio=fecha_inicio_obj,
-                fechaFin=fecha_fin_obj,
-                idProducto=producto,
-                idArrendador=arrendador,
-                idArrendatario=arrendatario,
-                condiciones=condiciones,
-                estado='Pendiente'
-            )
+            prestamo = Prestamo.existePrestamoPendiente(arrendatario,producto)
+            prestamo.fechaInicio = fecha_inicio_obj
+            prestamo.fechaFin = fecha_fin_obj
+            prestamo.condiciones = condiciones
             Prestamo.guardarPrestamo(prestamo)
             response_html = """
             <html>
