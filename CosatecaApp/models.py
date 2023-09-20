@@ -265,7 +265,14 @@ class CategoriaProducto(models.Model):
         return str(self.idCategoria.nombre) + ' - ' + str(self.idProducto.nombre)
     
     def nuevaCategoriaProducto(self):
-        self.save()   
+        self.save()
+    
+    @staticmethod
+    def existeCategoriaProducto(idCategoria, idProducto):
+        try:
+            return CategoriaProducto.objects.get(idCategoria = idCategoria, idProducto = idProducto)
+        except: 
+            return False
 
 
 class Reporte(models.Model):

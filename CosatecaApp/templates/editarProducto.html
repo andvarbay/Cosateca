@@ -13,7 +13,7 @@
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
 
 
-    <title>Nuevo producto</title>
+    <title>Editar Producto</title>
 </head>
 <body class="body-login-register">
     <div class="row justify-content-center align-items-center" style="width: 100%;">
@@ -25,7 +25,7 @@
                 <div class="container-login-register ">
                     <div class="text-center col">
                     
-                        <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >NUEVO PRODUCTO</h3>
+                        <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >EDITAR PRODUCTO</h3>
                         <br>
                         <br>
                     </div>
@@ -41,13 +41,14 @@
                             {% endfor %}
                         {% endif %}
                         <div class="form-group">
+                            <input type="hidden" name="idProducto" value="{{ values.idProducto }}">
                             <label for="" class="text-login-register">NOMBRE</label>
                             <input required name="nombre" id="" value="{{values.nombre}}" 
                             class="input-login-register form-control-sm form-control" placeholder="Nombre">
                         </div>
                         <div class="form-group">
                             <label for="" class="text-login-register">DESCRIPCIÓN</label>
-                            <input required name="apellidos" id="" value="{{values.descripcion}}" 
+                            <input required name="descripcion" id="" value="{{values.descripcion}}" 
                             class="input-login-register form-control-sm form-control" placeholder="Información relevante sobre el producto">
                         </div>
 
@@ -58,7 +59,7 @@
                                 <ul class="list-unstyled">
                                     {% for categoria in categorias %}
                                     <li class="d-flex align-items-center">
-                                        <input type="checkbox" name="categorias" value="{{categoria}}" id="categoria_{{ categoria.idCategoria }}">
+                                        <input type="checkbox" name="categorias" value="{{categoria}}" id="categoria_{{ categoria.idCategoria }}" {% if categoria.nombre in values.categorias %} checked {% endif %}>
                                         <label for="categoria_{{ categoria.idCategoria }}" class="mb-0 ml-2">{{ categoria.nombre }}</label>
                                         </li>
                                     {% endfor %}
@@ -72,7 +73,7 @@
                             <input type="file" name="fotoProducto" id="fotoPerfilInput" class="input-login-register form-control form-control-sm" value="{{values.fotoProducto}}" placeholder="Sube tu foto">
                         </div>
         
-                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">SUBIR PRODUCTO</button>
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">EDITAR</button>
         
         
                         

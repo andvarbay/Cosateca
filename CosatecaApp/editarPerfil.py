@@ -45,10 +45,13 @@ class EditarPerfil (View):
             'correo': correo,
             'nombreUsuario': nombreUsuario,
         }
-        foto = PrivateAttachment(
-            file = fotoPerfil
-        )
-        PrivateAttachment.nuevaFoto(foto)
+        if not fotoPerfil:
+            foto = None
+        else:
+            foto = PrivateAttachment(
+                file = fotoPerfil
+            )
+            PrivateAttachment.nuevaFoto(foto)
         
         listaErrores = None
         current = Usuario.getUsuarioPorNombreUsuario(idUsuario)

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from CosatecaApp import views
+from CosatecaApp.editarProducto import EditarProducto
 from CosatecaApp.login import Login, logout
 from CosatecaApp.nuevoProducto import NuevoProducto
 from CosatecaApp.register import Register
@@ -40,4 +41,5 @@ urlpatterns = [
     path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
     path('nuevoProducto/', NuevoProducto.as_view(), name='nuevoProducto'),
+    path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),  
 ]

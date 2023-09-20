@@ -11,7 +11,6 @@ class NuevoProducto(View):
         if nombreUsuario != None:
             usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
             categorias = Categoria.objects.all()
-            data['propietario'] = usuario
             data['categorias'] = categorias
             
             return render(request, 'nuevoProducto.html', data)
@@ -43,6 +42,7 @@ class NuevoProducto(View):
             fotoProducto = foto
         )
         Producto.guardarProducto(producto)
+        
         for cat in categorias:
             c = Categoria.getCategoriaPorNombre(cat)
             catprod = CategoriaProducto(

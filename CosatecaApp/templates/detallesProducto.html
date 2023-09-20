@@ -8,7 +8,14 @@
     <div class="row">
         <div class="col-12" style="display: flex; justify-content: end; font-size: 40px;margin-top: 5px;">
             {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
-                <i class="fa-solid fa-pencil" style="margin-right: 5px;"></i>                
+                    <button id="editar-producto-button" style="border: none;">
+                        <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
+                    </button>
+                    <script>
+                        document.getElementById('editar-producto-button').addEventListener('click', function () {
+                            window.location.href = '{% url "editarProducto" %}?idProducto={{ producto.idProducto }}';
+                        });
+                    </script>
             {% else %}
                 <i class="fa-regular fa-heart" style="margin-right: 5px;"></i>
             {% endif %}
