@@ -2,6 +2,8 @@ import json
 from django.db import models
 from django_minio_backend import MinioBackend, iso_date_prefix
 from minio import Minio
+from django.db.models import Avg
+from django.db.models import Q
 
 from cosateca.settings import SECRETS
 
@@ -57,6 +59,18 @@ class Chat(models.Model):
     
     def __str__(self):
         return 'CHAT ' + str(self.idChat) + '. USUARIOS: ' + str(self.idUsuarioArrendador.nombreUsuario) + ' y ' + str(self.idUsuarioArrendatario.nombreUsuario) + '. PRODUCTO: ' + str(self.idProducto.nombre)
+
+    @staticmethod
+    def getChatsPorUsuario(idUsuario):
+        try:
+            chatsArrendador =  Chat.objects.filter(idUsuarioArrendador=idUsuario)
+            try: 
+                chatsArrendatario = Chat.objects.filter(idUsuarioArrendatario=idUsuario)
+                return chatsArrendador | chatsArrendatario
+            except:
+                return chatsArrendador
+        except:
+            return []
 
 
 class Estadistica(models.Model):
@@ -172,6 +186,18 @@ class Prestamo(models.Model):
 
     def __str__(self):
         return str(self.idPrestamo) + ': ' + self.estado
+    
+    @staticmethod
+    def getPrestamosPorUsuario(idUsuario):
+        try:
+            prestamosArrendador =  Prestamo.objects.filter(idArrendador=idUsuario)
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario)
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
 
 
 class Producto(models.Model):
@@ -183,6 +209,8 @@ class Producto(models.Model):
     # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
     # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
+    fotoProducto = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoProducto', null=True, blank=True)
+    
 
     class Meta:
         managed = False
@@ -198,6 +226,17 @@ class Producto(models.Model):
     @staticmethod
     def getProductosDeUsuario(nombreUsuario):
         return Producto.objects.filter(idPropietario = nombreUsuario)
+
+    @staticmethod
+    def getProductoPorId(idProducto):
+        return Producto.objects.get(idProducto = idProducto)
+    
+    @staticmethod
+    def getCategoriasDeProducto(idProducto):
+        try:
+            return CategoriaProducto.objects.filter(idProducto = idProducto)
+        except:
+            return False
 
 class CategoriaProducto(models.Model):
     idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)
@@ -270,6 +309,7 @@ class Usuario(models.Model):
             return True
         return False
     
+    
     @staticmethod
     def existeCorreo(correo):
         if Usuario.objects.filter(correo=correo):
@@ -291,3 +331,33 @@ class Valoracion(models.Model):
 
     def __str__(self):
         return 'DE: ' + str(self.idEmisor.nombreUsuario) + ' A: ' + str(self.idReceptor.nombreUsuario)
+    
+    def guardarValoracion(self):
+        self.save()
+
+    @staticmethod
+    def getValoracionesDeProducto(idProducto):
+        try:
+            return Valoracion.objects.filter(idProducto = idProducto )
+        except:
+            return False
+        
+    @staticmethod
+    def getPuntuaciónProducto(idProducto):
+        try:
+            media = Valoracion.objects.filter(idProducto = idProducto).aggregate(media=Avg('puntuacion'))['media']
+            return media
+        except:
+            return '-'
+        
+    @staticmethod
+    def existeValoracionProducto(idEmisor,idProducto):
+        if Valoracion.objects.filter(idEmisor = idEmisor, idProducto = idProducto):
+            return True
+        return False
+    @staticmethod
+    def getValoracionProducto(idEmisor, idProducto):
+        if Valoracion.existeValoracionProducto(idEmisor, idProducto):
+            return Valoracion.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        return False
+    

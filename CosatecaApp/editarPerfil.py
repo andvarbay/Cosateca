@@ -53,22 +53,23 @@ class EditarPerfil (View):
         
         listaErrores = None
         currentNombreUsuario = request.session.get('usuario')
-        
         current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
         listaErrores = self.validarUsuario(currentNombreUsuario, nombre, apellidos, correo, nombreUsuario, contrasena, contrasenaNueva, contrasenaNueva2)
+
         if not listaErrores:
             current.nombre = nombre
             current.apellidos = apellidos
             current.correo = correo
             current.ubicacion = ubicacion
-            current.contrasena = contrasenaNueva
             current.nombreUsuario = nombreUsuario
             if fotoPerfil != None:
                 current.fotoPerfil= foto
-            current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
+            if contrasenaNueva != '':
+                current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
             Usuario.registro(current)
             request.session['usuario'] = current.nombreUsuario
-            request.session['usuarioFoto'] = str(current.fotoPerfil.file)
+            if current.fotoPerfil != None:
+                request.session['usuarioFoto'] = str(current.fotoPerfil.file)
             return redirect('perfil', current.nombreUsuario)
         else:
             data = {
