@@ -15,11 +15,11 @@
           <div producto="card mx-productos mb-3" id={{producto.idProducto}}>
             {% if producto.fotoProducto != None %}
               <a href="/detallesProducto/{{producto.idProducto}}">
-                <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                <img class="card-img-top" style='max-height: 400px;' src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
               </a>
             {% else %}
-              <a href="/detallesProducto/{{producto.idProducto}}">            
-                <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+            <a href="/detallesProducto/{{producto.idProducto}}">            
+                <img class="card-img-top" src="{% static 'Default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
               </a>
             {% endif %}
             <div class="card-body">

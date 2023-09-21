@@ -45,7 +45,20 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
-
+    
+    @staticmethod
+    def getCategoriaPorId(idCategoria):
+        try:
+            return Categoria.objects.get(idCategoria = idCategoria)
+        except:
+            return False
+        
+    @staticmethod
+    def getCategoriaPorNombre(nombre):
+        try:
+            return Categoria.objects.get(nombre = nombre)
+        except:
+            return False
 
 class Chat(models.Model):
     idChat = models.AutoField(db_column='idChat', primary_key=True) 
@@ -242,8 +255,6 @@ class Producto(models.Model):
     descripcion = models.CharField(blank=True, null=True, max_length=300)
     disponibilidad = models.IntegerField()
     idPropietario = models.ForeignKey('Usuario', models.CASCADE, db_column='idPropietario') 
-    # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
-    # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
     fotoProducto = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoProducto', null=True, blank=True)
     
@@ -254,6 +265,9 @@ class Producto(models.Model):
 
     def __str__(self):
         return str(self.idProducto) + ': ' + self.nombre
+    
+    def guardarProducto(self):
+        self.save()
     
     @staticmethod
     def getTodosProductos():
@@ -285,6 +299,16 @@ class CategoriaProducto(models.Model):
 
     def __str__(self):
         return str(self.idCategoria.nombre) + ' - ' + str(self.idProducto.nombre)
+    
+    def nuevaCategoriaProducto(self):
+        self.save()
+    
+    @staticmethod
+    def existeCategoriaProducto(idCategoria, idProducto):
+        try:
+            return CategoriaProducto.objects.get(idCategoria = idCategoria, idProducto = idProducto)
+        except: 
+            return False
 
 
 class Reporte(models.Model):
@@ -377,6 +401,12 @@ class Valoracion(models.Model):
             return Valoracion.objects.filter(idProducto = idProducto )
         except:
             return False
+    @staticmethod
+    def getValoracionesPerfil(idUsuario):
+        try:
+            return Valoracion.objects.filter(idReceptor = idUsuario, idProducto__isnull=True)
+        except:
+            return False
         
     @staticmethod
     def getPuntuaciónProducto(idProducto):
@@ -395,5 +425,16 @@ class Valoracion(models.Model):
     def getValoracionProducto(idEmisor, idProducto):
         if Valoracion.existeValoracionProducto(idEmisor, idProducto):
             return Valoracion.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        return False
+    
+    @staticmethod
+    def existeValoracionUsuario(idEmisor,idReceptor):
+        if Valoracion.objects.filter(idEmisor = idEmisor, idReceptor = idReceptor, idProducto__isnull=True):
+            return True
+        return False
+    @staticmethod
+    def getValoracionUsuario(idEmisor, idReceptor):
+        if Valoracion.existeValoracionUsuario(idEmisor, idReceptor):
+            return Valoracion.objects.get(idEmisor = idEmisor, idReceptor = idReceptor, idProducto__isnull=True)
         return False
     
