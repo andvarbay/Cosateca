@@ -29,10 +29,13 @@ class Register (View):
             'correo': correo,
             'nombreUsuario': nombreUsuario,
         }
-        foto = PrivateAttachment(
-            file = fotoPerfil
-        )
-        PrivateAttachment.nuevaFoto(foto)
+        if not fotoPerfil:
+            foto = None
+        else:
+            foto = PrivateAttachment(
+                file = fotoPerfil
+            )
+            PrivateAttachment.nuevaFoto(foto)
         
         listaErrors = None
   

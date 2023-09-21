@@ -19,8 +19,11 @@ def perfil(request, nombreUsuario):
     data = {}
     usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
     productos = Producto.getProductosDeUsuario(usuario)
+    print('USUARIO:',usuario, 'VALORACIONES:',Valoracion.getValoracionesPerfil(usuario.idUsuario))
+    valoraciones = Valoracion.getValoracionesPerfil(usuario.idUsuario)
     data['usuario'] = usuario
     data['productos'] = productos
+    data['valoraciones'] = valoraciones
     return render (request, 'perfil.html', data)
 
 def detallesProducto(request, idProducto):
@@ -55,10 +58,9 @@ def registroPrestamos(request):
     nombreUsuario = request.session.get('usuario')
     if nombreUsuario != None:
         usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
-        prestamos = Prestamo.getPrestamosPorUsuario(usuario.idUsuario)
+        prestamos = Prestamo.getRegistroPrestamosPorUsuario(usuario.idUsuario)
         data['prestamos'] = prestamos
     
         return render (request, 'registroPrestamos.html', data)
     else:
         return render (request, 'login.html')
-

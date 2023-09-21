@@ -4,11 +4,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <title>Valorar Producto</title>
+    <title>Confirmar Finalizar Prestamo</title>
     <style>
         body {
             font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -42,41 +44,36 @@
             border-radius: 5px;
             margin-bottom: 15px;
         }
-
+        .formulario-container button {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+       
     </style>
 </head>
 <body>
     <div class="formulario-container">
-        {% if valorado == 'producto' %}
-            <h2 style="color: #CCFF61;">VALORAR {{producto.nombre}}</h2>
-        {% else %}
-            <h2 style="color: #CCFF61;">VALORAR A {{usuario.nombreUsuario}}</h2>
+        {% if errors %}
+            {% for error in errors %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            {% endfor %}
         {% endif %}
+    
+            <h2 style="color: #CCFF61;">¿Estás seguro?</h2>
         <form method="post" action="">
             {% csrf_token %}
             <div style="display: flex;flex-direction: column;border: 2px solid #CCFF61;border-radius: 10px;padding: 15px;">
-                <label for="puntuacion" style="color: #CCFF61;">PUNTUACIÓN:</label>
-                <input type="range" id="puntuacion" name="puntuacion" min="0" max="5" step="1" value="{% if values %}{{values.puntuacion}}{% else %}0{% endif %}">
-                
-                <output for="puntuacion" id="valor_puntuacion" style="text-align: center;">{% if values %}{{values.puntuacion}}{% else %}0{% endif %}</output>
-                
-                <label for="comentario" style="color: #CCFF61;">COMENTARIO:</label>
-                <textarea id="comentario" name="comentario" rows="4">{{values.comentario}}</textarea>
-                <input id="idEmisor" name="idEmisor" style="display: none;" value="{{request.session.usuario}}">
+                <p style="color: #CCFF61;font-size: small;text-align: justify;">Estás a punto de dar por finalizado el préstamo de tu {{prestamo.idProducto.nombre}} con {{prestamo.idArrendatario.nombreUsuario}}. Asegúrate de hacerlo una vez el producto esté en tu propiedad.</p>                            
             </div>                        
-            <div style="display: flex; justify-content: center;">
-                <button class="button-login-register btn btn-sm btn-success col-md-5" type="submit" style="width: 80%;margin-top: 10px;">Enviar</button>
-            </div>        </form>
+            <div class="row" style="display: flex; justify-content: center; justify-content: space-between;">
+                <!-- <button class="button-login-register btn btn-sm btn-success col-md-5" type="submit" style="width: 80%;margin-top: 10px;">Enviar</button> -->
+                    <button type="submit" name="respuesta" value="confirmar" class="button-login-register btn btn-sm btn-success" >Finalizar préstamo</button>
+                    <button type="submit" name="respuesta" value="cancelar" class="button-login-register btn btn-sm btn-success" style="background-color: #980707;">Cancelar</button> 
+
+            </div>        
+        </form>
     </div>
-
-    <script>
-        const puntuacionInput = document.getElementById('puntuacion');
-        const valorpuntuacion = document.getElementById('valor_puntuacion');
-        const comentarioTextarea = document.getElementById('comentario');
-
-        puntuacionInput.addEventListener('input', function () {
-            valorpuntuacion.textContent = this.value;
-        });        
-    </script>
 </body>
 </html>
