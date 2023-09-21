@@ -38,8 +38,8 @@ urlpatterns = [
     path('listado-chats/', views.listadoChats, name='listadoChats'),
     path('editarPerfil/<idUsuario>', EditarPerfil.as_view(), name='editarPerfil'),
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
+    path('realizarValoracion/',FormularioValoración.as_view(), name='realizarValoracion'),
     path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
     path('nuevoProducto/', NuevoProducto.as_view(), name='nuevoProducto'),
     path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),  
-]

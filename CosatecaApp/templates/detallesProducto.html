@@ -29,14 +29,16 @@
             {% endif %}
             <p class="texto-detalles" style="font-size: 30px;">Puntuación:  {{puntuacion}} / 5</p>
             <p class="texto-detalles">CATEGORÍA/S: {{ categorias }}</p>
-            <div class="row">
-                <div class="col-6">
-                    <div id="valorar-producto" class="btn profile-button mb-4" style="width:100%;">VALORAR</div>
+            {% if producto.idPropietario.nombreUsuario != request.session.usuario %}
+                <div class="row">
+                    <div class="col-6">
+                        <div id="valorarProducto" class="btn profile-button mb-4" style="width:100%;">VALORAR</div>
+                    </div>
+                    <div class="col-6">
+                        <a href="" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">REPORTAR</a>
+                    </div>
                 </div>
-                <div class="col-6">
-                    <a href="" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">REPORTAR</a>
-                </div>
-            </div>
+            {% endif %}
         </div>
         <div class="col-1"></div>
         <div class="col-5 detallesProducto-derecha text-left" style="margin-right: 10px;">
@@ -116,8 +118,8 @@
 
 </div>
 <script>
-    document.getElementById('valorar-producto').addEventListener('click', function () {
-        window.open('/valorarProducto/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=400,height=400');
+    document.getElementById('valorarProducto').addEventListener('click', function () {
+        window.open('/realizarValoracion/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=400,height=400');
     });
 </script>
 {% endblock body_data %}
