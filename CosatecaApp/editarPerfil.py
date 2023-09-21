@@ -13,10 +13,9 @@ client = Minio(
             )
 
 class EditarPerfil (View):
-    def get(self, request):
+    def get(self, request, idUsuario):
         data = {}
-        currentNombreUsuario = request.session.get('usuario')
-        current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
+        current = Usuario.getUsuarioPorId(idUsuario)
         values = {
             'nombre': current.nombre,
             'apellidos': current.apellidos,
@@ -27,7 +26,7 @@ class EditarPerfil (View):
         data['values'] = values
         return render(request, 'editarPerfil.html', data)
     
-    def post(self,request):
+    def post(self,request, idUsuario):
         postData = request.POST
         nombre = postData.get('nombre')
         apellidos = postData.get('apellidos')
@@ -49,10 +48,8 @@ class EditarPerfil (View):
         }
         
         listaErrores = None
-        currentNombreUsuario = request.session.get('usuario')
-        current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
-        listaErrores = self.validarUsuario(currentNombreUsuario, nombre, apellidos, correo, nombreUsuario, contrasena, contrasenaNueva, contrasenaNueva2)
-
+        current = Usuario.getUsuarioPorNombreUsuario(idUsuario)
+        listaErrores = self.validarUsuario(idUsuario, nombre, apellidos, correo, nombreUsuario, contrasena, contrasenaNueva, contrasenaNueva2)
         if not listaErrores:
             current.nombre = nombre
             current.apellidos = apellidos
@@ -87,9 +84,9 @@ class EditarPerfil (View):
                 'values' : values
             }
             return render(request, 'editarPerfil.html',data)
-    def validarUsuario(self, currentNombreUsuario, nombre, apellidos, correo, nombreUsuario, contrasenaActual, contrasenaNueva , contrasenaNueva2):
+    def validarUsuario(self, idUsuario, nombre, apellidos, correo, nombreUsuario, contrasenaActual, contrasenaNueva , contrasenaNueva2):
         listaErrores=[]
-        current = Usuario.getUsuarioPorNombreUsuario(currentNombreUsuario)
+        current = Usuario.getUsuarioPorNombreUsuario(idUsuario)
         if len(nombre) < 3:
             listaErrores.append("El nombre debe tener al menos 3 caracteres.")
         if len(apellidos) < 3:
