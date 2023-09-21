@@ -33,16 +33,23 @@ class EditarProducto(View):
         categorias = request.POST.getlist('categorias')
         fotoProducto = request.FILES.get('fotoProducto')
         idProducto = postData.get('idProducto')
+        eliminarFoto = postData.get('eliminarFoto')
 
-        if fotoProducto:
-            foto = PrivateAttachment(
-                file = fotoProducto
-            )
-            PrivateAttachment.nuevaFoto(foto)
-            producto.fotoProducto = foto
         producto = Producto.getProductoPorId(idProducto)
         producto.nombre = nombre
         producto.descripcion = descripcion
+        if eliminarFoto:
+            foto = None
+            producto.fotoProducto = foto
+        else:
+            if fotoProducto:
+                foto = PrivateAttachment(
+                    file = fotoProducto
+                )
+                PrivateAttachment.nuevaFoto(foto)
+                producto.fotoProducto = foto
+        
+
         Producto.guardarProducto(producto)
 
         todasCategorias = Categoria.objects.all()

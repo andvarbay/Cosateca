@@ -37,7 +37,8 @@ class EditarPerfil (View):
         contrasenaNueva2 = postData.get('contrasenaNueva2')
         nombreUsuario = postData.get('nombreUsuario')
         fotoPerfil = request.FILES.get('fotoPerfil')
-        # validation
+        eliminarFoto = postData.get('eliminarFoto')        
+
         values = {
             'nombre': nombre,
             'apellidos': apellidos,
@@ -45,13 +46,6 @@ class EditarPerfil (View):
             'correo': correo,
             'nombreUsuario': nombreUsuario,
         }
-        if not fotoPerfil:
-            foto = None
-        else:
-            foto = PrivateAttachment(
-                file = fotoPerfil
-            )
-            PrivateAttachment.nuevaFoto(foto)
         
         listaErrores = None
         current = Usuario.getUsuarioPorNombreUsuario(idUsuario)
@@ -62,8 +56,19 @@ class EditarPerfil (View):
             current.correo = correo
             current.ubicacion = ubicacion
             current.nombreUsuario = nombreUsuario
-            if fotoPerfil != None:
-                current.fotoPerfil= foto
+
+            if eliminarFoto:
+                foto = None
+                current.fotoPerfil = foto
+            else:
+                if fotoPerfil:
+                    foto = PrivateAttachment(
+                        file = fotoPerfil
+                    )
+                    PrivateAttachment.nuevaFoto(foto)
+                    current.fotoPerfil= foto
+            
+            
             if contrasenaNueva != '':
                 current.contrasena = hashlib.md5(contrasenaNueva.encode()).hexdigest()
             Usuario.registro(current)
