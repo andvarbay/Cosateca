@@ -55,10 +55,10 @@
                 <a class="nav-link" href="/" style="color: #CCFF61;">Catálogo</a>
             </li>
             <li id="search-bar" class="col-lg-2" style="padding: 0;">
-                <input type="search" name="searchbar" class="form-control" placeholder="Buscar producto"/>
+                <input type="search" id="buscar" name="searchbar" class="form-control" placeholder="Buscar producto"/>
             </li>
             <li id="search-button">
-                <input class="btn btn-primary" type="submit" value="Buscar">
+                <input class="btn btn-primary" type="submit" value="Buscar" onclick="realizarBusqueda()">
             </li>
         </ul>
 
@@ -86,5 +86,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script>
+    function realizarBusqueda() {
+        var searchText = document.getElementById("buscar").value;
+        var encodedSearchText = encodeURIComponent(searchText);
+        window.location.href = "/?buscar=" + encodedSearchText;
+        event.preventDefault();
+    }
+</script>
 </body>
 </html>

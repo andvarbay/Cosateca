@@ -4,8 +4,28 @@ from CosatecaApp.models import *
 # Create your views here.
 
 def inicio(request):
-    productos = Producto.getTodosProductos()
     data= {}
+    busqueda = request.GET.get('buscar', None)
+    orden = request.GET.get('orden')
+    disponible = request.GET.get('disponible')
+    categorias_str = request.GET.get('categorias')
+
+
+    if busqueda == None:
+        productos = Producto.objects.all()
+    else:
+        productos = Producto.getProductosPorTexto(busqueda)
+    if orden == 'nuevos':
+        productos = productos.order_by('-fechaSubida')
+    if disponible == 'disponible':
+        productos = productos.filter(disponibilidad=True)
+    if categorias_str:
+        categorias = categorias_str.split('*')
+        for cat in categorias:
+            productos = productos.filter(categoriaproducto__idCategoria__nombre=cat)
+            productos = productos.distinct()
+
+
     data['productos'] = productos
     return render(request, 'inicio.html', data)
 
@@ -64,3 +84,8 @@ def registroPrestamos(request):
         return render (request, 'registroPrestamos.html', data)
     else:
         return render (request, 'login.html')
+def filtros(request):
+    data = {}
+    categorias = Categoria.objects.all().order_by('nombre')
+    data['categorias'] = categorias
+    return render(request, 'filtros.html', data)
