@@ -40,7 +40,6 @@ class FormularioValoración(View):
         comentario = postData.get('comentario')
         userNameEmisor = postData.get('idEmisor')
         idEmisor = Usuario.getUsuarioPorNombreUsuario(userNameEmisor).idUsuario
-        print('puntuacion:',puntuacion, 'comentario:',comentario,'userNameEmisor:',userNameEmisor, 'idEmisor:',idEmisor)
         idPrefijo = request.GET.get('id')
         if idPrefijo.startswith('p_'):
             partes = idPrefijo.split("_")

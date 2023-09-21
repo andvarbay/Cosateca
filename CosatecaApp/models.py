@@ -45,6 +45,13 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    @staticmethod
+    def getCategoriaPorNombre(nombre):
+        try:
+            return Categoria.objects.get(nombre = nombre)
+        except:
+            return False
 
 
 class Chat(models.Model):
@@ -222,6 +229,11 @@ class Producto(models.Model):
     @staticmethod
     def getTodosProductos():
         return Producto.objects.all()
+
+    @staticmethod
+    def getTodosProductosOrden():
+        
+        return Producto.objects.all().order_by('-fechaSubida')
     
     @staticmethod
     def getProductosDeUsuario(nombreUsuario):
@@ -237,6 +249,19 @@ class Producto(models.Model):
             return CategoriaProducto.objects.filter(idProducto = idProducto)
         except:
             return False
+    @staticmethod
+    def getProductosPorTexto(texto):
+        if not texto:
+            return Producto.objects.all()
+        
+        return Producto.objects.filter(nombre__icontains=texto)
+
+    @staticmethod
+    def getProductosPorTextoOrden(texto):
+        if not texto:
+            return Producto.objects.all()
+        
+        return Producto.objects.filter(nombre__icontains=texto).order_by('-fechaSubida')
 
 class CategoriaProducto(models.Model):
     idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)
