@@ -15,11 +15,11 @@
             <div class="elemento-lista-chats col-lg-5 col-md-5 col-sm-5 col-12" style="align-self: center;">
                 {% if prestamo.idProducto.fotoProducto != None %}
                     <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">
-                        <img class="card-img-top" style="width: 150px; height=auto" src="http://127.0.0.1:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
+                        <img class="card-img-top" style="width: 150px; height:auto" src="http://127.0.0.1:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
                     </a>
                 {% else %}  
                     <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">         
-                        <img class="card-img-top" style="width: 150px; height=auto" src="{% static 'default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                        <img class="card-img-top" style="width: 150px; height:auto" src="{% static 'default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
                     </a>  
                 {% endif %}
             </div>
