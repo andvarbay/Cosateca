@@ -42,6 +42,10 @@ class NuevoProducto(View):
             fotoProducto = foto
         )
         Producto.guardarProducto(producto)
+        estadistica = Estadistica.getEstadisticaPorNombre('Productos subidos')
+        estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, propietario)
+        estusu.valor += 1
+        estusu.save()
         
         for cat in categorias:
             c = Categoria.getCategoriaPorNombre(cat)

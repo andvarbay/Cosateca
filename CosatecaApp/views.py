@@ -89,3 +89,18 @@ def filtros(request):
     categorias = Categoria.objects.all().order_by('nombre')
     data['categorias'] = categorias
     return render(request, 'filtros.html', data)
+
+def logrosEstadisticas(request):
+    return render(request, 'logrosEstadisticas.html')
+
+def estadisticas(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        estadisticas = EstadisticaUsuario.getEstadisticasDeUsuario(usuario)
+        data['estadisticas'] = estadisticas
+
+        return render (request, 'estadisticas.html', data)
+    else:
+        return render (request, 'login.html')

@@ -34,7 +34,6 @@ class PrivateAttachment(models.Model):
             return False
 
 
-
 class Categoria(models.Model):
     idCategoria = models.AutoField(db_column='idCategoria', primary_key=True)  
     nombre = models.CharField(unique=True, max_length=20)
@@ -98,20 +97,33 @@ class Estadistica(models.Model):
     def __str__(self):
         return self.nombre
 
+    @staticmethod
+    def getTodasEstadisticas():
+        return Estadistica.objects.all()
+    
+    def getEstadisticaPorNombre(nombre):
+        return Estadistica.objects.get(nombre = nombre)
 
 class EstadisticaUsuario(models.Model):
     idEstadisticaUsuario = models.AutoField(db_column='idEstadisticaUsuario', primary_key=True)  
     idEstadistica = models.ForeignKey(Estadistica, models.CASCADE, db_column='idEstadistica')  
     idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario') 
-    valor = models.FloatField(blank=True, null=True)
+    valor = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'estadisticausuario'
 
     def __str__(self):
-        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' de ' + str(self.idUsuario.nombreUsuario)
+        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' de ' + str(self.idUsuario.nombreUsuario) + ': ' + str(self.valor)
 
+    @staticmethod
+    def getEstadisticaUsuario(idEstadistica, idUsuario):
+        return EstadisticaUsuario.objects.get(idEstadistica = idEstadistica, idUsuario = idUsuario)
+    
+    @staticmethod
+    def getEstadisticasDeUsuario(idUsuario):
+        return EstadisticaUsuario.objects.filter(idUsuario = idUsuario)
 
 class Listado(models.Model):
     idListado = models.AutoField(db_column='idListado', primary_key=True)  
@@ -224,9 +236,9 @@ class Prestamo(models.Model):
     @staticmethod    
     def getRegistroPrestamosPorUsuario(idUsuario):
         try:
-            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado', 'Finalizado']).order_by('-idPrestamo')
             try: 
-                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado', 'Finalizado']).order_by('-idPrestamo')
                 return prestamosArrendador | prestamosArrendatario
             except:
                 return prestamosArrendador
@@ -246,6 +258,13 @@ class Prestamo(models.Model):
     def existePrestamoPendiente(idArrendatario, idProducto):
         try:
             return Prestamo.objects.get(idArrendatario = idArrendatario, idProducto = idProducto, estado__in=['Pendiente'])
+        except:
+            return False
+
+    @staticmethod
+    def existePrestamoAceptado(idArrendador, idProducto):
+        try:
+            return Prestamo.objects.get(idArrendador = idArrendador, idProducto = idProducto, estado__in=['Aceptado'])
         except:
             return False
 

@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from CosatecaApp.models import Producto, Usuario, Valoracion
+from CosatecaApp.models import Estadistica, EstadisticaUsuario, Producto, Usuario, Valoracion
 
 
 class FormularioValoración(View):
@@ -68,6 +68,11 @@ class FormularioValoración(View):
                 valoracion.puntuacion = puntuacion
                 valoracion.comentario = comentario
             valoracion.guardarValoracion()
+            estadistica = Estadistica.getEstadisticaPorNombre('Comentarios publicados')
+            estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
+            estusu.valor += 1
+            estusu.save()
+
             
 
 
@@ -87,6 +92,10 @@ class FormularioValoración(View):
                 valoracion.puntuacion = puntuacion
                 valoracion.comentario = comentario
             valoracion.guardarValoracion()
+            estadistica = Estadistica.getEstadisticaPorNombre('Comentarios publicados')
+            estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
+            estusu.valor += 1
+            estusu.save()
 
         response_html = """
             <html>

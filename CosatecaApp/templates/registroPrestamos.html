@@ -41,22 +41,22 @@
               {% endif %}
               </div>
         </div>
-        <script>
-          const botonesFinalizarPrestamo = document.querySelectorAll('.finalizar-prestamo');
-        
-          botonesFinalizarPrestamo.forEach(function (boton) {
-            boton.addEventListener('click', function (event) {
-              event.preventDefault();
-              const idPrestamo = boton.getAttribute('data-producto-id');
-              window.open('/finalizarPrestamo/?id=p_' + idPrestamo, 'formulariovaloracion.html', 'width=500px,height=300px');
-            });
-          });
-        </script>
         {% endfor %}
     {% else %}
       <h2>Ups... no has participado en ningún préstamo aún</h1>
     {% endif %}  
       </div>
     </div>
+    <script>
+      const botonesFinalizarPrestamo = document.querySelectorAll('.finalizar-prestamo');
+    
+      botonesFinalizarPrestamo.forEach(function (boton) {
+        boton.addEventListener('click', function (event) {
+          event.preventDefault();
+          const idPrestamo = boton.getAttribute('data-producto-id');
+          window.open('/finalizarPrestamo/?id=p_' + idPrestamo, 'formulariovaloracion.html', 'width=500px,height=300px');
+        });
+      });
+    </script>
 
 {% endblock body_data %}

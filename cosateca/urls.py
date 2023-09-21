@@ -44,10 +44,13 @@ urlpatterns = [
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
     path('pedirPrestamo/',PedirPrestamo.as_view(), name = 'pedirPrestamo'),
     path('solicitudesPrestamo/',SolicitudesPrestamo.as_view(), name = 'solicitudesPrestamo'),
-    path('finalizarPrestamo/',FinalizarPrestamo.as_view(), name = 'finalizarPrestamo')
+    path('finalizarPrestamo/',FinalizarPrestamo.as_view(), name = 'finalizarPrestamo'),
     path('realizarValoracion/',FormularioValoración.as_view(), name='realizarValoracion'),
     path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
     path('filtros/',views.filtros, name='filtros'),
     path('nuevoProducto/', NuevoProducto.as_view(), name='nuevoProducto'),
-    path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),  
+    path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),
+    path('logrosEstadisticas/', views.logrosEstadisticas, name='logrosEstadisticasMenu'),
+    path('estadisticas/', views.estadisticas, name='estadisticas')
+    ] 

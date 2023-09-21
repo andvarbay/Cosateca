@@ -27,7 +27,7 @@
             {% if request.session.usuario == usuario.nombreUsuario %}
                 <div class="d-flex flex-column">
                     <a href="/editarPerfil/" class="btn profile-button mb-2">EDITAR PERFIL</a>
-                    <a href="" class="btn profile-button mb-2">SOLICITUDES DE PRÉSTAMO</a>
+                    <a href="/solicitudesPrestamo/" class="btn profile-button mb-2">SOLICITUDES DE PRÉSTAMO</a>
                     <a href="/registroPrestamos" class="btn profile-button mb-4">REGISTRO DE PRÉSTAMOS</a>
                     <a href="" class="btn delete-profile-button">ELIMINAR CUENTA</a>
                 </div>
@@ -75,7 +75,7 @@
         </div>
     {% endif %}
 
-    <div class="cuadro row justify-content-center" style="margin: 3px;margin-bottom: 5px;">
+    <div class="cuadro row justify-content-center" style="margin: 3px;margin-bottom: 5px;background-color: #d7ffb8;">
         {% for valoracion in valoraciones %}
             <div class="col-11 valoracion ">
                 <div class="row detalle-valoracion">

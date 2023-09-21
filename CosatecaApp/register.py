@@ -53,6 +53,14 @@ class Register (View):
 
         if not listaErrors:
             Usuario.registro(usuario)
+            estadisticas = Estadistica.getTodasEstadisticas()
+            for est in estadisticas:
+                estusu = EstadisticaUsuario(
+                    idEstadistica= est,
+                    idUsuario=usuario,
+                    valor = 0
+                )
+                estusu.save()
             return redirect('login')
         else:
             data = {

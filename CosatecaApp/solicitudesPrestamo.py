@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views import View
 
-from CosatecaApp.models import Prestamo, Usuario
+from CosatecaApp.models import Estadistica, EstadisticaUsuario, Prestamo, Usuario
 
 
 class SolicitudesPrestamo(View):
@@ -25,9 +25,43 @@ class SolicitudesPrestamo(View):
         idPrestamo = postData.get('idPrestamo')
 
         prestamo = Prestamo.getPrestamoPorId(idPrestamo)
+
         if respuesta == 'aceptar':
-            prestamo.estado = 'Aceptado'
+            p = Prestamo.existePrestamoAceptado(prestamo.idArrendador,prestamo.idProducto)
+            if p:
+                prestamos = Prestamo.getRegistroPrestamosPendientesPorUsuario(prestamo.idArrendador)            
+                data = {
+                    'prestamos': prestamos,
+                    'error': f'No puedes aceptar la solicitud de {p.idProducto.nombre} porque ya se lo estás prestando a {p.idArrendatario.nombreUsuario} ahora mismo.'
+                }
+                return render (request, 'solicitudesPrestamo.html', data)
+            else:
+                prestamo.estado = 'Aceptado'
         else:
             prestamo.estado = 'Denegado'
         Prestamo.guardarPrestamo(prestamo)
+        participado = Estadistica.getEstadisticaPorNombre('Préstamos realizados')
+        arrendador = Estadistica.getEstadisticaPorNombre('Préstamos como arrendador')
+        arrendatario = Estadistica.getEstadisticaPorNombre('Préstamos como arrendatario')
+        
+        #Logro participar en un préstamo aceptado
+        estusu = EstadisticaUsuario.getEstadisticaUsuario(participado, prestamo.idArrendador)
+        estusu.valor += 1
+        estusu.save()
+        estusu = EstadisticaUsuario.getEstadisticaUsuario(participado, prestamo.idArrendatario)
+        estusu.valor += 1
+        estusu.save()
+
+        #Logro participar como arrendador
+        estusu = EstadisticaUsuario.getEstadisticaUsuario(arrendador, prestamo.idArrendador)
+        estusu.valor += 1
+        estusu.save()
+
+        #Logro participar como arrendatario
+        estusu = EstadisticaUsuario.getEstadisticaUsuario(arrendatario, prestamo.idArrendatario)
+        estusu.valor += 1
+        estusu.save()
+
+
+
         return redirect ('/solicitudesPrestamo')
