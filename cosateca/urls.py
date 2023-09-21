@@ -18,18 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from CosatecaApp import views
 from CosatecaApp.finalizarPrestamo import FinalizarPrestamo
+from CosatecaApp.solicitudesPrestamo import SolicitudesPrestamo
 from CosatecaApp.pedirPrestamo import PedirPrestamo
 from CosatecaApp.editarProducto import EditarProducto
 from CosatecaApp.login import Login, logout
 from CosatecaApp.nuevoProducto import NuevoProducto
 from CosatecaApp.register import Register
+from CosatecaApp.editarPerfil import EditarPerfil
 from CosatecaApp.formularioValoracion import FormularioValoración
 
 from django.conf.urls.static import static
 from django.conf import settings
-
-from CosatecaApp.editarPerfil import EditarPerfil
-from CosatecaApp.solicitudesPrestamo import SolicitudesPrestamo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,9 +36,9 @@ urlpatterns = [
     path('login/', Login.as_view(), name='login'),
     path('register/', Register.as_view(), name='register'),
     path('logout/', logout , name='logout'),
-    path('perfil/<nombreUsuario>', views.perfil, name='perfil'),
+    path('perfil/<nombreUsuario>', views.perfil , name='perfil'),
+    path('editarPerfil/', EditarPerfil.as_view() , name='editarPerfil'),
     path('listado-chats/', views.listadoChats, name='listadoChats'),
-    path('editarPerfil/<idUsuario>', EditarPerfil.as_view(), name='editarPerfil'),
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
     path('pedirPrestamo/',PedirPrestamo.as_view(), name = 'pedirPrestamo'),
