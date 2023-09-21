@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
 
-    <title>Nueva cuenta</title>
+    <title>Editar perfil</title>
 </head>
 <body class="body-login-register">
     <div class="row justify-content-center align-items-center" style="width: 100%;">
@@ -24,11 +24,11 @@
                 <div class="container-login-register ">
                     <div class="text-center col">
                     
-                        <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >NUEVO USUARIO</h3>
+                        <h3 class="text-login-register" style="text-align:center;font-size: 52px;" >EDITAR PERFIL</h3>
                         <br>
                         <br>
                     </div>
-                    <form action="/register/" method="POST" enctype="multipart/form-data">
+                    <form action="/editarPerfil/{{request.session.usuario}}" method="POST" enctype="multipart/form-data">
                         
                         {% csrf_token %}
         
@@ -41,17 +41,17 @@
                         {% endif %}
                         <div class="form-group">
                             <label for="" class="text-login-register">NOMBRE</label>
-                            <input required name="nombre" id="" value="{{values.nombre}}" 
+                            <input name="nombre" id="" value="{{values.nombre}}" 
                             class="input-login-register form-control-sm form-control" placeholder="Nombre">
                         </div>
                         <div class="form-group">
                             <label for="" class="text-login-register">APELLIDOS</label>
-                            <input required name="apellidos" id="" value="{{values.apellidos}}" 
+                            <input name="apellidos" id="" value="{{values.apellidos}}" 
                             class="input-login-register form-control-sm form-control" placeholder="Apellidos">
                         </div>
                         <div class="form-group">
                             <label for="" class="text-login-register">CORREO ELECTRÓNICO</label>
-                            <input type="email" required name="correo" id="" value="{{values.correo}}" 
+                            <input type="email" name="correo" id="" value="{{values.correo}}" 
                             class="input-login-register form-control-sm form-control" placeholder="usuario@gmail.com">
                         </div>
                         <div class="form-group">
@@ -61,27 +61,29 @@
                         </div>
                         <div class="form-group">
                             <label for="" class="text-login-register">NOMBRE DE USUARIO</label>
-                            <input required name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
+                            <input name="nombreUsuario" id="" value="{{values.nombreUsuario}}" 
                             class="input-login-register form-control-sm form-control" placeholder="Nombre de usuario">
                         </div>
-
                         <div class="form-group">
-                            <label for="" class="text-login-register">CONTRASEÑA</label>
-                            <input required type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña">
+                            <label for="" class="text-login-register">CONTRASEÑA ACTUAL</label>
+                            <input type="password" name="contrasena" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena}}" placeholder="Contraseña Actual">
                         </div>
                         <div class="form-group">
-                            <label for="" class="text-login-register">REPITE CONTRASEÑA</label>
-                            <input required type="password" name="contrasena2" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasena2}}" placeholder="Contraseña">
+                            <label for="" class="text-login-register">CONTRASEÑA NUEVA</label>
+                            <input type="password" name="contrasenaNueva" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasenaNueva}}" placeholder="Nueva Contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="text-login-register">REPITE CONTRASEÑA NUEVA</label>
+                            <input type="password" name="contrasenaNueva2" id="" class="input-login-register form-control form-control-sm" value="{{values.contrasenaNueva2}}" placeholder="Repite Nueva Contraseña">
                         </div>
                         <div class="form-group">
                             <label for="" class="text-login-register">FOTO DE PERFIL</label>
                             <input type="file" name="fotoPerfil" id="fotoPerfilInput" class="input-login-register form-control form-control-sm" value="{{values.fotoPerfil}}" placeholder="Sube tu foto">
                         </div>
         
-                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">REGISTRARSE</button>
-        
-        
-                        
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">EDITAR PERFIL</button>
+                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5" style="background-color: black;">ELIMINAR PERFIL</button>
+                               
                     </form>
                 </div>
             </div> 

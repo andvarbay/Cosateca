@@ -1,6 +1,39 @@
+import json
 from django.db import models
+from django_minio_backend import MinioBackend, iso_date_prefix
+from minio import Minio
+from django.db.models import Avg
+from django.db.models import Q
+
+from cosateca.settings import SECRETS
 
 # Create your models here.
+client = Minio(
+                SECRETS['MINIO_ENDPOINT'],
+                access_key = SECRETS['MINIO_ACCESS_KEY'],
+                secret_key = SECRETS['MINIO_SECRET_KEY']
+            )
+
+class PrivateAttachment(models.Model):
+    file = models.FileField(verbose_name="Object Upload",
+                            storage=MinioBackend(bucket_name='django-backend-dev-public'),
+                            upload_to=iso_date_prefix,)
+    
+
+    def __str__(self):
+        return str(self.file)
+        
+    def nuevaFoto(self):
+        self.save()
+
+    @staticmethod
+    def getFoto(file):
+        try:
+            return PrivateAttachment.objects.get(file = file)
+        except:
+            return False
+
+
 
 class Categoria(models.Model):
     idCategoria = models.AutoField(db_column='idCategoria', primary_key=True)  
@@ -26,6 +59,18 @@ class Chat(models.Model):
     
     def __str__(self):
         return 'CHAT ' + str(self.idChat) + '. USUARIOS: ' + str(self.idUsuarioArrendador.nombreUsuario) + ' y ' + str(self.idUsuarioArrendatario.nombreUsuario) + '. PRODUCTO: ' + str(self.idProducto.nombre)
+
+    @staticmethod
+    def getChatsPorUsuario(idUsuario):
+        try:
+            chatsArrendador =  Chat.objects.filter(idUsuarioArrendador=idUsuario)
+            try: 
+                chatsArrendatario = Chat.objects.filter(idUsuarioArrendatario=idUsuario)
+                return chatsArrendador | chatsArrendatario
+            except:
+                return chatsArrendador
+        except:
+            return []
 
 
 class Estadistica(models.Model):
@@ -141,6 +186,18 @@ class Prestamo(models.Model):
 
     def __str__(self):
         return str(self.idPrestamo) + ': ' + self.estado
+    
+    @staticmethod
+    def getPrestamosPorUsuario(idUsuario):
+        try:
+            prestamosArrendador =  Prestamo.objects.filter(idArrendador=idUsuario)
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario)
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
 
 
 class Producto(models.Model):
@@ -152,6 +209,8 @@ class Producto(models.Model):
     # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
     # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
+    fotoProducto = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoProducto', null=True, blank=True)
+    
 
     class Meta:
         managed = False
@@ -163,6 +222,21 @@ class Producto(models.Model):
     @staticmethod
     def getTodosProductos():
         return Producto.objects.all()
+    
+    @staticmethod
+    def getProductosDeUsuario(nombreUsuario):
+        return Producto.objects.filter(idPropietario = nombreUsuario)
+
+    @staticmethod
+    def getProductoPorId(idProducto):
+        return Producto.objects.get(idProducto = idProducto)
+    
+    @staticmethod
+    def getCategoriasDeProducto(idProducto):
+        try:
+            return CategoriaProducto.objects.filter(idProducto = idProducto)
+        except:
+            return False
 
 class CategoriaProducto(models.Model):
     idCategoriaProducto = models.AutoField(db_column='idCategoriaProducto', primary_key=True)
@@ -171,7 +245,7 @@ class CategoriaProducto(models.Model):
     
     class Meta:
         managed = False
-        db_table = 'categoriaProducto'
+        db_table = 'categoriaproducto'
 
     def __str__(self):
         return str(self.idCategoria.nombre) + ' - ' + str(self.idProducto.nombre)
@@ -195,13 +269,14 @@ class Usuario(models.Model):
     idUsuario = models.AutoField(db_column='idUsuario', primary_key=True) 
     nombre = models.CharField(blank=True, null=True, max_length=20)
     apellidos = models.CharField(blank=True, null=True, max_length=50)
-    correo = models.CharField(unique=True, max_length=80)
+    correo = models.EmailField(unique=True, max_length=80)
     contrasena = models.CharField(max_length=80)
     nombreUsuario = models.CharField(db_column='nombreUsuario', unique=True, max_length=20) 
     ubicacion = models.CharField(blank=True, null=True, max_length=20)
+    fotoPerfil = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoPerfil', null=True, blank=True)
     # idProductosFavoritos = models.CharField(db_column='idProductosFavoritos', blank=True, null=True, max_length=30) 
     # idUsuariosFavoritos = models.CharField(db_column='idUsuariosFavoritos', blank=True, null=True, max_length=30) 
-    rol = models.CharField(blank=True, null=True, max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
+    rol = models.CharField(max_length=13, choices=(('administrador','administrador'), ('usuario', 'usuario')))
 
     class Meta:
         managed = False
@@ -209,6 +284,37 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.rol + ': ' + self.nombreUsuario
+    
+    def registro(self):
+        self.save()
+
+
+    @staticmethod
+    def getUsuarioPorNombreUsuario(nombreUsuario):
+        try:
+            return Usuario.objects.get(nombreUsuario=nombreUsuario)
+        except:
+            return False
+    
+    @staticmethod
+    def getUsuarioPorId(idUsuario):
+        try:
+            return Usuario.objects.get(idUsuario=idUsuario)
+        except:
+            return False
+
+
+    def existe(self):
+        if Usuario.objects.filter(nombreUsuario=self.nombreUsuario):
+            return True
+        return False
+    
+    
+    @staticmethod
+    def existeCorreo(correo):
+        if Usuario.objects.filter(correo=correo):
+            return True
+        return False
 
 
 class Valoracion(models.Model):
@@ -225,3 +331,33 @@ class Valoracion(models.Model):
 
     def __str__(self):
         return 'DE: ' + str(self.idEmisor.nombreUsuario) + ' A: ' + str(self.idReceptor.nombreUsuario)
+    
+    def guardarValoracion(self):
+        self.save()
+
+    @staticmethod
+    def getValoracionesDeProducto(idProducto):
+        try:
+            return Valoracion.objects.filter(idProducto = idProducto )
+        except:
+            return False
+        
+    @staticmethod
+    def getPuntuaciónProducto(idProducto):
+        try:
+            media = Valoracion.objects.filter(idProducto = idProducto).aggregate(media=Avg('puntuacion'))['media']
+            return media
+        except:
+            return '-'
+        
+    @staticmethod
+    def existeValoracionProducto(idEmisor,idProducto):
+        if Valoracion.objects.filter(idEmisor = idEmisor, idProducto = idProducto):
+            return True
+        return False
+    @staticmethod
+    def getValoracionProducto(idEmisor, idProducto):
+        if Valoracion.existeValoracionProducto(idEmisor, idProducto):
+            return Valoracion.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        return False
+    
