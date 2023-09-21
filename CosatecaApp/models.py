@@ -341,6 +341,12 @@ class Valoracion(models.Model):
             return Valoracion.objects.filter(idProducto = idProducto )
         except:
             return False
+    @staticmethod
+    def getValoracionesPerfil(idUsuario):
+        try:
+            return Valoracion.objects.filter(idReceptor = idUsuario, idProducto__isnull=True)
+        except:
+            return False
         
     @staticmethod
     def getPuntuaciónProducto(idProducto):
@@ -359,5 +365,16 @@ class Valoracion(models.Model):
     def getValoracionProducto(idEmisor, idProducto):
         if Valoracion.existeValoracionProducto(idEmisor, idProducto):
             return Valoracion.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        return False
+    
+    @staticmethod
+    def existeValoracionUsuario(idEmisor,idReceptor):
+        if Valoracion.objects.filter(idEmisor = idEmisor, idReceptor = idReceptor, idProducto__isnull=True):
+            return True
+        return False
+    @staticmethod
+    def getValoracionUsuario(idEmisor, idReceptor):
+        if Valoracion.existeValoracionUsuario(idEmisor, idReceptor):
+            return Valoracion.objects.get(idEmisor = idEmisor, idReceptor = idReceptor, idProducto__isnull=True)
         return False
     
