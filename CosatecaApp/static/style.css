@@ -1,5 +1,5 @@
 body {
-    background-color: #F5FFE9;
+    background-color: #d7ffb8;
     font-size: large;
     line-height: inherit;
 }
@@ -184,24 +184,20 @@ nav {
 
 @media screen and (max-width: 1030px) and (min-width: 630px) {
     #container-listado-chats {
-        /* overflow: auto; */
         max-height: 800px;
     }
 
     #container-registro-prestamos {
-        /* overflow: auto; */
         max-height: 800px;
     }
 }
 
 @media screen and (min-width: 1030px) {
     #container-listado-chats {
-        /* overflow: auto; */
         max-height: 450px;
     }
 
     #container-registro-prestamos {
-        /* overflow: auto; */
         max-height: 450px;
     }
 }
@@ -230,6 +226,20 @@ nav {
     padding-right: 0;
     background-color: #F5FFE9;
 }
+
+.scrollable-options {
+    max-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    background-color: #A8F5A4;
+    padding: 5px;
+}
+
+.scrollable-options li {
+    display: flex;
+    align-items: center;
+}
+
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.

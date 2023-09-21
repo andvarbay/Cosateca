@@ -32,6 +32,15 @@ class FormularioValoración(View):
             usuario = Usuario.getUsuarioPorId(idUsuario)
             data['valorado'] = 'usuario'
             data['usuario'] = usuario
+            idEmisor = Usuario.getUsuarioPorNombreUsuario(request.session.get('usuario')).idUsuario
+            if Valoracion.existeValoracionUsuario(idEmisor,usuario.idUsuario):
+                valoracion = Valoracion.getValoracionUsuario(idEmisor, usuario.idUsuario)
+                values = {
+                    'puntuacion':valoracion.puntuacion,
+                    'comentario': valoracion.comentario,
+                }
+                data['values'] = values
+
         return render(request, 'formularioValoracion.html', data)
     
     def post(self, request):
@@ -39,21 +48,46 @@ class FormularioValoración(View):
         puntuacion = postData.get('puntuacion')
         comentario = postData.get('comentario')
         userNameEmisor = postData.get('idEmisor')
-        idEmisor = Usuario.getUsuarioPorNombreUsuario(userNameEmisor).idUsuario
+        emisor = Usuario.getUsuarioPorNombreUsuario(userNameEmisor)
         idPrefijo = request.GET.get('id')
         if idPrefijo.startswith('p_'):
             partes = idPrefijo.split("_")
-            idProducto = partes[1]
-            valoracion = Valoracion.getValoracionProducto(idEmisor,idProducto)
-            valoracion.puntuacion = puntuacion
-            valoracion.comentario = comentario
+            idProducto = partes[1] 
+            valoracion = Valoracion.getValoracionProducto(emisor.idUsuario,idProducto)   
+            if valoracion == False:
+                producto = Producto.getProductoPorId(idProducto)
+                receptor = Usuario.getUsuarioPorId(producto.idProducto)
+                valoracion = Valoracion(
+                    idEmisor = emisor,
+                    idReceptor = receptor,
+                    puntuacion = puntuacion,
+                    comentario = comentario,
+                    idProducto = producto
+                )
+            else:
+                valoracion.puntuacion = puntuacion
+                valoracion.comentario = comentario
             valoracion.guardarValoracion()
+            
 
 
         else:
             partes = idPrefijo.split("_")
             idUsuario = partes[1]
             usuario = Usuario.getUsuarioPorId(idUsuario)
+            valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,usuario.idUsuario)
+            if valoracion == False:
+                valoracion = Valoracion(
+                    idEmisor = emisor,
+                    idReceptor = usuario,
+                    puntuacion = puntuacion,
+                    comentario = comentario,
+                )
+            else:
+                valoracion.puntuacion = puntuacion
+                valoracion.comentario = comentario
+            valoracion.guardarValoracion()
+
         response_html = """
             <html>
             <head>

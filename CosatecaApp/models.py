@@ -47,12 +47,18 @@ class Categoria(models.Model):
         return self.nombre
     
     @staticmethod
+    def getCategoriaPorId(idCategoria):
+        try:
+            return Categoria.objects.get(idCategoria = idCategoria)
+        except:
+            return False
+        
+    @staticmethod
     def getCategoriaPorNombre(nombre):
         try:
             return Categoria.objects.get(nombre = nombre)
         except:
             return False
-
 
 class Chat(models.Model):
     idChat = models.AutoField(db_column='idChat', primary_key=True) 
@@ -192,8 +198,18 @@ class Prestamo(models.Model):
         db_table = 'prestamo'
 
     def __str__(self):
-        return str(self.idPrestamo) + ': ' + self.estado
+        return str(self.idPrestamo) + ': ' + str(self.idArrendador.nombreUsuario) + ' a ' + str(self.idArrendatario.nombreUsuario) + ': ' + str(self.estado)
     
+    def guardarPrestamo(self):
+        self.save()
+    
+    @staticmethod
+    def getPrestamoPorId(idPrestamo):
+        try:
+            return Prestamo.objects.get(idPrestamo = idPrestamo)
+        except:
+            return False
+
     @staticmethod
     def getPrestamosPorUsuario(idUsuario):
         try:
@@ -205,7 +221,33 @@ class Prestamo(models.Model):
                 return prestamosArrendador
         except:
             return []
+    @staticmethod    
+    def getRegistroPrestamosPorUsuario(idUsuario):
+        try:
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
+        
+    @staticmethod    
+    def getRegistroPrestamosPendientesPorUsuario(idUsuario):
+        try:
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Pendiente'])
+            return prestamosArrendador
+        except:
+            return []
+    
 
+    @staticmethod
+    def existePrestamoPendiente(idArrendatario, idProducto):
+        try:
+            return Prestamo.objects.get(idArrendatario = idArrendatario, idProducto = idProducto, estado__in=['Pendiente'])
+        except:
+            return False
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)
@@ -213,8 +255,6 @@ class Producto(models.Model):
     descripcion = models.CharField(blank=True, null=True, max_length=300)
     disponibilidad = models.IntegerField()
     idPropietario = models.ForeignKey('Usuario', models.CASCADE, db_column='idPropietario') 
-    # idCategorias = models.CharField(db_column='idCategorias', blank=True, null=True, max_length=20) 
-    # idCategorias = models.ManyToManyField(Categoria)
     fechaSubida = models.DateTimeField(db_column='fechaSubida')
     fotoProducto = models.ForeignKey(PrivateAttachment, models.SET_NULL, db_column='fotoProducto', null=True, blank=True)
     
@@ -225,6 +265,9 @@ class Producto(models.Model):
 
     def __str__(self):
         return str(self.idProducto) + ': ' + self.nombre
+    
+    def guardarProducto(self):
+        self.save()
     
     @staticmethod
     def getTodosProductos():
@@ -274,6 +317,16 @@ class CategoriaProducto(models.Model):
 
     def __str__(self):
         return str(self.idCategoria.nombre) + ' - ' + str(self.idProducto.nombre)
+    
+    def nuevaCategoriaProducto(self):
+        self.save()
+    
+    @staticmethod
+    def existeCategoriaProducto(idCategoria, idProducto):
+        try:
+            return CategoriaProducto.objects.get(idCategoria = idCategoria, idProducto = idProducto)
+        except: 
+            return False
 
 
 class Reporte(models.Model):
@@ -366,6 +419,12 @@ class Valoracion(models.Model):
             return Valoracion.objects.filter(idProducto = idProducto )
         except:
             return False
+    @staticmethod
+    def getValoracionesPerfil(idUsuario):
+        try:
+            return Valoracion.objects.filter(idReceptor = idUsuario, idProducto__isnull=True)
+        except:
+            return False
         
     @staticmethod
     def getPuntuaciónProducto(idProducto):
@@ -384,5 +443,16 @@ class Valoracion(models.Model):
     def getValoracionProducto(idEmisor, idProducto):
         if Valoracion.existeValoracionProducto(idEmisor, idProducto):
             return Valoracion.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        return False
+    
+    @staticmethod
+    def existeValoracionUsuario(idEmisor,idReceptor):
+        if Valoracion.objects.filter(idEmisor = idEmisor, idReceptor = idReceptor, idProducto__isnull=True):
+            return True
+        return False
+    @staticmethod
+    def getValoracionUsuario(idEmisor, idReceptor):
+        if Valoracion.existeValoracionUsuario(idEmisor, idReceptor):
+            return Valoracion.objects.get(idEmisor = idEmisor, idReceptor = idReceptor, idProducto__isnull=True)
         return False
     
