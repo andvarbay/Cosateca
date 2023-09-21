@@ -57,7 +57,7 @@
             <br>
             <div style="display: flex;flex-direction: column;">
                 {% if producto.disponibilidad %}
-                    <a href="" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
+                    <a href=""id="pedir-prestamo" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
                 {% endif %}
                 <div class="row">
                     <div class="col-6">
@@ -118,6 +118,8 @@
 
 </div>
 <script>
+    document.getElementById('pedir-prestamo').addEventListener('click', function () {
+        window.open('/pedirPrestamo/?id=p_{{producto.idProducto}}', 'solicitarProducto.html', 'width=500,height=500');
     document.getElementById('valorarProducto').addEventListener('click', function () {
         window.open('/realizarValoracion/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=400,height=400');
     });

@@ -8,17 +8,26 @@
         <h1 id="titulo-listado-chats">MENSAJES</h1>
     </div>
     <div class="container" id="container-listado-chats" style="margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;overflow: auto; resize: none;">
-    {% if chats.count > 1 %}   
-      <div class="cuadro row justify-content-center">
+    {% if chats.count > 1 %}
+    <style>
+      .impar {
+        background-color: #b6e5ac;
+      }
+      .par{
+        background-color: #d8facc;
+      }
+    </style>
+
         {% for chat in chats %}
-        <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
-          <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
-          <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
-        </div>
+          <div class="cuadro row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}">
+            <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">
+              <div style="text-align: center">{{ chat.idProducto.nombre }}</div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-3 col-12" style="align-self: center; padding-top: 1%;">
+              <a href="/chat/{{ chat.idChat }}" class="btn profile-button mb-2">CHAT</a>
+            </div>
+          </div>
         {% endfor %}
-      </div>
     {% elif chats.count == 1 %}
       <div class="cuadro row justify-content-center">
         <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-9 col-12" style="align-self: center;">

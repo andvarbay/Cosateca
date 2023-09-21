@@ -58,7 +58,7 @@ def registroPrestamos(request):
     nombreUsuario = request.session.get('usuario')
     if nombreUsuario != None:
         usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
-        prestamos = Prestamo.getPrestamosPorUsuario(usuario.idUsuario)
+        prestamos = Prestamo.getRegistroPrestamosPorUsuario(usuario.idUsuario)
         data['prestamos'] = prestamos
     
         return render (request, 'registroPrestamos.html', data)

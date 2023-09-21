@@ -198,8 +198,18 @@ class Prestamo(models.Model):
         db_table = 'prestamo'
 
     def __str__(self):
-        return str(self.idPrestamo) + ': ' + self.estado
+        return str(self.idPrestamo) + ': ' + str(self.idArrendador.nombreUsuario) + ' a ' + str(self.idArrendatario.nombreUsuario) + ': ' + str(self.estado)
     
+    def guardarPrestamo(self):
+        self.save()
+    
+    @staticmethod
+    def getPrestamoPorId(idPrestamo):
+        try:
+            return Prestamo.objects.get(idPrestamo = idPrestamo)
+        except:
+            return False
+
     @staticmethod
     def getPrestamosPorUsuario(idUsuario):
         try:
@@ -211,7 +221,33 @@ class Prestamo(models.Model):
                 return prestamosArrendador
         except:
             return []
+    @staticmethod    
+    def getRegistroPrestamosPorUsuario(idUsuario):
+        try:
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
+        
+    @staticmethod    
+    def getRegistroPrestamosPendientesPorUsuario(idUsuario):
+        try:
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Pendiente'])
+            return prestamosArrendador
+        except:
+            return []
+    
 
+    @staticmethod
+    def existePrestamoPendiente(idArrendatario, idProducto):
+        try:
+            return Prestamo.objects.get(idArrendatario = idArrendatario, idProducto = idProducto, estado__in=['Pendiente'])
+        except:
+            return False
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)
