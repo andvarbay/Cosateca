@@ -73,59 +73,13 @@ class FormularioValoración(View):
                 estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
                 estusu.valor += 1
                 estusu.save()
-                if estusu.valor == 1:
-                    logro = Logro.GetLogroPorNombre('Libertad de expresión')
-                    logrousu= LogroUsuario(
-                    idLogro= logro,
-                    idUsuario=emisor,
-                    fechaObtencion=datetime.now()
-                    )
-                    logrousu.save()
-                elif estusu.valor == 5:
-                    logro = Logro.GetLogroPorNombre('Valorando el mercado')
-                    logrousu= LogroUsuario(
-                    idLogro= logro,
-                    idUsuario=emisor,
-                    fechaObtencion=datetime.now()
-                    )
-                    logrousu.save()
-                elif estusu.valor == 10:
-                    logro = Logro.GetLogroPorNombre('El juez')
-                    logrousu= LogroUsuario(
-                    idLogro= logro,
-                    idUsuario=emisor,
-                    fechaObtencion=datetime.now()
-                    )
-                    logrousu.save()
+                self.LogroPublicarValoracion(estusu.valor, emisor)
+
                 estadistica = Estadistica.getEstadisticaPorNombre('Valoraciones recibidas')
                 estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, receptor)
                 estusu.valor += 1
                 estusu.save()
-                if estusu.valor == 1:
-                    logro = Logro.GetLogroPorNombre('En el punto de mira')
-                    logrousu= LogroUsuario(
-                    idLogro= logro,
-                    idUsuario=receptor,
-                    fechaObtencion=datetime.now()
-                    )
-                    logrousu.save()
-                elif estusu.valor == 5:
-                    logro = Logro.GetLogroPorNombre('La vieja confiable')
-                    logrousu= LogroUsuario(
-                    idLogro= logro,
-                    idUsuario=receptor,
-                    fechaObtencion=datetime.now()
-                    )
-                    logrousu.save()
-                elif estusu.valor == 10:
-                    logro = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
-                    logrousu= LogroUsuario(
-                    idLogro= logro,
-                    idUsuario=receptor,
-                    fechaObtencion=datetime.now()
-                    )
-                    logrousu.save()
-
+                self.LogroRecibirValoracion(estusu.valor, receptor)
             else:
                 valoracion.puntuacion = puntuacion
                 valoracion.comentario = comentario
@@ -154,30 +108,8 @@ class FormularioValoración(View):
             estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
             estusu.valor += 1
             estusu.save()
-            if estusu.valor == 1:
-                logro = Logro.GetLogroPorNombre('Libertad de expresión')
-                logrousu= LogroUsuario(
-                idLogro= logro,
-                idUsuario=emisor,
-                fechaObtencion=datetime.now()
-                )
-                logrousu.save()
-            elif estusu.valor == 5:
-                logro = Logro.GetLogroPorNombre('Valorando el mercado')
-                logrousu= LogroUsuario(
-                idLogro= logro,
-                idUsuario=emisor,
-                fechaObtencion=datetime.now()
-                )
-                logrousu.save()
-            elif estusu.valor == 10:
-                logro = Logro.GetLogroPorNombre('El juez')
-                logrousu= LogroUsuario(
-                idLogro= logro,
-                idUsuario=emisor,
-                fechaObtencion=datetime.now()
-                )
-                logrousu.save()
+            self.LogroPublicarValoracion(estusu.valor, emisor)
+
                 
 
 
@@ -185,30 +117,8 @@ class FormularioValoración(View):
             estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, receptor)
             estusu.valor += 1
             estusu.save()
-            if estusu.valor == 1:
-                logro = Logro.GetLogroPorNombre('En el punto de mira')
-                logrousu= LogroUsuario(
-                idLogro= logro,
-                idUsuario=receptor,
-                fechaObtencion=datetime.now()
-                )
-                logrousu.save()
-            elif estusu.valor == 5:
-                logro = Logro.GetLogroPorNombre('La vieja confiable')
-                logrousu= LogroUsuario(
-                idLogro= logro,
-                idUsuario=receptor,
-                fechaObtencion=datetime.now()
-                )
-                logrousu.save()
-            elif estusu.valor == 10:
-                logro = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
-                logrousu= LogroUsuario(
-                idLogro= logro,
-                idUsuario=receptor,
-                fechaObtencion=datetime.now()
-                )
-                logrousu.save()
+            self.LogroRecibirValoracion(estusu.valor, receptor)
+
 
         response_html = """
             <html>
@@ -226,3 +136,34 @@ class FormularioValoración(View):
             </html>
             """
         return HttpResponse(response_html)
+    
+    def obtenerLogro(logro, usuario):
+        logrosu = LogroUsuario(
+            idLogro=logro,
+            idUsuario=usuario,
+            fechaObtencion=datetime.now()
+        )
+        logrosu.save()
+
+    def LogroPublicarValoracion(self, valor, usuario):
+        if valor == 1:
+            logro = Logro.GetLogroPorNombre('Libertad de expresión')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 5:
+            logro = Logro.GetLogroPorNombre('Valorando el mercado')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 10:
+            logro = Logro.GetLogroPorNombre('El juez')
+            self.obtenerLogro(logro, usuario)
+
+    def LogroRecibirValoracion(self, valor, usuario):
+        if valor == 1:
+            logro = Logro.GetLogroPorNombre('En el punto de mira')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 5:
+            logro = Logro.GetLogroPorNombre('La vieja confiable')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 10:
+            logro = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
+            self.obtenerLogro(logro, usuario)
+
