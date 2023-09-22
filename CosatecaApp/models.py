@@ -102,7 +102,7 @@ class Estadistica(models.Model):
         return Estadistica.objects.all()
     
     def getEstadisticaPorNombre(nombre):
-        return Estadistica.objects.get(nombre = nombre)
+        return Estadistica.objects.get(nombre=nombre)
 
 class EstadisticaUsuario(models.Model):
     idEstadisticaUsuario = models.AutoField(db_column='idEstadisticaUsuario', primary_key=True)  
@@ -199,9 +199,9 @@ class Prestamo(models.Model):
     idPrestamo = models.AutoField(db_column='idPrestamo', primary_key=True)
     fechaInicio = models.DateField(db_column='fechaInicio') 
     fechaFin = models.DateField(db_column='fechaFin')
-    idProducto = models.ForeignKey('Producto', models.CASCADE, db_column='idProducto')
-    idArrendador = models.ForeignKey('Usuario', models.CASCADE, db_column='idArrendador') 
-    idArrendatario = models.ForeignKey('Usuario', models.CASCADE, db_column='idArrendatario', related_name='prestamo_idarrendatario_set')
+    idProducto = models.ForeignKey('Producto', models.SET_NULL, null=True, db_column='idProducto')
+    idArrendador = models.ForeignKey('Usuario', models.SET_NULL, null=True, db_column='idArrendador') 
+    idArrendatario = models.ForeignKey('Usuario', models.SET_NULL, null=True, db_column='idArrendatario', related_name='prestamo_idarrendatario_set')
     condiciones = models.CharField(max_length=300)
     estado = models.CharField(blank=True, null=True, max_length=10, choices=(('Pendiente','Pendiente'), ('Aceptado', 'Aceptado'), ('Denegado', 'Denegado'), ('Finalizado', 'Finalizado')))
 
@@ -267,6 +267,7 @@ class Prestamo(models.Model):
             return Prestamo.objects.get(idArrendador = idArrendador, idProducto = idProducto, estado__in=['Aceptado'])
         except:
             return False
+        
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)

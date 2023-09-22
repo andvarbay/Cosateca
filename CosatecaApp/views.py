@@ -39,7 +39,6 @@ def perfil(request, nombreUsuario):
     data = {}
     usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
     productos = Producto.getProductosDeUsuario(usuario)
-    print('USUARIO:',usuario, 'VALORACIONES:',Valoracion.getValoracionesPerfil(usuario.idUsuario))
     valoraciones = Valoracion.getValoracionesPerfil(usuario.idUsuario)
     data['usuario'] = usuario
     data['productos'] = productos

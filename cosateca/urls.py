@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from CosatecaApp import views
+from CosatecaApp.borrarProducto import BorrarProducto
 from CosatecaApp.filtros import Filtros
 from CosatecaApp.finalizarPrestamo import FinalizarPrestamo
 from CosatecaApp.solicitudesPrestamo import SolicitudesPrestamo
@@ -52,5 +53,6 @@ urlpatterns = [
     path('nuevoProducto/', NuevoProducto.as_view(), name='nuevoProducto'),
     path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),
     path('logrosEstadisticas/', views.logrosEstadisticas, name='logrosEstadisticasMenu'),
-    path('estadisticas/', views.estadisticas, name='estadisticas')
+    path('estadisticas/', views.estadisticas, name='estadisticas'),
+    path('borrarProducto/', BorrarProducto.as_view(), name='estadisticas')
     ] 

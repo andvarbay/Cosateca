@@ -37,6 +37,8 @@ class SolicitudesPrestamo(View):
                 return render (request, 'solicitudesPrestamo.html', data)
             else:
                 prestamo.estado = 'Aceptado'
+                prestamo.idProducto.disponibilidad = 0
+                prestamo.idProducto.save()
         else:
             prestamo.estado = 'Denegado'
         Prestamo.guardarPrestamo(prestamo)

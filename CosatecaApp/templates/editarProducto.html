@@ -78,6 +78,7 @@
                         </div>
         
                         <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">EDITAR</button>
+                        <div id="borrarProducto" class="button-login-register btn btn-sm btn-success col-lg-5" style="background-color: black;">ELIMINAR PRODUCTO</button>
         
         
                         
@@ -87,4 +88,9 @@
             </div> 
         </div>
     </div>        
+    <script>
+        document.getElementById('borrarProducto').addEventListener('click', function () {
+            window.open('/borrarProducto/?id={{values.idProducto}}', 'borrarProducto.html', 'width=600,height=200');
+        });
+      </script>  
 </body>

@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-12" style="display: flex; justify-content: end; font-size: 40px;margin-top: 5px;">
             {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
-                    <button id="editar-producto-button" style="border: none;">
+                    <button id="editar-producto-button" style="border: none;background-color: white;">
                         <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
                     </button>
                     <script>
@@ -17,7 +17,7 @@
                         });
                     </script>
             {% else %}
-                <i class="fa-regular fa-heart" style="margin-right: 5px;"></i>
+                <i class="fa-regular fa-heart" style="margin-right: 5px; background-color: white;"></i>
             {% endif %}
         </div>
         <div class="col-5 detallesProducto-izquierda text-center" style="margin-left: 10px;">

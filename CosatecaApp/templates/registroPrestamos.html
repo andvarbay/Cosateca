@@ -18,30 +18,50 @@
             background-color: #d8facc;
           }
         </style>
+        {% if prestamo.idProducto %}
         <div class="cuadro-registro-prestamos row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}">
-              <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
-                {% if prestamo.idProducto.fotoProducto != None %}
-                    <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">
-                        <img class="card-img-top" style="width: 100%; height:auto; margin-top: 2.5%; margin-bottom: 2.5%" src="http://127.0.0.1:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
-                    </a>
-                {% else %}  
-                    <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">         
-                        <img class="card-img-top" style="width: 100%; height:auto;margin-top: 2.5%; margin-bottom: 2.5%;" src="{% static 'default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
-                    </a>  
-                {% endif %}
-              </div>
-              <div class="elemento-registro-prestamos-texto col-lg-7 col-md-7 col-sm-7 col-12" style="text-align: center;align-self: center;">
-                  <b>{{ prestamo.idArrendador.nombreUsuario }}</b> prestó  {{ prestamo.idProducto.nombre }} a <b>{{ prestamo.idArrendatario.nombreUsuario }}</b> del {{ prestamo.fechaInicio|date:"d/m/Y" }} al {{ prestamo.fechaFin|date:"d/m/Y" }}: {% if prestamo.estado == 'Aceptado' %} Activo {% else %}{% endif %}
-              </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="align-self: center;">
-              {% if prestamo.estado == 'Aceptado' %}
-              <a href="#" data-producto-id="{{ prestamo.idPrestamo }}" class="btn profile-button mb-4 finalizar-prestamo" style="width:100%;background-color: #980707;">FINALIZAR PRÉSTAMO</a>
-              {% else %}
-                <p>Finalizado</p>
-              {% endif %}
-              </div>
+          <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+            {% if prestamo.idProducto.fotoProducto != None %}
+                <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">
+                    <img class="card-img-top" style="width: 100%; height:auto; margin-top: 2.5%; margin-bottom: 2.5%" src="http://127.0.0.1:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
+                </a>
+            {% else %}  
+                <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">         
+                    <img class="card-img-top" style="width: 100%; height:auto;margin-top: 2.5%; margin-bottom: 2.5%;" src="{% static 'default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                </a>  
+            {% endif %}
+          </div>
+          <div class="elemento-registro-prestamos-texto col-lg-7 col-md-7 col-sm-7 col-12" style="text-align: center;align-self: center;">
+              <b>{{ prestamo.idArrendador.nombreUsuario }}</b> prestó  {{ prestamo.idProducto.nombre }} a <b>{{ prestamo.idArrendatario.nombreUsuario }}</b> del {{ prestamo.fechaInicio|date:"d/m/Y" }} al {{ prestamo.fechaFin|date:"d/m/Y" }}: {% if prestamo.estado == 'Aceptado' %} Activo {% else %}{% endif %}
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="align-self: center;">
+            {% if prestamo.estado == 'Aceptado' %}
+            <a href="#" data-producto-id="{{ prestamo.idPrestamo }}" class="btn profile-button mb-4 finalizar-prestamo" style="width:100%;background-color: #980707;">FINALIZAR PRÉSTAMO</a>
+            {% else %}
+              <p>Finalizado</p>
+            {% endif %}
+            </div>
         </div>
-        {% endfor %}
+        {% else %}
+        <div class="cuadro-registro-prestamos row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}">
+          <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+              <img class="card-img-top" style="width: 100%; height:auto;margin-top: 2.5%; margin-bottom: 2.5%;" src="{% static 'default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+          </div>
+          <div class="elemento-registro-prestamos-texto col-lg-7 col-md-7 col-sm-7 col-12" style="text-align: center;align-self: center;">
+              <b>{{ prestamo.idArrendador.nombreUsuario }}</b> prestó  [producto borrado] a <b>{{ prestamo.idArrendatario.nombreUsuario }}</b> del {{ prestamo.fechaInicio|date:"d/m/Y" }} al {{ prestamo.fechaFin|date:"d/m/Y" }}: {% if prestamo.estado == 'Aceptado' %} Activo {% else %}{% endif %}
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-12" style="align-self: center;">
+            {% if prestamo.estado == 'Aceptado' %}
+            <a href="#" data-producto-id="{{ prestamo.idPrestamo }}" class="btn profile-button mb-4 finalizar-prestamo" style="width:100%;background-color: #980707;">FINALIZAR PRÉSTAMO</a>
+            {% else %}
+              <p>Finalizado</p>
+            {% endif %}
+            </div>
+          </div>
+
+        {% endif %}
+
+                {% endfor %}
     {% else %}
       <h2>Ups... no has participado en ningún préstamo aún</h1>
     {% endif %}  
