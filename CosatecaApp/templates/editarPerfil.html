@@ -87,12 +87,16 @@
 
         
                         <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5">EDITAR PERFIL</button>
-                        <button type="submit" class="button-login-register btn btn-sm btn-success col-lg-5" style="background-color: black;">ELIMINAR PERFIL</button>
+                        <div id="borrarPerfil" class="button-login-register btn btn-sm btn-success col-lg-5" style="background-color: black;">ELIMINAR PERFIL</button>
                                
                     </form>
                 </div>
             </div> 
         </div>
     </div>        
-    
+    <script>
+        document.getElementById('borrarPerfil').addEventListener('click', function () {
+            window.open('/borrarPerfil/?id={{values.idUsuario}}', 'borrarPerfil.html', 'width=600,height=200');
+        });
+    </script>    
 </body>

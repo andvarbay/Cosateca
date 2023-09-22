@@ -41,6 +41,7 @@ def perfil(request, nombreUsuario):
     productos = Producto.getProductosDeUsuario(usuario)
     valoraciones = Valoracion.getValoracionesPerfil(usuario.idUsuario)
     data['usuario'] = usuario
+    data['idUsuario'] = usuario.idUsuario
     data['productos'] = productos
     data['valoraciones'] = valoraciones
     return render (request, 'perfil.html', data)

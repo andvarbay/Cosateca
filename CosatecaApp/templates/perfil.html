@@ -29,7 +29,7 @@
                     <a href="/editarPerfil/" class="btn profile-button mb-2">EDITAR PERFIL</a>
                     <a href="/solicitudesPrestamo/" class="btn profile-button mb-2">SOLICITUDES DE PRÉSTAMO</a>
                     <a href="/registroPrestamos" class="btn profile-button mb-4">REGISTRO DE PRÉSTAMOS</a>
-                    <a href="" class="btn delete-profile-button">ELIMINAR CUENTA</a>
+                    <div id="borrarPerfil" class="btn delete-profile-button">ELIMINAR CUENTA</div>
                 </div>
             {% else %}
                 <div class="d-flex flex-column">
@@ -116,4 +116,10 @@
             window.open('/realizarValoracion/?id=u_{{usuario.idUsuario}}', 'formulariovaloracion.html', 'width=500,height=500');
         });
     </script>
+    <script>
+        document.getElementById('borrarPerfil').addEventListener('click', function () {
+            window.open('/borrarPerfil/?id={{idUsuario}}', 'borrarPerfil.html', 'width=600,height=200');
+        });
+    </script>    
+    
 {% endblock body_data %}

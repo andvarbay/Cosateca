@@ -23,6 +23,7 @@ class EditarPerfil (View):
             'ubicacion': current.ubicacion,
             'correo': current.correo,
             'nombreUsuario': current.nombreUsuario,
+            'idUsuario': current.idUsuario,
         }
         data['values'] = values
         return render(request, 'editarPerfil.html', data)
