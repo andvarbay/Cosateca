@@ -16,7 +16,7 @@
         }
         .formulario-container {
             background-color: #107F0E;
-            max-width: 400px;
+            max-width: 550px;
             margin: 0 auto;
             padding: 20px;
             border-radius: 10px;
@@ -62,6 +62,7 @@
                 
                 <label for="comentario" style="color: #CCFF61;">COMENTARIO:</label>
                 <textarea id="comentario" name="comentario" rows="4">{{values.comentario}}</textarea>
+                <p id="contador-caracteres" style="color: #CCFF61;">{{values.longitudComentario}} / 300</p>
                 <input id="idEmisor" name="idEmisor" style="display: none;" value="{{request.session.usuario}}">
             </div>                        
             <div style="display: flex; justify-content: center;">
@@ -77,6 +78,21 @@
         puntuacionInput.addEventListener('input', function () {
             valorpuntuacion.textContent = this.value;
         });        
+    </script>
+    <script>
+        const textarea = document.getElementById('comentario');
+        const contadorCaracteres = document.getElementById('contador-caracteres');
+        const maxLength = 300;
+    
+        textarea.addEventListener('input', function () {
+            const caracteresIngresados = textarea.value.length;
+            contadorCaracteres.textContent = caracteresIngresados + ' / ' + maxLength;
+    
+            if (caracteresIngresados > maxLength) {
+                textarea.value = textarea.value.slice(0, maxLength);
+                contadorCaracteres.textContent = maxLength + ' / ' + maxLength;
+            }
+        });
     </script>
 </body>
 </html>

@@ -150,6 +150,9 @@ class Logro(models.Model):
 
     def __str__(self):
         return self.nombre
+    @staticmethod
+    def GetLogroPorNombre(nombre):
+        return Logro.objects.get(nombre = nombre)
 
 
 class LogroUsuario(models.Model):

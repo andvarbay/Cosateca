@@ -1,8 +1,9 @@
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from CosatecaApp.models import Estadistica, EstadisticaUsuario, Producto, Usuario, Valoracion
+from CosatecaApp.models import Estadistica, EstadisticaUsuario, Logro, LogroUsuario, Producto, Usuario, Valoracion
 
 
 class FormularioValoración(View):
@@ -23,6 +24,8 @@ class FormularioValoración(View):
                 values = {
                     'puntuacion':valoracion.puntuacion,
                     'comentario': valoracion.comentario,
+                    'longitudComentario':len(valoracion.comentario)
+                    
                 }
                 data['values'] = values
             
@@ -57,34 +60,89 @@ class FormularioValoración(View):
             if valoracion == False:
                 producto = Producto.getProductoPorId(idProducto)
                 receptor = Usuario.getUsuarioPorId(producto.idProducto)
-                valoracion = Valoracion(
+                valoracion = Valoracion(    
                     idEmisor = emisor,
                     idReceptor = receptor,
                     puntuacion = puntuacion,
                     comentario = comentario,
                     idProducto = producto
                 )
+                valoracion.guardarValoracion()
+
+                estadistica = Estadistica.getEstadisticaPorNombre('Comentarios publicados')
+                estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
+                estusu.valor += 1
+                estusu.save()
+                if estusu.valor == 1:
+                    logro = Logro.GetLogroPorNombre('Libertad de expresión')
+                    logrousu= LogroUsuario(
+                    idLogro= logro,
+                    idUsuario=emisor,
+                    fechaObtencion=datetime.now()
+                    )
+                    logrousu.save()
+                elif estusu.valor == 5:
+                    logro = Logro.GetLogroPorNombre('Valorando el mercado')
+                    logrousu= LogroUsuario(
+                    idLogro= logro,
+                    idUsuario=emisor,
+                    fechaObtencion=datetime.now()
+                    )
+                    logrousu.save()
+                elif estusu.valor == 10:
+                    logro = Logro.GetLogroPorNombre('El juez')
+                    logrousu= LogroUsuario(
+                    idLogro= logro,
+                    idUsuario=emisor,
+                    fechaObtencion=datetime.now()
+                    )
+                    logrousu.save()
+                estadistica = Estadistica.getEstadisticaPorNombre('Valoraciones recibidas')
+                estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, receptor)
+                estusu.valor += 1
+                estusu.save()
+                if estusu.valor == 1:
+                    logro = Logro.GetLogroPorNombre('En el punto de mira')
+                    logrousu= LogroUsuario(
+                    idLogro= logro,
+                    idUsuario=receptor,
+                    fechaObtencion=datetime.now()
+                    )
+                    logrousu.save()
+                elif estusu.valor == 5:
+                    logro = Logro.GetLogroPorNombre('La vieja confiable')
+                    logrousu= LogroUsuario(
+                    idLogro= logro,
+                    idUsuario=receptor,
+                    fechaObtencion=datetime.now()
+                    )
+                    logrousu.save()
+                elif estusu.valor == 10:
+                    logro = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
+                    logrousu= LogroUsuario(
+                    idLogro= logro,
+                    idUsuario=receptor,
+                    fechaObtencion=datetime.now()
+                    )
+                    logrousu.save()
+
             else:
                 valoracion.puntuacion = puntuacion
                 valoracion.comentario = comentario
-            valoracion.guardarValoracion()
-            estadistica = Estadistica.getEstadisticaPorNombre('Comentarios publicados')
-            estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
-            estusu.valor += 1
-            estusu.save()
-
+                Valoracion.guardarValoracion(valoracion)                
+                
             
 
 
         else:
             partes = idPrefijo.split("_")
             idUsuario = partes[1]
-            usuario = Usuario.getUsuarioPorId(idUsuario)
-            valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,usuario.idUsuario)
+            receptor = Usuario.getUsuarioPorId(idUsuario)
+            valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,receptor.idUsuario)
             if valoracion == False:
                 valoracion = Valoracion(
                     idEmisor = emisor,
-                    idReceptor = usuario,
+                    idReceptor = receptor,
                     puntuacion = puntuacion,
                     comentario = comentario,
                 )
@@ -96,6 +154,61 @@ class FormularioValoración(View):
             estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
             estusu.valor += 1
             estusu.save()
+            if estusu.valor == 1:
+                logro = Logro.GetLogroPorNombre('Libertad de expresión')
+                logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=emisor,
+                fechaObtencion=datetime.now()
+                )
+                logrousu.save()
+            elif estusu.valor == 5:
+                logro = Logro.GetLogroPorNombre('Valorando el mercado')
+                logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=emisor,
+                fechaObtencion=datetime.now()
+                )
+                logrousu.save()
+            elif estusu.valor == 10:
+                logro = Logro.GetLogroPorNombre('El juez')
+                logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=emisor,
+                fechaObtencion=datetime.now()
+                )
+                logrousu.save()
+                
+
+
+            estadistica = Estadistica.getEstadisticaPorNombre('Valoraciones recibidas')
+            estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, receptor)
+            estusu.valor += 1
+            estusu.save()
+            if estusu.valor == 1:
+                logro = Logro.GetLogroPorNombre('En el punto de mira')
+                logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=receptor,
+                fechaObtencion=datetime.now()
+                )
+                logrousu.save()
+            elif estusu.valor == 5:
+                logro = Logro.GetLogroPorNombre('La vieja confiable')
+                logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=receptor,
+                fechaObtencion=datetime.now()
+                )
+                logrousu.save()
+            elif estusu.valor == 10:
+                logro = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
+                logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=receptor,
+                fechaObtencion=datetime.now()
+                )
+                logrousu.save()
 
         response_html = """
             <html>

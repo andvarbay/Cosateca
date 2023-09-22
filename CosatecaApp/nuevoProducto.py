@@ -42,10 +42,40 @@ class NuevoProducto(View):
             fotoProducto = foto
         )
         Producto.guardarProducto(producto)
+
+        #ESTADISTICAS Y LOGROS =============================
         estadistica = Estadistica.getEstadisticaPorNombre('Productos subidos')
         estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, propietario)
         estusu.valor += 1
         estusu.save()
+        if estusu.valor==1:
+            logro = Logro.GetLogroPorNombre('Proveedor novato')
+            logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=propietario,
+                fechaObtencion=datetime.now()
+            )
+            logrousu.save()
+        elif estusu.valor==5:
+            logro = Logro.GetLogroPorNombre('Proveedor intermedio')
+            logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=propietario,
+                fechaObtencion=datetime.now()
+            )
+            logrousu.save()
+        elif estusu.valor==10:
+            logrousu.save()
+            logro = Logro.GetLogroPorNombre('Proveedor experto')
+            logrousu= LogroUsuario(
+                idLogro= logro,
+                idUsuario=propietario,
+                fechaObtencion=datetime.now()
+            )
+            logrousu.save()
+
+        #ESTADISTICAS Y LOGROS =============================
+        
         
         for cat in categorias:
             c = Categoria.getCategoriaPorNombre(cat)
