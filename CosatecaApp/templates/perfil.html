@@ -37,8 +37,8 @@
                         <a href=""><i class="fa-solid fa-trophy" style="font-size: 40px;"></i></a>
                         <i class="fa-regular fa-heart" style="font-size: 40px;"></i>
                     </div>
-                    <a id='valorarUsuario' class="btn profile-button mb-4" >VALORAR</a>
-                    <a href="" class="btn delete-profile-button" >REPORTAR</a>    
+                    <div id='valorarUsuario' class="btn profile-button mb-4" >VALORAR</div>
+                    <div id="reportarUsuario" class="btn delete-profile-button" >REPORTAR</div>
                 </div>
             {% endif %}
         </div>
@@ -112,13 +112,29 @@
     </div>    
 
     <script>
-        document.getElementById('valorarUsuario').addEventListener('click', function () {
-            window.open('/realizarValoracion/?id=u_{{usuario.idUsuario}}', 'formulariovaloracion.html', 'width=500,height=500');
-        });
-    </script>
-    <script>
-        document.getElementById('borrarPerfil').addEventListener('click', function () {
-            window.open('/borrarPerfil/?id={{idUsuario}}', 'borrarPerfil.html', 'width=600,height=200');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var botonBorrarPerfil = document.getElementById('borrarPerfil');
+            var botonValorarUsuario = document.getElementById('valorarUsuario');
+            var botonReportarUsuario = document.getElementById('reportarUsuario');
+
+            if (botonBorrarPerfil) {
+                botonBorrarPerfil.addEventListener('click', function () {
+                    window.open('/borrarPerfil/?id={{idUsuario}}', 'borrarPerfilConfirmar.html', 'width=650,height=300');
+                });
+            }
+
+            if (botonValorarUsuario){
+                botonValorarUsuario.addEventListener('click', function () {
+                    window.open('/realizarValoracion/?id=u_{{usuario.idUsuario}}', 'formulariovaloracion.html', 'width=500,height=500');
+                });
+            }
+
+            if (botonReportarUsuario){
+                botonReportarUsuario.addEventListener('click', function () {
+                    window.open('/realizarReporte/?id=p_{{idUsuario}}', 'formularioreporte.html', 'width=550,height=475');
+                });
+            }
         });
     </script>    
     
