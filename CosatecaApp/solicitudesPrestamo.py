@@ -103,7 +103,7 @@ class SolicitudesPrestamo(View):
             logro = Logro.GetLogroPorNombre('Arrendando que es gerundio')
             self.obtenerLogro(logro, usuario)
 
-    def obtenerLogro(logro, usuario):
+    def obtenerLogro(self, logro, usuario):
         logrosu = LogroUsuario(
             idLogro=logro,
             idUsuario=usuario,

@@ -55,6 +55,7 @@ urlpatterns = [
     path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),
     path('logrosEstadisticas/', views.logrosEstadisticas, name='logrosEstadisticasMenu'),
     path('estadisticas/', views.estadisticas, name='estadisticas'),
+    path('logros/', views.logros, name='logros'),
     path('borrarProducto/', BorrarProducto.as_view(), name='borrarProducto'),
     path('borrarPerfil/', BorrarPerfil.as_view(), name='borrarPerfil')
     ] 

@@ -104,3 +104,17 @@ def estadisticas(request):
         return render (request, 'estadisticas.html', data)
     else:
         return render (request, 'login.html')
+    
+def logros(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        completados = LogroUsuario.GetLogrosObtenidosDeUsuario(usuario)
+        noCompletados = LogroUsuario.GetLogros_No_ObtenidosDeUsuario(usuario)
+        data['completados'] = completados
+        data['noCompletados'] = noCompletados
+
+        return render (request, 'logros.html', data)
+    else:
+        return render (request, 'login.html')

@@ -50,6 +50,7 @@ class NuevoProducto(View):
         estusu.save()
         if estusu.valor==1:
             logro = Logro.GetLogroPorNombre('Proveedor novato')
+            print(logro,'ASDASDSADASDASDASDASDDAASD',propietario)
             self.obtenerLogro(logro, propietario)
         elif estusu.valor==5:
             logro = Logro.GetLogroPorNombre('Proveedor intermedio')
@@ -71,7 +72,7 @@ class NuevoProducto(View):
 
         return redirect('detalles', idProducto = producto.idProducto)
     
-    def obtenerLogro(logro, usuario):
+    def obtenerLogro(self, logro, usuario):
         logrosu = LogroUsuario(
             idLogro=logro,
             idUsuario=usuario,

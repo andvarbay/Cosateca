@@ -137,7 +137,7 @@ class FormularioValoración(View):
             """
         return HttpResponse(response_html)
     
-    def obtenerLogro(logro, usuario):
+    def obtenerLogro(self, logro, usuario):
         logrosu = LogroUsuario(
             idLogro=logro,
             idUsuario=usuario,

@@ -159,7 +159,7 @@ class LogroUsuario(models.Model):
     idLogroUsuario = models.AutoField(db_column='idLogroUsuario', primary_key=True) 
     idLogro = models.ForeignKey('Logro', models.CASCADE, db_column='idLogro')  
     idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario') 
-    fechaObtencion = models.DateField(db_column='fechaObtencion') 
+    fechaObtencion = models.DateTimeField(db_column='fechaObtencion') 
 
     class Meta:
         managed = False
@@ -167,6 +167,15 @@ class LogroUsuario(models.Model):
 
     def __str__(self):
         return str(self.idLogroUsuario) + ': ' + str(self.idLogro) + ' - ' + str(self.idUsuario.nombreUsuario)
+    
+    def GetLogrosObtenidosDeUsuario(idUsuario):
+        return LogroUsuario.objects.filter(idUsuario = idUsuario).order_by('idLogro')
+    
+    def GetLogros_No_ObtenidosDeUsuario(idUsuario):
+        logrosObtenidos = LogroUsuario.objects.filter(idUsuario = idUsuario).values_list('idLogro', flat=True)
+        return Logro.objects.exclude(idLogro__in=logrosObtenidos).order_by('idLogro')
+
+    
 
 
 class Mensaje(models.Model):
