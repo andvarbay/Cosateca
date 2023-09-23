@@ -18,12 +18,12 @@ class PedirPrestamo(View):
         arrendatario = Usuario.getUsuarioPorNombreUsuario(request.session.get('usuario'))
         data['producto']=producto
         prestamo = Prestamo.existePrestamoPendiente(arrendatario, producto)
-        fecha_inicio_obj = prestamo.fechaInicio
-        fecha_inicio_formateada = fecha_inicio_obj.strftime('%d/%m/%Y')
-        fecha_fin_obj = prestamo.fechaFin
-        fecha_fin_formateada = fecha_fin_obj.strftime('%d/%m/%Y')
 
         if prestamo:
+            fecha_inicio_obj = prestamo.fechaInicio
+            fecha_inicio_formateada = fecha_inicio_obj.strftime('%d/%m/%Y')
+            fecha_fin_obj = prestamo.fechaFin
+            fecha_fin_formateada = fecha_fin_obj.strftime('%d/%m/%Y')
             values = {
                 'fechaInicio': fecha_inicio_formateada,
                 'fechaFin': fecha_fin_formateada,
@@ -70,9 +70,21 @@ class PedirPrestamo(View):
             return render(request, 'pedirPrestamo.html', data)
         else:
             prestamo = Prestamo.existePrestamoPendiente(arrendatario,producto)
-            prestamo.fechaInicio = fecha_inicio_obj
-            prestamo.fechaFin = fecha_fin_obj
-            prestamo.condiciones = condiciones
+            if prestamo:
+                prestamo.fechaInicio = fecha_inicio_obj
+                prestamo.fechaFin = fecha_fin_obj
+                prestamo.condiciones = condiciones
+            else: 
+                prestamo = Prestamo(
+                    fechaInicio = fecha_inicio_obj,
+                    fechaFin = fecha_fin_obj,
+                    idProducto = producto,
+                    idArrendador = arrendador,
+                    idArrendatario = arrendatario,
+                    condiciones = condiciones,
+                    estado = 'Pendiente'
+                )
+
             Prestamo.guardarPrestamo(prestamo)
             response_html = """
             <html>

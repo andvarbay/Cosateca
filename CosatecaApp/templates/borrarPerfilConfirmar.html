@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <title>Confirmar Finalizar Prestamo</title>
+    <title>Eliminar producto</title>
     <style>
         body {
             font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -18,7 +18,7 @@
         }
         .formulario-container {
             background-color: #107F0E;
-            max-width: 400px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
             border-radius: 10px;
@@ -65,11 +65,11 @@
         <form method="post" action="">
             {% csrf_token %}
             <div style="display: flex;flex-direction: column;border: 2px solid #CCFF61;border-radius: 10px;padding: 15px;">
-                <p style="color: #CCFF61;font-size: small;text-align: justify;">Estás a punto de dar por finalizado el préstamo de tu {{prestamo.idProducto.nombre}} con {{prestamo.idArrendatario.nombreUsuario}}. Asegúrate de hacerlo una vez el producto esté en tu propiedad.</p>                            
+                <p style="color: #CCFF61;font-size: small;text-align: center;">Una vez borras tu perfil no puedes recuperarlo.</p>
             </div>                        
             <div class="row" style="display: flex; justify-content: center; justify-content: space-between;">
-                    <button type="submit" name="respuesta" value="confirmar" class="button-login-register btn btn-sm btn-success" >Finalizar préstamo</button>
-                    <button type="submit" name="respuesta" value="cancelar" class="button-login-register btn btn-sm btn-success" style="background-color: #980707;">Cancelar</button> 
+                    <button type="submit" name="respuesta" value="confirmar" class="button-login-register btn btn-sm btn-success" style="background-color: #980707;">Si, eliminar producto</button>
+                    <button type="submit" name="respuesta" value="cancelar" class="button-login-register btn btn-sm btn-success">Bueno mejor no</button> 
 
             </div>        
         </form>

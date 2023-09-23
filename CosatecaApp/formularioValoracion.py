@@ -1,8 +1,9 @@
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from CosatecaApp.models import Producto, Usuario, Valoracion
+from CosatecaApp.models import Estadistica, EstadisticaUsuario, Logro, LogroUsuario, Producto, Usuario, Valoracion
 
 
 class FormularioValoración(View):
@@ -23,6 +24,8 @@ class FormularioValoración(View):
                 values = {
                     'puntuacion':valoracion.puntuacion,
                     'comentario': valoracion.comentario,
+                    'longitudComentario':len(valoracion.comentario)
+                    
                 }
                 data['values'] = values
             
@@ -57,29 +60,43 @@ class FormularioValoración(View):
             if valoracion == False:
                 producto = Producto.getProductoPorId(idProducto)
                 receptor = Usuario.getUsuarioPorId(producto.idProducto)
-                valoracion = Valoracion(
+                valoracion = Valoracion(    
                     idEmisor = emisor,
                     idReceptor = receptor,
                     puntuacion = puntuacion,
                     comentario = comentario,
                     idProducto = producto
                 )
+                valoracion.guardarValoracion()
+
+                estadistica = Estadistica.getEstadisticaPorNombre('Comentarios publicados')
+                estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
+                estusu.valor += 1
+                estusu.save()
+                self.LogroPublicarValoracion(estusu.valor, emisor)
+
+                estadistica = Estadistica.getEstadisticaPorNombre('Valoraciones recibidas')
+                estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, receptor)
+                estusu.valor += 1
+                estusu.save()
+                self.LogroRecibirValoracion(estusu.valor, receptor)
             else:
                 valoracion.puntuacion = puntuacion
                 valoracion.comentario = comentario
-            valoracion.guardarValoracion()
+                Valoracion.guardarValoracion(valoracion)                
+                
             
 
 
         else:
             partes = idPrefijo.split("_")
             idUsuario = partes[1]
-            usuario = Usuario.getUsuarioPorId(idUsuario)
-            valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,usuario.idUsuario)
+            receptor = Usuario.getUsuarioPorId(idUsuario)
+            valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,receptor.idUsuario)
             if valoracion == False:
                 valoracion = Valoracion(
                     idEmisor = emisor,
-                    idReceptor = usuario,
+                    idReceptor = receptor,
                     puntuacion = puntuacion,
                     comentario = comentario,
                 )
@@ -87,6 +104,21 @@ class FormularioValoración(View):
                 valoracion.puntuacion = puntuacion
                 valoracion.comentario = comentario
             valoracion.guardarValoracion()
+            estadistica = Estadistica.getEstadisticaPorNombre('Comentarios publicados')
+            estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, emisor)
+            estusu.valor += 1
+            estusu.save()
+            self.LogroPublicarValoracion(estusu.valor, emisor)
+
+                
+
+
+            estadistica = Estadistica.getEstadisticaPorNombre('Valoraciones recibidas')
+            estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, receptor)
+            estusu.valor += 1
+            estusu.save()
+            self.LogroRecibirValoracion(estusu.valor, receptor)
+
 
         response_html = """
             <html>
@@ -104,3 +136,34 @@ class FormularioValoración(View):
             </html>
             """
         return HttpResponse(response_html)
+    
+    def obtenerLogro(self, logro, usuario):
+        logrosu = LogroUsuario(
+            idLogro=logro,
+            idUsuario=usuario,
+            fechaObtencion=datetime.now()
+        )
+        logrosu.save()
+
+    def LogroPublicarValoracion(self, valor, usuario):
+        if valor == 1:
+            logro = Logro.GetLogroPorNombre('Libertad de expresión')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 5:
+            logro = Logro.GetLogroPorNombre('Valorando el mercado')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 10:
+            logro = Logro.GetLogroPorNombre('El juez')
+            self.obtenerLogro(logro, usuario)
+
+    def LogroRecibirValoracion(self, valor, usuario):
+        if valor == 1:
+            logro = Logro.GetLogroPorNombre('En el punto de mira')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 5:
+            logro = Logro.GetLogroPorNombre('La vieja confiable')
+            self.obtenerLogro(logro, usuario)
+        elif valor == 10:
+            logro = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
+            self.obtenerLogro(logro, usuario)
+

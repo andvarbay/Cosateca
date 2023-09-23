@@ -7,6 +7,16 @@
     <div class="row justify-content-center" style="width:100%;">
         <h1 id="titulo-listado-chats">SOLICITUDES DE PRÉSTAMO </h1>
     </div>
+    {% if error %}
+      <div class="col-12 text-center">
+        <div class="alert alert-danger" role="alert">
+          {{error}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    {% endif %}
     <div class="container" id="container-registro-prestamos" style="background-color: #b6e5ac; margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;overflow: auto; resize: none;">
     {% if prestamos %}   
         {% for prestamo in prestamos %}
@@ -37,7 +47,7 @@
                     El usuario {{ prestamo.idArrendatario.nombreUsuario }} quiere pedir prestado tu {{ prestamo.idProducto.nombre }}<br>del {{ prestamo.fechaInicio|date:"Y-m-d" }} al {{ prestamo.fechaFin|date:"Y-m-d" }}.<br><br> Detalles de la solicitud:
                 </div>
                 <div class="condiciones-arrendatario col-lg-12 col-md-12 col-sm-12 col-12">
-                    <textarea spellcheck="false" class="condiciones" style="width: 100%; height: 100px;resize: none; border:2px solid #03650A;"> {{prestamo.condiciones}}</textarea>
+                    <textarea readonly spellcheck="false" class="condiciones" style="width: 100%; height: 100px;resize: none; border:2px solid #03650A;"> {{prestamo.condiciones}}</textarea>
                 </div>
             </div>
         </div>
@@ -47,7 +57,7 @@
                 {% csrf_token %}
                     <input type="hidden" name="idPrestamo" value="{{prestamo.idPrestamo}}">
                     <div class="col-aceptar col-lg-12 col-md-12 col-sm-12 col-12">
-                        <button type="submit" name="respuesta" value="aceptar" class="btn profile-button mb-4" style="width:100%;">ACEPTAR</button>
+                        <button type="submit"  name="respuesta" value="aceptar" class="btn profile-button mb-4" style="width:100%;">ACEPTAR</button>
                     </div>
                     <div class="col-denegar col-lg-12 col-md-12 col-sm-12 col-12">
                         <button type="submit" name="respuesta" value="denegar" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">DENEGAR</button> 

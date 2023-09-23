@@ -1,50 +1,41 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
 
-from CosatecaApp.models import Prestamo, Usuario
+from CosatecaApp.models import Prestamo, Producto, Usuario
 
 
-class FinalizarPrestamo(View):
+class BorrarPerfil(View):
     return_url = None
 
     def get(self, request):
-        data = {}
-        idPrefijo = request.GET.get('id')
-        partes = idPrefijo.split("_")
-        idPrestamo = partes[1]
-        prestamo = Prestamo.getPrestamoPorId(idPrestamo)
-        data['prestamo'] = prestamo
-        return render(request, 'finalizarPrestamoConfirmar.html', data)
+        return render(request, 'borrarProductoConfirmar.html')
     
     def post(self, request):
         postData = request.POST
         respuesta = postData.get('respuesta')
-        idPrefijo = request.GET.get('id')
-        partes = idPrefijo.split("_")
-        idPrestamo = partes[1]
-        prestamo = Prestamo.getPrestamoPorId(idPrestamo)
-        arrendador = prestamo.idArrendador
+        idUsuario = request.GET.get('id')
+        usuario = Usuario.getUsuarioPorId(idUsuario)
         current = Usuario.getUsuarioPorNombreUsuario(request.session.get('usuario'))
         listaErrores = None
         if respuesta == 'confirmar':
             listaErrores = []
-            if current != arrendador:
-                listaErrores.append('Solo puedes finalizar un préstamo si eres el arrendador del mismo. Travieso.')
-            if prestamo.estado != 'Aceptado':
-                listaErrores.append('Solo puedes finalizar préstamos activos')
+            if current != usuario:
+                listaErrores.append('Solo puedes borrar tu perfil si tienes iniciada sesión desde tu propia cuenta. Travieso.')
             if not listaErrores:
-                prestamo.estado = 'Finalizado'
-                Prestamo.guardarPrestamo(prestamo)
-                response_html = """
+                usuario.delete()
+                request.session.clear()
+                response_html = f"""
                 <html>
                 <head>
                     <script>
-                    if (window.opener && !window.opener.closed) {
-                        window.opener.location.reload();
-                    }
+                    if (window.opener && !window.opener.closed) {{
+                        window.opener.location.href = '{reverse('catalogo')}';  // Redirige a la ruta '/'
+                        window.opener.focus();
+                    }}
                     window.close();
-                </script>
+                    </script>
                 </head>
                 <body>
                     <p>Formulario procesado con éxito. Esta ventana se cerrará automáticamente.</p>
@@ -55,7 +46,6 @@ class FinalizarPrestamo(View):
             else:
                 data = {
                     'errors': listaErrores,
-                    'prestamo': prestamo
                 }
                 return render(request, 'finalizarPrestamoConfirmar.html', data)
             

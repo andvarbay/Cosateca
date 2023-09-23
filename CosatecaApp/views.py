@@ -39,9 +39,9 @@ def perfil(request, nombreUsuario):
     data = {}
     usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
     productos = Producto.getProductosDeUsuario(usuario)
-    print('USUARIO:',usuario, 'VALORACIONES:',Valoracion.getValoracionesPerfil(usuario.idUsuario))
     valoraciones = Valoracion.getValoracionesPerfil(usuario.idUsuario)
     data['usuario'] = usuario
+    data['idUsuario'] = usuario.idUsuario
     data['productos'] = productos
     data['valoraciones'] = valoraciones
     return render (request, 'perfil.html', data)
@@ -89,3 +89,32 @@ def filtros(request):
     categorias = Categoria.objects.all().order_by('nombre')
     data['categorias'] = categorias
     return render(request, 'filtros.html', data)
+
+def logrosEstadisticas(request):
+    return render(request, 'logrosEstadisticas.html')
+
+def estadisticas(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        estadisticas = EstadisticaUsuario.getEstadisticasDeUsuario(usuario)
+        data['estadisticas'] = estadisticas
+
+        return render (request, 'estadisticas.html', data)
+    else:
+        return render (request, 'login.html')
+    
+def logros(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        completados = LogroUsuario.GetLogrosObtenidosDeUsuario(usuario)
+        noCompletados = LogroUsuario.GetLogros_No_ObtenidosDeUsuario(usuario)
+        data['completados'] = completados
+        data['noCompletados'] = noCompletados
+
+        return render (request, 'logros.html', data)
+    else:
+        return render (request, 'login.html')

@@ -42,6 +42,25 @@ class NuevoProducto(View):
             fotoProducto = foto
         )
         Producto.guardarProducto(producto)
+
+        #ESTADISTICAS Y LOGROS =============================
+        estadistica = Estadistica.getEstadisticaPorNombre('Productos subidos')
+        estusu = EstadisticaUsuario.getEstadisticaUsuario(estadistica, propietario)
+        estusu.valor += 1
+        estusu.save()
+        if estusu.valor==1:
+            logro = Logro.GetLogroPorNombre('Proveedor novato')
+            print(logro,'ASDASDSADASDASDASDASDDAASD',propietario)
+            self.obtenerLogro(logro, propietario)
+        elif estusu.valor==5:
+            logro = Logro.GetLogroPorNombre('Proveedor intermedio')
+            self.obtenerLogro(logro, propietario)
+        elif estusu.valor==10:
+            logro = Logro.GetLogroPorNombre('Proveedor experto')
+            self.obtenerLogro(logro, propietario)
+
+        #ESTADISTICAS Y LOGROS =============================
+        
         
         for cat in categorias:
             c = Categoria.getCategoriaPorNombre(cat)
@@ -52,3 +71,11 @@ class NuevoProducto(View):
             CategoriaProducto.nuevaCategoriaProducto(catprod)
 
         return redirect('detalles', idProducto = producto.idProducto)
+    
+    def obtenerLogro(self, logro, usuario):
+        logrosu = LogroUsuario(
+            idLogro=logro,
+            idUsuario=usuario,
+            fechaObtencion=datetime.now()
+        )
+        logrosu.save()

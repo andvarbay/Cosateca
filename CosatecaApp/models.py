@@ -34,7 +34,6 @@ class PrivateAttachment(models.Model):
             return False
 
 
-
 class Categoria(models.Model):
     idCategoria = models.AutoField(db_column='idCategoria', primary_key=True)  
     nombre = models.CharField(unique=True, max_length=20)
@@ -98,20 +97,33 @@ class Estadistica(models.Model):
     def __str__(self):
         return self.nombre
 
+    @staticmethod
+    def getTodasEstadisticas():
+        return Estadistica.objects.all()
+    
+    def getEstadisticaPorNombre(nombre):
+        return Estadistica.objects.get(nombre=nombre)
 
 class EstadisticaUsuario(models.Model):
     idEstadisticaUsuario = models.AutoField(db_column='idEstadisticaUsuario', primary_key=True)  
     idEstadistica = models.ForeignKey(Estadistica, models.CASCADE, db_column='idEstadistica')  
     idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario') 
-    valor = models.FloatField(blank=True, null=True)
+    valor = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'estadisticausuario'
 
     def __str__(self):
-        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' de ' + str(self.idUsuario.nombreUsuario)
+        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' de ' + str(self.idUsuario.nombreUsuario) + ': ' + str(self.valor)
 
+    @staticmethod
+    def getEstadisticaUsuario(idEstadistica, idUsuario):
+        return EstadisticaUsuario.objects.get(idEstadistica = idEstadistica, idUsuario = idUsuario)
+    
+    @staticmethod
+    def getEstadisticasDeUsuario(idUsuario):
+        return EstadisticaUsuario.objects.filter(idUsuario = idUsuario)
 
 class Listado(models.Model):
     idListado = models.AutoField(db_column='idListado', primary_key=True)  
@@ -138,13 +150,16 @@ class Logro(models.Model):
 
     def __str__(self):
         return self.nombre
+    @staticmethod
+    def GetLogroPorNombre(nombre):
+        return Logro.objects.get(nombre = nombre)
 
 
 class LogroUsuario(models.Model):
     idLogroUsuario = models.AutoField(db_column='idLogroUsuario', primary_key=True) 
     idLogro = models.ForeignKey('Logro', models.CASCADE, db_column='idLogro')  
     idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario') 
-    fechaObtencion = models.DateField(db_column='fechaObtencion') 
+    fechaObtencion = models.DateTimeField(db_column='fechaObtencion') 
 
     class Meta:
         managed = False
@@ -152,6 +167,15 @@ class LogroUsuario(models.Model):
 
     def __str__(self):
         return str(self.idLogroUsuario) + ': ' + str(self.idLogro) + ' - ' + str(self.idUsuario.nombreUsuario)
+    
+    def GetLogrosObtenidosDeUsuario(idUsuario):
+        return LogroUsuario.objects.filter(idUsuario = idUsuario).order_by('idLogro')
+    
+    def GetLogros_No_ObtenidosDeUsuario(idUsuario):
+        logrosObtenidos = LogroUsuario.objects.filter(idUsuario = idUsuario).values_list('idLogro', flat=True)
+        return Logro.objects.exclude(idLogro__in=logrosObtenidos).order_by('idLogro')
+
+    
 
 
 class Mensaje(models.Model):
@@ -187,9 +211,9 @@ class Prestamo(models.Model):
     idPrestamo = models.AutoField(db_column='idPrestamo', primary_key=True)
     fechaInicio = models.DateField(db_column='fechaInicio') 
     fechaFin = models.DateField(db_column='fechaFin')
-    idProducto = models.ForeignKey('Producto', models.CASCADE, db_column='idProducto')
-    idArrendador = models.ForeignKey('Usuario', models.CASCADE, db_column='idArrendador') 
-    idArrendatario = models.ForeignKey('Usuario', models.CASCADE, db_column='idArrendatario', related_name='prestamo_idarrendatario_set')
+    idProducto = models.ForeignKey('Producto', models.SET_NULL, null=True, db_column='idProducto')
+    idArrendador = models.ForeignKey('Usuario', models.SET_NULL, null=True, db_column='idArrendador') 
+    idArrendatario = models.ForeignKey('Usuario', models.SET_NULL, null=True, db_column='idArrendatario', related_name='prestamo_idarrendatario_set')
     condiciones = models.CharField(max_length=300)
     estado = models.CharField(blank=True, null=True, max_length=10, choices=(('Pendiente','Pendiente'), ('Aceptado', 'Aceptado'), ('Denegado', 'Denegado'), ('Finalizado', 'Finalizado')))
 
@@ -224,9 +248,9 @@ class Prestamo(models.Model):
     @staticmethod    
     def getRegistroPrestamosPorUsuario(idUsuario):
         try:
-            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado', 'Finalizado']).order_by('-idPrestamo')
             try: 
-                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado', 'Finalizado'])
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado', 'Finalizado']).order_by('-idPrestamo')
                 return prestamosArrendador | prestamosArrendatario
             except:
                 return prestamosArrendador
@@ -248,6 +272,14 @@ class Prestamo(models.Model):
             return Prestamo.objects.get(idArrendatario = idArrendatario, idProducto = idProducto, estado__in=['Pendiente'])
         except:
             return False
+
+    @staticmethod
+    def existePrestamoAceptado(idArrendador, idProducto):
+        try:
+            return Prestamo.objects.get(idArrendador = idArrendador, idProducto = idProducto, estado__in=['Aceptado'])
+        except:
+            return False
+        
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)
