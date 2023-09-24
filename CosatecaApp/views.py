@@ -118,3 +118,10 @@ def logros(request):
         return render (request, 'logros.html', data)
     else:
         return render (request, 'login.html')
+    
+def listados(request): 
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        return render (request, 'listados.html')
+    else:
+        return render (request, 'login.html')

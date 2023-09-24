@@ -59,5 +59,6 @@ urlpatterns = [
     path('logros/', views.logros, name='logros'),
     path('borrarProducto/', BorrarProducto.as_view(), name='borrarProducto'),
     path('borrarPerfil/', BorrarPerfil.as_view(), name='borrarPerfil'),
-    path('realizarReporte/', FormularioReporte.as_view(), name='realizarReporte')
+    path('realizarReporte/', FormularioReporte.as_view(), name='realizarReporte'),
+    path('listados/', views.listados, name='listados'),
     ] 
