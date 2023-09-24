@@ -65,7 +65,7 @@
                     <div class="row justify-content-center">
                 {% if producto.idPropietario.nombreUsuario != request.session.usuario %}
                         <div class="col-6">
-                            <a href="" class="btn profile-button mb-4" style="width: 100%;">CONTACTAR</a>
+                            <a href="/crearChat/{{producto.idProducto}}" class="btn profile-button mb-4" style="width: 100%;">CONTACTAR</a>
                         </div>
                 {% endif %}
                         <div class="col-6">

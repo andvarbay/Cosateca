@@ -227,6 +227,58 @@ nav {
     background-color: #F5FFE9;
 }
 
+#fila-cabecera-chat {
+    background-color: #FFFFFF;
+    border: 2px solid #065104;
+}
+
+.mensaje-dentro-chat-propio {
+    border: 1px solid #065104;
+    background-color: #FFFFFF;
+    max-width: 40%;
+    margin: 5px;
+    margin-left: 60%;
+}
+
+.mensaje-dentro-chat-ajeno {
+    border: 1px solid #065104;
+    background-color: #FFFFFF;
+    max-width: 40%;
+    margin: 5px;
+}
+
+.mensaje-dentro-chat-propio p {
+    align-self: center;
+    padding: 5px;
+    margin-bottom: 0px;
+}
+
+.mensaje-dentro-chat-ajeno p {
+    align-self: center;
+    padding: 5px;
+    margin-bottom: 0px;
+}
+
+#fecha-mensaje-chat {
+    color: rgb(64, 63, 63);
+    font-size: small;
+}
+
+#form-mensajes {
+    position: fixed;
+    width: 100%;
+    max-width: 650px;
+    left:50%;
+    bottom: 10%;
+    transform: translate(-50%,10%  );
+}
+
+#mensaje {
+    width: 80%;
+}
+
+#boton-enviar {
+    width: 10%;
 .scrollable-options {
     max-height: 100px;
     overflow-y: auto;
@@ -243,5 +295,5 @@ nav {
 /* 
 ZONA DE PRUEBAS: Cuando añadas css de algo que estás probando, pruebalo debajo de 
 este texto, una vez sea css definito, pásalo arriba.
-*/
+ */
 
