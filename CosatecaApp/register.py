@@ -1,3 +1,4 @@
+from datetime import datetime
 import hashlib
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.auth.hashers import check_password
@@ -29,10 +30,13 @@ class Register (View):
             'correo': correo,
             'nombreUsuario': nombreUsuario,
         }
-        foto = PrivateAttachment(
-            file = fotoPerfil
-        )
-        PrivateAttachment.nuevaFoto(foto)
+        if not fotoPerfil:
+            foto = None
+        else:
+            foto = PrivateAttachment(
+                file = fotoPerfil
+            )
+            PrivateAttachment.nuevaFoto(foto)
         
         listaErrors = None
   
@@ -50,6 +54,27 @@ class Register (View):
 
         if not listaErrors:
             Usuario.registro(usuario)
+            estadisticas = Estadistica.getTodasEstadisticas()
+            for est in estadisticas:
+                estusu = EstadisticaUsuario(
+                    idEstadistica = est,
+                    idUsuario = usuario,
+                    valor = 0
+                )
+                estusu.save()
+            logro = Logro.GetLogroPorNombre('Bienvenido a Cosateca')
+            logrousu = LogroUsuario(
+                idLogro = logro,
+                idUsuario = usuario,
+                fechaObtencion = datetime.now()
+            )
+            logrousu.save()
+            noti = Notificacion(
+                idUsuario = usuario,
+                texto = "Tu cuenta ha sido creada con éxito. ¡Bienvenido a Cosateca!",
+                fechaHora = datetime.now()
+            )
+            noti.save()
             return redirect('login')
         else:
             data = {
