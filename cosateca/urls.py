@@ -26,7 +26,10 @@ from django.conf import settings
 
 from CosatecaApp.editarPerfil import EditarPerfil
 
+from django.urls import include, path
+
 urlpatterns = [
+    path("chat/", include("chat.urls")),
     path('admin/', admin.site.urls),
     path('', views.inicio, name='catalogo'),
     path('login/', Login.as_view(), name='login'),
@@ -38,4 +41,5 @@ urlpatterns = [
     path('detallesProducto/<idProducto>',views.detallesProducto, name="detalles"),
     path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
+    path('crearChat/<idProducto>', views.crearChat, name='crearChat'),
 ]

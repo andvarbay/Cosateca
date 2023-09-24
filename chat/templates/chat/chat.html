@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  <title>Chat {{chat.idChat}}</title>
+{% endblock title %}
+
+{% block body_data %}
+
+    <div class="container" style="max-width:100%; margin-bottom:120px;" >
+        <div class="row justify-content-center" id="fila-cabecera-chat">
+            <div class="col-6 justify-content-end" style="display: flex; padding: 0%; align-self: end">
+            <a class="navbar-brand ms-3 text-dark" style="margin-right: 0; padding-left: 5px;" href="/perfil/{{otroUsuario.nombreUsuario}}">
+                <div class="image-container">
+                {% if otroUsuario.usuarioFoto == None %}
+                    <img src="../../static/default_profile_pic.png" class="rounded-image">
+                {% else %}
+                    <img src="http://127.0.0.1:9000/django-backend-dev-public/{{otroUsuario.usuarioFoto}}" class="rounded-image">
+                {% endif %}
+                </div>
+            </a>
+            </div>
+            <div class="col-6 justify-content-initial" style="display: flex;padding: 0%; align-self: center">
+                <a class="nav-link" style="color:black !important" href="/perfil/{{otroUsuario.nombreUsuario}}" id="nombre-otro-usuario">{{otroUsuario.nombreUsuario}}</a>
+            </div>
+        </div>
+    
+        <div hidden id="chatId"> {{ chat.idChat }} </div>
+        <div hidden id="usuarioId">{{ usuario.nombreUsuario }}</div>
+
+        <div id="chat-messages_prev">
+            {% for message in mensajes %}
+                {% if message.idEmisor.nombreUsuario == usuario.nombreUsuario %}
+                    <div class="mensaje-dentro-chat-propio">
+                        <p id="fecha-mensaje-chat">{{message.fechaHora|date:"d/m/y H:i"}}<p> {{ message.idEmisor.nombreUsuario }}: {{ message.texto }}</p></p>
+                    </div>
+                {% else %}
+                    <div class="mensaje-dentro-chat-ajeno">
+                        <p id="fecha-mensaje-chat">{{message.fechaHora|date:"d/m/y H:i"}}<p> {{ message.idEmisor.nombreUsuario }}: {{ message.texto }}</p></p>
+                    </div>
+                {% endif%}
+            {% endfor %}
+        </div>
+
+        <div id="chat-messages">
+            <!-- Aquí se añaden los mensajes nuevos -->
+        </div>
+
+        <form id="form-mensajes" method="POST">
+            {% csrf_token %}
+            <input name="mensaje" type="text" id="mensaje" placeholder="Escribe tu mensaje">
+            <button type="submit" id="boton-enviar">Enviar</button>
+        </form>
+
+    </div>
+
+
+    <script>
+
+        const idChat = JSON.parse(document.getElementById('chatId').textContent);
+        const chatBotonEnviar = document.querySelector('#boton-enviar');
+        const chatMensaje = document.querySelector('#mensaje');
+        const usuarioChat = document.querySelector('#usuarioId');
+        const divNuevosMensajes = document.querySelector('#chat-messages');
+        const nombreOtroUsuario = document.querySelector('#nombre-otro-usuario').textContent;
+    
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + idChat
+            + '/'
+        );
+
+        chatSocket.onopen = function(e) {
+            console.log('Chat socket abierto')
+        }
+
+        chatSocket.onmessage = function(e) {
+            console.log('Mensaje recibido')
+
+            const data = JSON.parse(e.data);
+
+            const mensaje = data.mensaje;
+            const nombreUsuario = data.nombreUsuario; 
+            const fechaMensaje = data.fechaMensaje;
+
+            // Añadir mensaje nuevo al div chat-messages
+            const chatContainer = document.getElementById('chat-messages');
+            const mensajeElement = document.createElement('div');
+            const fechaElement = document.createElement('p');
+            const nombreTextoElement = document.createElement('p');
+            if (nombreUsuario == nombreOtroUsuario) {
+                mensajeElement.classList.add('mensaje-dentro-chat-ajeno');
+            } else {
+                mensajeElement.classList.add('mensaje-dentro-chat-propio');
+            }
+            fechaElement.setAttribute('id', 'fecha-mensaje-chat');
+            fechaElement.textContent = fechaMensaje;
+            nombreTextoElement.textContent = nombreUsuario + ": " + mensaje;
+            chatContainer.appendChild(mensajeElement);
+            mensajeElement.appendChild(fechaElement);
+            mensajeElement.appendChild(nombreTextoElement);
+        }
+
+        chatSocket.onclose = function(e) {
+            console.log('Chat socket cerrado')
+        }
+
+        chatBotonEnviar.onclick = function(e) {
+            event.preventDefault()
+
+            enviarMensaje()
+            chatMensaje.value = "";
+            divNuevosMensajes.scrollIntoView({ behavior: "smooth" });
+
+            return false
+        }
+
+        function enviarMensaje() {
+            chatSocket.send(JSON.stringify({
+                'type':'mensaje',
+                'mensaje': chatMensaje.value,
+                'usuarioId': usuarioChat.innerText,
+                'chatId': idChat
+            }))
+        }
+
+        // Si el contenido es suficientemente largo, lleva hacia abajo al entrar en la pagina
+        window.addEventListener("load", function() {
+            if (document.body.scrollHeight > window.innerHeight) {
+              window.scrollTo(0, document.body.scrollHeight);
+            }
+          });
+    
+    </script>
+
+{% endblock %}

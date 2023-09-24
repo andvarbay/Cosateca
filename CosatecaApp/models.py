@@ -71,6 +71,24 @@ class Chat(models.Model):
                 return chatsArrendador
         except:
             return []
+        
+    @staticmethod
+    def getChatPorId(idChat):
+        try:
+            return Chat.objects.get(idChat=idChat)
+        except:
+            return False
+        
+    @staticmethod
+    def existeChat(idUsuarioArrendador, idUsuarioArrendatario, idProducto):
+        try:
+            chat = Chat.objects.get(idUsuarioArrendador=idUsuarioArrendador, idUsuarioArrendatario=idUsuarioArrendatario, idProducto=idProducto)
+            if chat :
+                return True
+            else : 
+                return False
+        except:
+            return False
 
 
 class Estadistica(models.Model):
