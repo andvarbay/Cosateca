@@ -10,7 +10,7 @@ class BorrarPerfil(View):
     return_url = None
 
     def get(self, request):
-        return render(request, 'borrarProductoConfirmar.html')
+        return render(request, 'borrarPerfilConfirmar.html')
     
     def post(self, request):
         postData = request.POST
@@ -47,7 +47,7 @@ class BorrarPerfil(View):
                 data = {
                     'errors': listaErrores,
                 }
-                return render(request, 'finalizarPrestamoConfirmar.html', data)
+                return render(request, 'borrarPerfilConfirmar.html', data)
             
         else:
             response_html = """

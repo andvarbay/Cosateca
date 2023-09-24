@@ -35,7 +35,7 @@
                         <div id="valorarProducto" class="btn profile-button mb-4" style="width:100%;">VALORAR</div>
                     </div>
                     <div class="col-6">
-                        <a href="" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">REPORTAR</a>
+                        <div id="reportarProducto" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">REPORTAR</div>
                     </div>
                 </div>
             {% endif %}
@@ -94,7 +94,7 @@
                                 <a href="/perfil/{{valoracion.idEmisor.nombreUsuario}}">
                                     <div class="image-container-valoracion">
                                         {% if valoracion.idEmisor.fotoPerfil == None %}
-                                          <img src="{% static 'Default_producto_picture.png' %}" class="rounded-image">
+                                          <img src="{% static 'Default_profile_pic.png' %}" class="rounded-image">
                                         {% else %}
                                           <img src="http://127.0.0.1:9000/django-backend-dev-public/{{valoracion.idEmisor.fotoPerfil}}" class="rounded-image">
                                         {% endif %}
@@ -127,6 +127,9 @@
     });
     document.getElementById('valorarProducto').addEventListener('click', function () {
         window.open('/realizarValoracion/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=550,height=550');
+    });
+    document.getElementById('reportarProducto').addEventListener('click', function () {
+        window.open('/realizarReporte/?id=p_{{producto.idProducto}}', 'formularioreporte.html', 'width=550,height=475');
     });
 </script>
 {% endblock body_data %}

@@ -361,19 +361,6 @@ class CategoriaProducto(models.Model):
             return False
 
 
-class Reporte(models.Model):
-    idReporte = models.AutoField(db_column='idReporte', primary_key=True) 
-    idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario')
-    idProducto = models.ForeignKey(Producto, models.CASCADE, db_column='idProducto', blank=True, null=True)
-    descripcion = models.CharField(blank=True, null=True, max_length=200)
-    fechaHora = models.DateTimeField(db_column='fechaHora')
-
-    class Meta:
-        managed = False
-        db_table = 'reporte'
-    
-    def __str__(self):
-        return str(self.idReporte) + ': ' + str(self.idUsuario) + ' a ' + str(self.fechaHora)
 
 class Usuario(models.Model):
     idUsuario = models.AutoField(db_column='idUsuario', primary_key=True) 
@@ -426,6 +413,34 @@ class Usuario(models.Model):
             return True
         return False
 
+class Reporte(models.Model):
+    idReporte = models.AutoField(db_column='idReporte', primary_key=True) 
+    idEmisor = models.ForeignKey(Usuario, models.CASCADE, db_column='idEmisor')  
+    idReceptor = models.ForeignKey(Usuario, models.CASCADE, db_column='idReceptor', related_name='reporte_idreceptor_set')       
+    idProducto = models.ForeignKey(Producto, models.CASCADE, db_column='idProducto', blank=True, null=True)
+    descripcion = models.CharField(blank=True, null=True, max_length=200)
+    fechaHora = models.DateTimeField(db_column='fechaHora')
+
+    class Meta:
+        managed = False
+        db_table = 'reporte'
+    
+    def __str__(self):
+        return str(self.idReporte) + ': ' + str(self.idEmisor) + ': ' + str(self.descripcion)
+    
+    @staticmethod
+    def getReporteProducto(idEmisor, idProducto):
+        try:
+            return Reporte.objects.get(idEmisor = idEmisor, idProducto = idProducto)
+        except:
+            return False
+    
+    @staticmethod
+    def getReporteUsuario(idEmisor, idReceptor):
+        try:
+            return Reporte.objects.get(idEmisor=idEmisor, idReceptor=idReceptor, idProducto=None)
+        except:
+            return False
 
 class Valoracion(models.Model):
     idValoracion = models.AutoField(db_column='idValoracion', primary_key=True) 

@@ -12,6 +12,25 @@ class FormularioValoración(View):
     def get(self, request):
         data = {}
         idPrefijo = request.GET.get('id')
+        nombreUsuario = request.session.get('usuario')
+        if nombreUsuario == None:
+            response_html = """
+            <html>
+            <head>
+                <script>
+                if (window.opener && !window.opener.closed) {
+                    window.opener.location.href = '/login'; // Redirige la ventana anterior a /login
+                    window.opener.focus(); // Enfoca la ventana anterior
+                }
+                window.close(); // Cierra la ventana actual
+                </script>
+            </head>
+            <body>
+                <p>Formulario procesado con éxito. Esta ventana se cerrará automáticamente.</p>
+            </body>
+            </html>
+            """
+            return HttpResponse(response_html)
         if idPrefijo.startswith('p_'):
             partes = idPrefijo.split("_")
             idProducto = partes[1]

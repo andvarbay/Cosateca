@@ -21,6 +21,7 @@ from CosatecaApp.borrarPerfil import BorrarPerfil
 from CosatecaApp.borrarProducto import BorrarProducto
 from CosatecaApp.filtros import Filtros
 from CosatecaApp.finalizarPrestamo import FinalizarPrestamo
+from CosatecaApp.formularioReporte import FormularioReporte
 from CosatecaApp.solicitudesPrestamo import SolicitudesPrestamo
 from CosatecaApp.pedirPrestamo import PedirPrestamo
 from CosatecaApp.editarProducto import EditarProducto
@@ -57,5 +58,6 @@ urlpatterns = [
     path('estadisticas/', views.estadisticas, name='estadisticas'),
     path('logros/', views.logros, name='logros'),
     path('borrarProducto/', BorrarProducto.as_view(), name='borrarProducto'),
-    path('borrarPerfil/', BorrarPerfil.as_view(), name='borrarPerfil')
+    path('borrarPerfil/', BorrarPerfil.as_view(), name='borrarPerfil'),
+    path('realizarReporte/', FormularioReporte.as_view(), name='realizarReporte')
     ] 
