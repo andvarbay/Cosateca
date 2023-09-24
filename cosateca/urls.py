@@ -30,11 +30,14 @@ from CosatecaApp.nuevoProducto import NuevoProducto
 from CosatecaApp.register import Register
 from CosatecaApp.editarPerfil import EditarPerfil
 from CosatecaApp.formularioValoracion import FormularioValoración
-
+from CosatecaApp.editarPerfil import EditarPerfil
 from django.conf.urls.static import static
 from django.conf import settings
 
+from django.urls import include, path
+
 urlpatterns = [
+    path("chat/", include("chat.urls")),
     path('admin/', admin.site.urls),
     path('', views.inicio, name='catalogo'),
     path('login/', Login.as_view(), name='login'),
@@ -51,6 +54,7 @@ urlpatterns = [
     path('realizarValoracion/',FormularioValoración.as_view(), name='realizarValoracion'),
     path('registroPrestamos', views.registroPrestamos, name='registroPrestamos'),
     path('valorarProducto/',FormularioValoración.as_view(), name='valorarProducto'),
+    path('crearChat/<idProducto>', views.crearChat, name='crearChat'),
     path('filtros/',views.filtros, name='filtros'),
     path('nuevoProducto/', NuevoProducto.as_view(), name='nuevoProducto'),
     path('editarProducto/', EditarProducto.as_view(), name='editarProducto'),

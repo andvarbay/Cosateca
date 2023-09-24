@@ -93,6 +93,21 @@ def filtros(request):
 def logrosEstadisticas(request):
     return render(request, 'logrosEstadisticas.html')
 
+def crearChat(request, idProducto):
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        producto = Producto.getProductoPorId(idProducto)
+        usuarioPropietario = producto.idPropietario
+        existeChat = Chat.existeChat(usuarioPropietario, usuario, producto)
+        if existeChat:
+            return listadoChats(request)
+        else : 
+            nuevoChat = Chat(idUsuarioArrendador=usuarioPropietario, idUsuarioArrendatario=usuario, idProducto=producto)
+            nuevoChat.save()
+            return listadoChats(request)
+    else:
+        return render (request, 'login.html')
 def estadisticas(request):
     data = {}
     nombreUsuario = request.session.get('usuario')
