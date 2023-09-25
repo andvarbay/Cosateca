@@ -65,4 +65,6 @@ urlpatterns = [
     path('borrarPerfil/', BorrarPerfil.as_view(), name='borrarPerfil'),
     path('realizarReporte/', FormularioReporte.as_view(), name='realizarReporte'),
     path('listados/', views.listados, name='listados'),
+    path('productosFavoritos/', views.productosFavoritos, name='productosFavoritos'),
+    path('eliminarProductoDeListado/<idListadoProducto>', views.eliminarProductoDeListado, name='eliminarProductoDeListado'),
     ] 

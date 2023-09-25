@@ -75,6 +75,17 @@ class Register (View):
                 fechaHora = datetime.now()
             )
             noti.save()
+            productosFavoritos = Listado(
+                nombre = "Productos Favoritos",
+                idPropietario = usuario
+            )
+            productosFavoritos.save
+            usuariosFavoritos = Listado(
+                nombre = "Usuarios Favoritos",
+                idPropietario = usuario
+            )
+            usuariosFavoritos.save
+
             return redirect('login')
         else:
             data = {

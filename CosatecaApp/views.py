@@ -108,6 +108,7 @@ def crearChat(request, idProducto):
             return listadoChats(request)
     else:
         return render (request, 'login.html')
+    
 def estadisticas(request):
     data = {}
     nombreUsuario = request.session.get('usuario')
@@ -138,5 +139,33 @@ def listados(request):
     nombreUsuario = request.session.get('usuario')
     if nombreUsuario != None:
         return render (request, 'listados.html')
+    else:
+        return render (request, 'login.html')
+    
+def productosFavoritos(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listadoProductosFavoritos = Listado.getListadoProductosFavoritos(usuario)
+        productosFavoritos = ListadoProducto.getListadoItems(listadoProductosFavoritos.idListado)
+        data['productosFavoritos'] = productosFavoritos
+        return render (request, 'productosFavoritos.html', data)
+
+    else:
+        return render (request, 'login.html')
+    
+def eliminarProductoDeListado(request, idListadoProducto):
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listadoProducto = ListadoProducto.getListadoProductoPorId(idListadoProducto)
+        listado = listadoProducto.idListado
+        if listado.idPropietario.idUsuario == usuario.idUsuario :
+            listadoProducto.delete()
+            return productosFavoritos(request)
+        else :
+            return productosFavoritos(request)
+
     else:
         return render (request, 'login.html')

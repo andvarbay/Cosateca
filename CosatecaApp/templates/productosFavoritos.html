@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Cosateca</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="width:100%;">
+        <h1 id="titulo-listado-chats">PRODUCTOS FAVORITOS</h1>
+    </div>
+    <div class="row justify-content-center" style="width:100%" id="product-cards">
+        {% for producto in productosFavoritos %}
+            <div class="col-lg-3 col-md-5 col-sm-11 product-card" style="margin-bottom: 2.5%;margin-top: 0;">      
+                <div producto="card mx-productos mb-3" id="{{producto.idProducto.idProducto}}">
+                <p hidden class="fecha-subida" dataFecha="{{producto.fechaSubida}}">{{producto.fechaAdicion}}</p>
+
+                {% if producto.fotoProducto != None %}
+                    <a href="/detallesProducto/{{producto.idProducto.idProducto}}">
+                    <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.idProducto.nombre}}">
+                    </a>
+                {% else %}
+                    <a href="/detallesProducto/{{producto.idProducto.idProducto}}">            
+                    <img class="card-img-top" src="{% static 'Default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.idProducto.nombre}}">
+                    </a>
+                {% endif %}
+                <div class="card-body">
+                    <a href="/detallesProducto/{{producto.idProducto.idProducto}}">
+                    <p class="card-text" style="font-size: 25px;">{{producto.idProducto.nombre}}</p>
+                    </a>
+                    <br>
+                    <a href="/perfil/{{producto.idPropietario.nombreUsuario}}">
+                    <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
+                    </a>
+                    <p class="card-text">{{producto.idPropietario.ubicacion}}</p>
+                    <p class="texto-detalles {% if producto.disponibilidad %}verde{% else %}rojo{% endif %}">{% if producto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>
+                    <a id="borrar-producto-listado" style="border: none;background-color: white;" href="/eliminarProductoDeListado/{{producto.idListadoProducto}}">
+                        <i class="fa-regular fa-circle-xmark" style="background-color: white;"></i>
+                    </a>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock body_data %}
