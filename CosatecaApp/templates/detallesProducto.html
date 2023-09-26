@@ -7,17 +7,23 @@
 <div class="container-detalles">
     <div class="row">
         <div class="col-12" style="display: flex; justify-content: end; font-size: 40px;margin-top: 5px;">
-            {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
-                    <button id="editar-producto-button" style="border: none;background-color: white;">
-                        <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
-                    </button>
-                    <script>
-                        document.getElementById('editar-producto-button').addEventListener('click', function () {
-                            window.location.href = '{% url "editarProducto" %}?idProducto={{ producto.idProducto }}';
-                        });
-                    </script>
-            {% else %}
-                <i class="fa-regular fa-heart" style="margin-right: 5px; background-color: white;"></i>
+            {% if request.session.usuario != None %}
+                {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
+                        <button id="editar-producto-button" style="border: none;background-color: white;">
+                            <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
+                        </button>
+                        <script>
+                            document.getElementById('editar-producto-button').addEventListener('click', function () {
+                                window.location.href = '{% url "editarProducto" %}?idProducto={{ producto.idProducto }}';
+                            });
+                        </script>
+                {% else %}
+                    {% if existeListadoProducto != True %}
+                        <a id="favoritos-producto-listado" style="border: none;background-color: white; color:#c20404 " href="/anadirProductoAFavoritos/{{producto.idProducto}}">
+                            <i class="fa-regular fa-heart" style="margin-right: 5px; background-color: white;"></i>
+                        </a>
+                    {% endif %}
+                {% endif %}
             {% endif %}
         </div>
         <div class="col-5 detallesProducto-izquierda text-center" style="margin-left: 10px;">

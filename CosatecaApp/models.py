@@ -188,7 +188,18 @@ class ListadoProducto(models.Model):
     @staticmethod
     def getListadoProductoPorId(idListadoProducto):
         return ListadoProducto.objects.get(idListadoProducto = idListadoProducto)
-
+    
+    @staticmethod
+    def existenListadosIguales(idListado, idProducto, idUsuario):
+        try:
+            listadoIgual = ListadoProducto.objects.get(idListado = idListado, idProducto=idProducto, idUsuario=idUsuario)
+            if listadoIgual:
+                return True
+            else:
+                return False
+        except:
+            return False
+    
 
 class Logro(models.Model):
     idLogro = models.AutoField(db_column='idLogro', primary_key=True) 

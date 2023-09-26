@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from CosatecaApp.models import *
 
@@ -47,6 +48,7 @@ def perfil(request, nombreUsuario):
     return render (request, 'perfil.html', data)
 
 def detallesProducto(request, idProducto):
+    nombreUsuario = request.session.get('usuario')
     data = {}
     producto = Producto.getProductoPorId(idProducto)
     cat= Producto.getCategoriasDeProducto(idProducto)
@@ -59,6 +61,14 @@ def detallesProducto(request, idProducto):
     data['categorias'] = categorias
     data['valoraciones'] = valoraciones
     data['puntuacion'] = puntuacion
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listado = Listado.getListadoProductosFavoritos(usuario)
+        existeListadoProducto = ListadoProducto.existenListadosIguales(listado, producto, usuario)
+        if existeListadoProducto:
+            data['existeListadoProducto'] = True
+        else:
+            data['existeListadoProducto'] = False
     return render (request, 'detallesProducto.html', data)
 
 def listadoChats(request):
@@ -166,6 +176,28 @@ def eliminarProductoDeListado(request, idListadoProducto):
             return productosFavoritos(request)
         else :
             return productosFavoritos(request)
+
+    else:
+        return render (request, 'login.html')
+    
+def anadirProductoAFavoritos(request, idProducto) :
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        producto = Producto.getProductoPorId(idProducto)
+        listadoProductosFavoritos = Listado.getListadoProductosFavoritos(usuario.idUsuario)
+        listadoProducto = ListadoProducto(
+            idListado = listadoProductosFavoritos,
+            idProducto = producto,
+            idUsuario = usuario,
+            fechaAdicion = datetime.datetime.now()
+        )
+        existenIguales = ListadoProducto.existenListadosIguales(listadoProductosFavoritos.idListado, producto.idProducto, usuario.idUsuario)
+        if existenIguales:
+            return detallesProducto(request, idProducto)
+        else:
+            listadoProducto.save()
+            return detallesProducto(request, idProducto)
 
     else:
         return render (request, 'login.html')

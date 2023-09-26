@@ -11,7 +11,7 @@
         {% for producto in productosFavoritos %}
             <div class="col-lg-3 col-md-5 col-sm-11 product-card" style="margin-bottom: 2.5%;margin-top: 0;">      
                 <div producto="card mx-productos mb-3" id="{{producto.idProducto.idProducto}}">
-                <p hidden class="fecha-subida" dataFecha="{{producto.fechaSubida}}">{{producto.fechaAdicion}}</p>
+                <p class="fecha-producto-listado">Añadido: {{producto.fechaAdicion|date:"d/m/Y"}}</p>
 
                 {% if producto.fotoProducto != None %}
                     <a href="/detallesProducto/{{producto.idProducto.idProducto}}">
@@ -27,11 +27,11 @@
                     <p class="card-text" style="font-size: 25px;">{{producto.idProducto.nombre}}</p>
                     </a>
                     <br>
-                    <a href="/perfil/{{producto.idPropietario.nombreUsuario}}">
-                    <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
+                    <a href="/perfil/{{producto.idProducto.idPropietario.nombreUsuario}}">
+                    <p class="card-text"><b>{{producto.idProducto.idPropietario.nombreUsuario}}</b></p>
                     </a>
-                    <p class="card-text">{{producto.idPropietario.ubicacion}}</p>
-                    <p class="texto-detalles {% if producto.disponibilidad %}verde{% else %}rojo{% endif %}">{% if producto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>
+                    <p class="card-text">{{producto.idProducto.idPropietario.ubicacion}}</p>
+                    <p class="texto-detalles" style="font-size: x-large;">{% if producto.idProducto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>  
                     <a id="borrar-producto-listado" style="border: none;background-color: white;" href="/eliminarProductoDeListado/{{producto.idListadoProducto}}">
                         <i class="fa-regular fa-circle-xmark" style="background-color: white;"></i>
                     </a>
