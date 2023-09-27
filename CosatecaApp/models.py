@@ -170,8 +170,8 @@ class Listado(models.Model):
 class ListadoProducto(models.Model):
     idListadoProducto = models.AutoField(db_column='idListadoProducto', primary_key=True) 
     idListado = models.ForeignKey('Listado', models.CASCADE, db_column='idListado')  
-    idProducto = models.ForeignKey('Producto', models.CASCADE, db_column='idProducto') 
-    idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario') 
+    idProducto = models.ForeignKey('Producto', models.CASCADE, db_column='idProducto', null=True, blank=True) 
+    idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario', null=True, blank=True) 
     fechaAdicion = models.DateTimeField(db_column='fechaAdicion') 
 
     class Meta:
@@ -192,13 +192,10 @@ class ListadoProducto(models.Model):
     @staticmethod
     def existenListadosIguales(idListado, idProducto, idUsuario):
         try:
-            listadoIgual = ListadoProducto.objects.get(idListado = idListado, idProducto=idProducto, idUsuario=idUsuario)
-            if listadoIgual:
-                return True
-            else:
-                return False
+            return ListadoProducto.objects.get(idListado = idListado, idProducto=idProducto, idUsuario=idUsuario)
         except:
             return False
+            
     
 
 class Logro(models.Model):

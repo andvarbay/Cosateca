@@ -68,4 +68,7 @@ urlpatterns = [
     path('productosFavoritos/', views.productosFavoritos, name='productosFavoritos'),
     path('eliminarProductoDeListado/<idListadoProducto>', views.eliminarProductoDeListado, name='eliminarProductoDeListado'),
     path('anadirProductoAFavoritos/<idProducto>', views.anadirProductoAFavoritos, name='anadirProductoAFavoritos'),
+    path('usuariosFavoritos/', views.usuariosFavoritos, name='usuariosFavoritos'),
+    path('eliminarUsuarioDeListado/<idListadoProducto>', views.eliminarUsuarioDeListado, name='eliminarUsuarioDeListado'),
+    path('anadirUsuarioAFavoritos/<idUsuario>', views.anadirUsuarioAFavoritos, name='anadirUsuarioAFavoritos'),
     ] 

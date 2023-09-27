@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from CosatecaApp.models import *
 
 # Create your views here.
@@ -45,6 +45,15 @@ def perfil(request, nombreUsuario):
     data['idUsuario'] = usuario.idUsuario
     data['productos'] = productos
     data['valoraciones'] = valoraciones
+    if request.session.get('usuario') != None:
+        nombreUsuarioLogueado = request.session.get('usuario')
+        usuarioLogueado = Usuario.getUsuarioPorNombreUsuario(nombreUsuarioLogueado)
+        listado = Listado.getListadoUsuariosFavoritos(usuarioLogueado)
+        existeListadoProducto = ListadoProducto.existenListadosIguales(listado, None, usuario)
+        if existeListadoProducto:
+            data['existeListadoUsuario'] = True
+        else:
+            data['existeListadoUsuario'] = False
     return render (request, 'perfil.html', data)
 
 def detallesProducto(request, idProducto):
@@ -64,7 +73,7 @@ def detallesProducto(request, idProducto):
     if nombreUsuario != None:
         usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
         listado = Listado.getListadoProductosFavoritos(usuario)
-        existeListadoProducto = ListadoProducto.existenListadosIguales(listado, producto, usuario)
+        existeListadoProducto = ListadoProducto.existenListadosIguales(listado, producto, None)
         if existeListadoProducto:
             data['existeListadoProducto'] = True
         else:
@@ -173,9 +182,9 @@ def eliminarProductoDeListado(request, idListadoProducto):
         listado = listadoProducto.idListado
         if listado.idPropietario.idUsuario == usuario.idUsuario :
             listadoProducto.delete()
-            return productosFavoritos(request)
+            return redirect("productosFavoritos")
         else :
-            return productosFavoritos(request)
+            return redirect("productosFavoritos")
 
     else:
         return render (request, 'login.html')
@@ -189,15 +198,65 @@ def anadirProductoAFavoritos(request, idProducto) :
         listadoProducto = ListadoProducto(
             idListado = listadoProductosFavoritos,
             idProducto = producto,
-            idUsuario = usuario,
+            idUsuario = None,
             fechaAdicion = datetime.datetime.now()
         )
-        existenIguales = ListadoProducto.existenListadosIguales(listadoProductosFavoritos.idListado, producto.idProducto, usuario.idUsuario)
+        existenIguales = ListadoProducto.existenListadosIguales(listadoProductosFavoritos.idListado, producto.idProducto, None)
         if existenIguales:
-            return detallesProducto(request, idProducto)
+            return redirect("detalles", idProducto=idProducto)
         else:
             listadoProducto.save()
-            return detallesProducto(request, idProducto)
+            return redirect("detalles", idProducto=idProducto)
+
+    else:
+        return render (request, 'login.html')
+    
+def usuariosFavoritos(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listadoUsuariosFavoritos = Listado.getListadoUsuariosFavoritos(usuario)
+        usuariosFavoritos = ListadoProducto.getListadoItems(listadoUsuariosFavoritos.idListado)
+        data['usuariosFavoritos'] = usuariosFavoritos
+        return render (request, 'usuariosFavoritos.html', data)
+
+    else:
+        return render (request, 'login.html')
+    
+def eliminarUsuarioDeListado(request, idListadoProducto):
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listadoProducto = ListadoProducto.getListadoProductoPorId(idListadoProducto)
+        listado = listadoProducto.idListado
+        if listado.idPropietario.idUsuario == usuario.idUsuario :
+            listadoProducto.delete()
+            return redirect("usuariosFavoritos")
+        else :
+            return redirect("usuariosFavoritos")
+
+    else:
+        return render (request, 'login.html')
+
+def anadirUsuarioAFavoritos(request, idUsuario) :
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        usuarioAGuardar = Usuario.getUsuarioPorId(idUsuario)
+        listadoUsuariosFavoritos = Listado.getListadoUsuariosFavoritos(usuario.idUsuario)
+        listadoProducto = ListadoProducto(
+            idListado = listadoUsuariosFavoritos,
+            idProducto = None,
+            idUsuario = usuarioAGuardar,
+            fechaAdicion = datetime.datetime.now()
+        )
+        existenIguales = ListadoProducto.existenListadosIguales(listadoUsuariosFavoritos.idListado, None, usuarioAGuardar.idUsuario)
+        if existenIguales:
+            return redirect("perfil", nombreUsuario=usuarioAGuardar.nombreUsuario)
+        else:
+            listadoProducto.save()
+            return redirect("perfil", nombreUsuario=usuarioAGuardar.nombreUsuario)
 
     else:
         return render (request, 'login.html')
