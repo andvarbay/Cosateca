@@ -31,11 +31,15 @@
                     <a href="/registroPrestamos" class="btn profile-button mb-4">REGISTRO DE PRÉSTAMOS</a>
                     <div id="borrarPerfil" class="btn delete-profile-button">ELIMINAR CUENTA</div>
                 </div>
-            {% else %}
+            {% elif request.session.usuario != None %}
                 <div class="d-flex flex-column">
                     <div class="row" style="justify-content:space-between;margin-left: 5%;margin-right: 5%;margin-bottom: 5%;">
-                        <a href=""><i class="fa-solid fa-trophy" style="font-size: 40px;"></i></a>
-                        <i class="fa-regular fa-heart" style="font-size: 40px;"></i>
+                        <a href=""><i class="fa-solid fa-trophy" style="font-size: 40px; display:None"></i></a>
+                        {% if existeListadoUsuario != True %}
+                            <a id="favoritos-producto-listado" style="border: none;background-color: white; color:#c20404 " href="/anadirUsuarioAFavoritos/{{usuario.idUsuario}}">
+                                <i class="fa-regular fa-heart" style="font-size: 40px;"></i>
+                            </a>
+                        {% endif %}
                     </div>
                     <div id='valorarUsuario' class="btn profile-button mb-4" >VALORAR</div>
                     <div id="reportarUsuario" class="btn delete-profile-button" >REPORTAR</div>

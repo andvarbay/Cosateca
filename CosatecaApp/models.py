@@ -146,7 +146,6 @@ class EstadisticaUsuario(models.Model):
 class Listado(models.Model):
     idListado = models.AutoField(db_column='idListado', primary_key=True)  
     nombre = models.CharField(max_length=20)
-    productos = models.CharField(blank=True, null=True, max_length=20)
     idPropietario = models.ForeignKey('Usuario', models.CASCADE, db_column='idPropietario') 
 
     class Meta:
@@ -155,7 +154,49 @@ class Listado(models.Model):
 
     def __str__(self):
         return self.nombre + ' de ' + str(self.idPropietario)
+    
+    @staticmethod
+    def getListadoProductosFavoritos(idUsuario):
+        return Listado.objects.get(idPropietario = idUsuario, nombre="Productos Favoritos")
+    
+    @staticmethod
+    def getListadoPorId(idListado):
+        return Listado.objects.get(idListado = idListado)
+    
+    @staticmethod
+    def getListadoUsuariosFavoritos(idUsuario):
+        return Listado.objects.get(idPropietario = idUsuario, nombre="Usuarios Favoritos")
+    
+class ListadoProducto(models.Model):
+    idListadoProducto = models.AutoField(db_column='idListadoProducto', primary_key=True) 
+    idListado = models.ForeignKey('Listado', models.CASCADE, db_column='idListado')  
+    idProducto = models.ForeignKey('Producto', models.CASCADE, db_column='idProducto', null=True, blank=True) 
+    idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario', null=True, blank=True) 
+    fechaAdicion = models.DateTimeField(db_column='fechaAdicion') 
 
+    class Meta:
+        managed = False
+        db_table = 'listadoproducto'
+
+    def __str__(self):
+        return str(self.idListadoProducto) + ': ' + str(self.idListado)
+    
+    @staticmethod
+    def getListadoItems(idListado):
+        return ListadoProducto.objects.filter(idListado = idListado)
+    
+    @staticmethod
+    def getListadoProductoPorId(idListadoProducto):
+        return ListadoProducto.objects.get(idListadoProducto = idListadoProducto)
+    
+    @staticmethod
+    def existenListadosIguales(idListado, idProducto, idUsuario):
+        try:
+            return ListadoProducto.objects.get(idListado = idListado, idProducto=idProducto, idUsuario=idUsuario)
+        except:
+            return False
+            
+    
 
 class Logro(models.Model):
     idLogro = models.AutoField(db_column='idLogro', primary_key=True) 
@@ -192,8 +233,6 @@ class LogroUsuario(models.Model):
     def GetLogros_No_ObtenidosDeUsuario(idUsuario):
         logrosObtenidos = LogroUsuario.objects.filter(idUsuario = idUsuario).values_list('idLogro', flat=True)
         return Logro.objects.exclude(idLogro__in=logrosObtenidos).order_by('idLogro')
-
-    
 
 
 class Mensaje(models.Model):

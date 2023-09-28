@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Cosateca</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="width:100%;">
+        <h1 id="titulo-listado-chats">USUARIOS FAVORITOS</h1>
+    </div>
+    <div class="row justify-content-center" style="width:100%" id="product-cards">
+        {% for usuario in usuariosFavoritos %}
+            <div class="col-lg-3 col-md-5 col-sm-11 product-card" style="margin-bottom: 2.5%;margin-top: 0;">      
+                <div usuario="card mx-productos mb-3" id="{{usuario.idUsuario.idUsuario}}">
+                    <p class="fecha-producto-listado">Añadido: {{usuario.fechaAdicion|date:"d/m/Y"}}</p>
+
+                    {% if usuario.fotoUsuario != None %}
+                        <a href="/perfil/{{usuario.idUsuario.nombreUsuario}}">
+                        <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{usuario.idUsuario.nombreUsuario}}" alt="Foto {{MEDIA_URL}}{{usuario.idUsuario.nombreUsuario}}">
+                        </a>
+                    {% else %}
+                        <a href="/perfil/{{usuario.idUsuario.nombreUsuario}}">            
+                        <img class="card-img-top" src="{% static 'Default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{usuario.idUsuario.nombreUsuario}}">
+                        </a>
+                    {% endif %}
+                    <div class="card-body">
+                        <a href="/perfil/{{usuario.idUsuario.nombreUsuario}}">
+                        <p class="card-text"><b>{{usuario.idUsuario.nombreUsuario}}</b></p>
+                        </a>
+                        <p class="card-text">{{usuario.idUsuario.ubicacion}}</p>
+                        <a id="borrar-producto-listado" style="border: none;background-color: white;" href="/eliminarUsuarioDeListado/{{usuario.idListadoProducto}}">
+                            <i class="fa-regular fa-circle-xmark" style="background-color: white;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock body_data %}

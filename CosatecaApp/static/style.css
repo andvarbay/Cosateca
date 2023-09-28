@@ -279,6 +279,8 @@ nav {
 
 #boton-enviar {
     width: 10%;
+}
+
 .scrollable-options {
     max-height: 100px;
     overflow-y: auto;
@@ -290,6 +292,11 @@ nav {
 .scrollable-options li {
     display: flex;
     align-items: center;
+}
+
+.fecha-producto-listado {
+    margin-top: 5%;
+    text-align: center;
 }
 
 /* 
