@@ -79,12 +79,12 @@ class Register (View):
                 nombre = "Productos Favoritos",
                 idPropietario = usuario
             )
-            productosFavoritos.save
+            productosFavoritos.save()
             usuariosFavoritos = Listado(
                 nombre = "Usuarios Favoritos",
                 idPropietario = usuario
             )
-            usuariosFavoritos.save
+            usuariosFavoritos.save()
 
             return redirect('login')
         else:
