@@ -15,21 +15,21 @@ class FormularioValoración(View):
         nombreUsuario = request.session.get('usuario')
         if nombreUsuario == None:
             response_html = """
-            <html>
-            <head>
-                <script>
-                if (window.opener && !window.opener.closed) {
-                    window.opener.location.href = '/login'; // Redirige la ventana anterior a /login
-                    window.opener.focus(); // Enfoca la ventana anterior
-                }
-                window.close(); // Cierra la ventana actual
-                </script>
-            </head>
-            <body>
-                <p>Formulario procesado con éxito. Esta ventana se cerrará automáticamente.</p>
-            </body>
-            </html>
-            """
+                <html>
+                <head>
+                    <script>
+                    if (window.opener && !window.opener.closed) {
+                        window.opener.location.href = '/login'; // Redirige la ventana anterior a /login
+                        window.opener.focus(); // Enfoca la ventana anterior
+                    }
+                    window.close(); // Cierra la ventana actual
+                    </script>
+                </head>
+                <body>
+                    <p>Formulario procesado con éxito. Esta ventana se cerrará automáticamente.</p>
+                </body>
+                </html>
+                """
             return HttpResponse(response_html)
         if idPrefijo.startswith('p_'):
             partes = idPrefijo.split("_")
@@ -38,6 +38,23 @@ class FormularioValoración(View):
             data['valorado'] = 'producto'
             data['producto'] = producto
             idEmisor = Usuario.getUsuarioPorNombreUsuario(request.session.get('usuario')).idUsuario
+            if idEmisor == producto.idPropietario:
+                response_html = """
+                <html>
+                <head>
+                    <script>
+                    if (window.opener && !window.opener.closed) {
+                        window.opener.location.reload();
+                    }
+                    window.close();
+                </script>
+                </head>
+                <body>
+                    <p>Formulario procesado con éxito. Esta ventana se cerrará automáticamente.</p>
+                </body>
+                </html>
+                """
+                return HttpResponse(response_html)
             if Valoracion.existeValoracionProducto(idEmisor, producto.idProducto):
                 valoracion = Valoracion.getValoracionProducto(idEmisor, producto.idProducto)
                 values = {
@@ -78,7 +95,7 @@ class FormularioValoración(View):
             valoracion = Valoracion.getValoracionProducto(emisor.idUsuario,idProducto)   
             if valoracion == False:
                 producto = Producto.getProductoPorId(idProducto)
-                receptor = Usuario.getUsuarioPorId(producto.idProducto)
+                receptor = Usuario.getUsuarioPorId(producto.idPropietario.idUsuario)
                 valoracion = Valoracion(    
                     idEmisor = emisor,
                     idReceptor = receptor,
@@ -111,6 +128,24 @@ class FormularioValoración(View):
             partes = idPrefijo.split("_")
             idUsuario = partes[1]
             receptor = Usuario.getUsuarioPorId(idUsuario)
+            if emisor == receptor:
+                response_html = """
+                <html>
+                <head>
+                    <script>
+                    if (window.opener && !window.opener.closed) {
+                        window.opener.location.reload();
+                    }
+                    window.close();
+                </script>
+                </head>
+                <body>
+                    <p>Formulario procesado con éxito. Esta ventana se cerrará automáticamente.</p>
+                </body>
+                </html>
+                """
+                return HttpResponse(response_html)
+
             valoracion = Valoracion.getValoracionUsuario(emisor.idUsuario,receptor.idUsuario)
             if valoracion == False:
                 valoracion = Valoracion(

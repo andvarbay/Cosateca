@@ -113,7 +113,7 @@ class Estadistica(models.Model):
         db_table = 'estadistica'
     
     def __str__(self):
-        return self.nombre
+        return str(self.idEstadistica) +': ' + self.nombre
 
     @staticmethod
     def getTodasEstadisticas():
@@ -133,7 +133,7 @@ class EstadisticaUsuario(models.Model):
         db_table = 'estadisticausuario'
 
     def __str__(self):
-        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica) + ' de ' + str(self.idUsuario.nombreUsuario) + ': ' + str(self.valor)
+        return str(self.idEstadisticaUsuario) + ': ' + str(self.idEstadistica.nombre) + ' de ' + str(self.idUsuario.nombreUsuario) + ': ' + str(self.valor)
 
     @staticmethod
     def getEstadisticaUsuario(idEstadistica, idUsuario):
