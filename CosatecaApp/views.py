@@ -91,6 +91,35 @@ def listadoChats(request):
         return render (request, 'listadoChats.html', data)
     else:
         return render (request, 'login.html')
+    
+def listadoListasPersonalizadas(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listado = Listado.getListasPersonalidazas(usuario)
+        data['listas'] = listado
+    
+        return render (request, 'listadoListasPersonalizadas.html', data)
+    else:
+        return redirect ('login') 
+    
+def listaPersonalizada(request, idListado):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    listado = Listado.getListadoPorId(idListado)
+    propietario = listado.idPropietario
+    if nombreUsuario == None:
+        return redirect ('login')
+    elif nombreUsuario != propietario.nombreUsuario:
+        return redirect ('catalogo')        
+    else:
+        lista = Listado.getListadoPorId(idListado)
+        productos = ListadoProducto.getListadoItems(lista)
+        data['nombreLista'] = lista.nombre
+        data['lista'] = productos
+    
+        return render (request, 'listasPersonalizadas.html', data)
 
 def registroPrestamos(request):
     data = {}
@@ -174,7 +203,7 @@ def productosFavoritos(request):
     else:
         return render (request, 'login.html')
     
-def eliminarProductoDeListado(request, idListadoProducto):
+def eliminarProductoDeFavoritos(request, idListadoProducto):
     nombreUsuario = request.session.get('usuario')
     if nombreUsuario != None:
         usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
@@ -185,6 +214,21 @@ def eliminarProductoDeListado(request, idListadoProducto):
             return redirect("productosFavoritos")
         else :
             return redirect("productosFavoritos")
+
+    else:
+        return render (request, 'login.html')
+
+def eliminarProductoDeListaPersonalizada(request, idListadoProducto):
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        listadoProducto = ListadoProducto.getListadoProductoPorId(idListadoProducto)
+        listado = listadoProducto.idListado
+        if listado.idPropietario.idUsuario == usuario.idUsuario :
+            listadoProducto.delete()
+            return redirect("listaPersonalizada", idListado= listado.idListado)
+        else :
+            return redirect("listaPersonalizada", idListado= listado.idListado)
 
     else:
         return render (request, 'login.html')
