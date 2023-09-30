@@ -5,7 +5,7 @@ from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from CosatecaApp.models import Chat, Mensaje, Usuario
+from CosatecaApp.models import Chat, Mensaje, Usuario, Notificacion
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -47,6 +47,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def crear_mensaje(self, mensaje, usuario, chat) :
         mensaje = Mensaje(texto=mensaje, idEmisor=usuario, idChat=chat, fechaHora = datetime.datetime.now())
         mensaje.save()
+        if usuario == chat.idUsuarioArrendador:
+            notificacion = Notificacion(idUsuario=chat.idUsuarioArrendatario, texto="Has recibido un nuevo mensaje de " + str(usuario.nombre) + " en el chat por el producto " + str(chat.idProducto.nombre), fechaHora = datetime.datetime.now())
+        else :
+            notificacion = Notificacion(idUsuario=chat.idUsuarioArrendador, texto="Has recibido un nuevo mensaje de " + str(usuario.nombre) + " en el chat por el producto " + str(chat.idProducto.nombre), fechaHora = datetime.datetime.now())
+        notificacion.save()
 
         return mensaje
 

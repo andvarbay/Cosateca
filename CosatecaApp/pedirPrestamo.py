@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from CosatecaApp.models import Prestamo, Producto, Usuario
+from CosatecaApp.models import Prestamo, Producto, Usuario, Notificacion
 
 
 class PedirPrestamo(View):
@@ -52,6 +52,7 @@ class PedirPrestamo(View):
             }
             data['values'] = values
         return render(request, 'pedirPrestamo.html', data)
+    
     def post(self,request):
         postData = request.POST
         idPrefijo = request.GET.get('id')
@@ -104,8 +105,10 @@ class PedirPrestamo(View):
                     condiciones = condiciones,
                     estado = 'Pendiente'
                 )
-
+                
             Prestamo.guardarPrestamo(prestamo)
+            Notificacion.guardarNotificacion(idUsuario=prestamo.idArrendador, tipo="recibirSolicitudPrestamo", concatenacion=str(prestamo.idProducto.nombre))
+            Notificacion.guardarNotificacion(idUsuario=prestamo.idArrendatario, tipo="enviarSolicitudPrestamo", concatenacion=str(prestamo.idProducto.nombre))
             response_html = """
             <html>
             <head>

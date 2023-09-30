@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Logros</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="width:100%;">
+        <h1 id="titulo-listado-chats">NOTIFICACIONES</h1>
+    </div>
+    <div class="container" id="container-listado-chats" style="margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;max-height: none;">
+        <style>
+        .impar {
+            background-color: #d8facc;
+        }
+        .par{
+            background-color: #b6e5ac;
+        }
+        </style>
+
+        {% for notificacion in notificaciones %}
+        <div class="row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}" style="padding-top: 10px;padding-bottom: 10px;">
+            <div class="elemento-lista-chats col-lg-2 col-md-2 col-sm-2 col-12" style="align-self: center; border-right: 1px solid #065104;">
+                <div style="text-align: center">{{notificacion.fechaHora|date:"d/m/y H:i"}}</div>
+            </div>
+            <div class="elemento-lista-chats col-lg-10 col-md-10 col-sm-10 col-12" style="align-self: center;">
+                <div style="text-align: start">{{notificacion.texto }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock body_data %}
