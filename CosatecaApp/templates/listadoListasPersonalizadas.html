@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Cosateca</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="width:100%;">
+        <div class="col-12 text-center">
+          <h1 id="titulo-listado-chats">TUS LISTAS PERSONALIZADAS</h1>
+        </div>
+    </div>
+    <div class="container" id="container-listado-chats" style="margin-left: 5px; margin-right: 5px; max-width: 800px; margin: auto; text-align: center;overflow: auto; resize: none;">
+    {% if listas.count > 1 %}
+      <style>
+        .impar {
+          background-color: #b6e5ac;
+        }
+        .par{
+          background-color: #d8facc;
+        }
+      </style>
+
+      {% for lista in listas %}
+        <div class="cuadro row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}" style="border: 1px solid #065104;">
+          <div class="elemento-lista-chats col-lg-8 col-md-8 col-sm-8 col-12" style="align-self: center;">
+            <div style="text-align: center">{{ lista.nombre }}</div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="align-self: center; padding-top: 1%;">
+            <a href="/listaPersonalizada/{{lista.idListado}}" class="btn profile-button mb-2" style="width: 80%;">VER</a>
+          </div>
+        </div>
+      {% endfor %}
+
+    {% else %}
+      <h2>No tienes ninguna lista personalizada todavía.</h1>
+    {% endif %}  
+    <div class="row justify-content-center">
+      <div class="col-12 text-center">
+        <div id="nuevaListaPersonalizada" class="btn profile-button mb-4" style="width:90%;margin-top: 1.5rem; max-width: 800px;">Nueva lista personalizada</div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  var botonNuevaListaPersonalizada = document.getElementById('nuevaListaPersonalizada');
+
+  if(botonNuevaListaPersonalizada) {
+    botonNuevaListaPersonalizada.addEventListener('click', function () {
+    window.open('/nuevaListaPersonalizada', 'formularioListaPersonalizada.html', 'width=600,height=350');
+    });
+  }
+
+  });
+</script>
+{% endblock body_data %}

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 
-from CosatecaApp.models import Prestamo, Producto, Usuario
+from CosatecaApp.models import Usuario
 
 
 class BorrarPerfil(View):
