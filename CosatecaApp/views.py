@@ -304,3 +304,14 @@ def anadirUsuarioAFavoritos(request, idUsuario) :
 
     else:
         return render (request, 'login.html')
+    
+def notificaciones(request):
+    data = {}
+    nombreUsuario = request.session.get('usuario')
+    if nombreUsuario != None:
+        usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
+        notificaciones = Notificacion.getNotificacionesPorUsuario(usuario.idUsuario).order_by('-fechaHora')
+        data['notificaciones'] = notificaciones
+        return render(request, 'notificaciones.html', data)
+    else:
+        return render (request, 'login.html')

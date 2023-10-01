@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from django.db import models
 from django_minio_backend import MinioBackend, iso_date_prefix
@@ -267,6 +268,73 @@ class Notificacion(models.Model):
 
     def __str__(self):
         return str(self.idNotificacion) + ': ' + str(self.idUsuario.nombreUsuario) + ' a ' + str(self.fechaHora)
+    
+
+    @staticmethod
+    def getNotificacionesPorUsuario(idUsuario):
+        try:
+            return Notificacion.objects.filter(idUsuario=idUsuario)
+        except:
+            return []  
+          
+    @staticmethod
+    def guardarNotificacion(idUsuario, tipo, concatenacion) :
+        match tipo:
+            case "crearCuenta":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Tu cuenta ha sido creada con éxito. ¡Bienvenido a Cosateca!",
+                    fechaHora = datetime.now()
+                )
+            case "recibirSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Has recibido una solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "enviarSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Has enviado una solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "aceptarSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Se ha aceptado tu solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "rechazarSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Se ha rechazado tu solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "finPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Ha finalizado el préstamo por el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "recordatorioFinPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Ha finalizado el préstamo por el producto " + concatenacion + ", pero no se ha cerrado.",
+                    fechaHora = datetime.now()
+                )
+            case "desbloqueoLogro":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "¡Has desbloqueado el logro " + concatenacion + "!",
+                    fechaHora = datetime.now()
+                )
+            case "mensajeNuevo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Has recibido un nuevo mensaje " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+        notificacion.save()
 
 
 class Prestamo(models.Model):
@@ -307,6 +375,7 @@ class Prestamo(models.Model):
                 return prestamosArrendador
         except:
             return []
+        
     @staticmethod    
     def getRegistroPrestamosPorUsuario(idUsuario):
         try:
@@ -342,6 +411,24 @@ class Prestamo(models.Model):
         except:
             return False
         
+    @staticmethod    
+    def getPrestamosFinalizadosPendientesPorUsuario(idUsuario):
+        try:
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado'], fechaFin__lt=datetime.now()).order_by('-idPrestamo')
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado'], fechaFin__lt=datetime.now()).order_by('-idPrestamo')
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
+    
+    @staticmethod
+    def comprobarPrestamosCaducados(idUsuario):
+        listadoPrestamosFinalizadosUsuario = Prestamo.getPrestamosFinalizadosPendientesPorUsuario(idUsuario)
+        for prestamo in listadoPrestamosFinalizadosUsuario:
+            Notificacion.guardarNotificacion(idUsuario=idUsuario, tipo="recordatorioFinPrestamo", concatenacion=str(prestamo.idProducto.nombre))
+
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)

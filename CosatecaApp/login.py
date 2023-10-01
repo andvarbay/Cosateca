@@ -23,11 +23,8 @@ class Login(View):
                 request.session['usuario'] = usuario.nombreUsuario
                 if usuario.fotoPerfil != None:
                     request.session['usuarioFoto'] = str(usuario.fotoPerfil.file)
-                if Login.return_url:
-                    return HttpResponseRedirect(Login.return_url)
-                else:
-                    Login.return_url = None
-                    return redirect ('catalogo')
+                Prestamo.comprobarPrestamosCaducados(usuario)
+                return redirect ('catalogo')
             else:
                 mensajeError = 'Contraseña incorrecta'
         else:
