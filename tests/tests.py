@@ -464,11 +464,12 @@ def test_logros_realizar_valoraciones(logged_in_client):
 @pytest.mark.django_db
 def test_logros_recibir_valoraciones(client, logged_in_client, product_data):
     client = Client()
-    client.post(reverse('login'), {
-        'nombreUsuario': 'pablester',
-        'contrasena':'pablester123'
+    response = client.post(reverse('login'), {
+                'nombreUsuario': 'pablester',
+                'contrasena':'pablester123'
                                    })
     
+    assert response.status_code == 302
     estad = Estadistica.getEstadisticaPorNombre('Valoraciones recibidas')
     usu = Usuario.getUsuarioPorNombreUsuario('test')
     estadusu = EstadisticaUsuario.objects.get(idEstadistica=estad,idUsuario=usu)
@@ -477,7 +478,8 @@ def test_logros_recibir_valoraciones(client, logged_in_client, product_data):
     logro5 = Logro.GetLogroPorNombre('La vieja confiable')
     logro10 = Logro.GetLogroPorNombre('Solo Dios puede juzgarme')
 
-    logged_in_client.post(reverse('nuevoProducto'), data= product_data)
+    response = logged_in_client.post(reverse('nuevoProducto'), data= product_data)
+    assert response.status_code == 302
     pablester = Usuario.getUsuarioPorNombreUsuario('pablester')
     p = Producto.objects.get(nombre='producto')
     par = 'p_'+str(p.idProducto)
