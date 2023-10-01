@@ -3,17 +3,20 @@
   <title>Cosateca</title>
 {% endblock title %}
 {% block body_data %}
+{% load static %}
 <style>
     .verde {color: #107F0E;}
     .rojo {color: #980707;}
   </style>
   
-{% load static %}
     <div class="row justify-content-center" style="width:100%;">
-        <h1 id="titulo-listado-chats">PRODUCTOS FAVORITOS</h1>
+        <div class="col-12 text-center">
+            <h1 id="titulo-listado-chats">LISTA: {{nombreLista}}</h1>
+        </div>
+
     </div>
     <div class="row justify-content-center" style="width:100%" id="product-cards">
-        {% for producto in productosFavoritos %}
+        {% for producto in lista %}
             <div class="col-lg-3 col-md-5 col-sm-11 product-card" style="margin-bottom: 2.5%;margin-top: 0;">      
                 <div producto="card mx-productos mb-3" id="{{producto.idProducto.idProducto}}">
                 <p class="fecha-producto-listado">Añadido: {{producto.fechaAdicion|date:"d/m/Y"}}</p>
@@ -37,7 +40,7 @@
                     </a>
                     <p class="card-text">{{producto.idProducto.idPropietario.ubicacion}}</p>
                     <p class="texto-detalles {% if producto.idProducto.disponibilidad %}verde{% else %}rojo{% endif %}" style="font-size: x-large;">{% if producto.idProducto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>  
-                    <a id="borrar-producto-listado" style="border: none;background-color: white;" href="/eliminarProductoDeFavoritos/{{producto.idListadoProducto}}">
+                    <a id="borrar-producto-listado" style="border: none;background-color: white;" href="/eliminarProductoDeListaPersonalizada/{{producto.idListadoProducto}}">
                         <i class="fa-regular fa-circle-xmark" style="background-color: white;"></i>
                     </a>
                 </div>

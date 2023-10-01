@@ -157,6 +157,11 @@ class Listado(models.Model):
         return self.nombre + ' de ' + str(self.idPropietario)
     
     @staticmethod
+    def getListasPersonalidazas(idUsuario):
+        favoritos=["Productos Favoritos", "Usuarios Favoritos"]
+        return Listado.objects.filter(idPropietario=idUsuario).exclude(nombre__in=favoritos)
+
+    @staticmethod
     def getListadoProductosFavoritos(idUsuario):
         return Listado.objects.get(idPropietario = idUsuario, nombre="Productos Favoritos")
     
