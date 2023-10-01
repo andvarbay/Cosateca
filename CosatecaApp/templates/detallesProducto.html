@@ -7,17 +7,23 @@
 <div class="container-detalles">
     <div class="row">
         <div class="col-12" style="display: flex; justify-content: end; font-size: 40px;margin-top: 5px;">
-            {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
-                    <button id="editar-producto-button" style="border: none;background-color: white;">
-                        <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
-                    </button>
-                    <script>
-                        document.getElementById('editar-producto-button').addEventListener('click', function () {
-                            window.location.href = '{% url "editarProducto" %}?idProducto={{ producto.idProducto }}';
-                        });
-                    </script>
-            {% else %}
-                <i class="fa-regular fa-heart" style="margin-right: 5px; background-color: white;"></i>
+            {% if request.session.usuario != None %}
+                {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
+                        <button id="editar-producto-button" style="border: none;background-color: white;">
+                            <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
+                        </button>
+                        <script>
+                            document.getElementById('editar-producto-button').addEventListener('click', function () {
+                                window.location.href = '{% url "editarProducto" %}?idProducto={{ producto.idProducto }}';
+                            });
+                        </script>
+                {% else %}
+                    {% if existeListadoProducto != True %}
+                        <a id="favoritos-producto-listado" style="border: none;background-color: white; color:#c20404 " href="/anadirProductoAFavoritos/{{producto.idProducto}}">
+                            <i class="fa-regular fa-heart" style="margin-right: 5px; background-color: white;"></i>
+                        </a>
+                    {% endif %}
+                {% endif %}
             {% endif %}
         </div>
         <div class="col-5 detallesProducto-izquierda text-center" style="margin-left: 10px;">
@@ -58,7 +64,7 @@
             <div style="display: flex;flex-direction: column;">
                 {% if producto.idPropietario.nombreUsuario != request.session.usuario %}
                     {% if producto.disponibilidad %}
-                        <a href=""id="pedir-prestamo" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
+                        <a href="" id="pedir-prestamo" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
                     {% endif %}
                 {% endif %}
 
@@ -69,7 +75,7 @@
                         </div>
                 {% endif %}
                         <div class="col-6">
-                            <a href="" class="btn profile-button mb-4" style="width: 100%;">AÑADIR A...</a>
+                            <a href="" id="anadir-a" class="btn profile-button mb-4" style="width: 100%;">AÑADIR A...</a>
                         </div>
                     </div>
             </div>    
@@ -122,14 +128,35 @@
 
 </div>
 <script>
-    document.getElementById('pedir-prestamo').addEventListener('click', function () {
-        window.open('/pedirPrestamo/?id=p_{{producto.idProducto}}', 'solicitarProducto.html', 'width=500,height=500');
-    });
-    document.getElementById('valorarProducto').addEventListener('click', function () {
-        window.open('/realizarValoracion/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=550,height=550');
-    });
-    document.getElementById('reportarProducto').addEventListener('click', function () {
-        window.open('/realizarReporte/?id=p_{{producto.idProducto}}', 'formularioreporte.html', 'width=550,height=475');
+    document.addEventListener('DOMContentLoaded', function () {
+        var botonAnadirA = document.getElementById('anadir-a');
+        var botonPedirPrestamo = document.getElementById('pedir-prestamo');
+        var botonRealizarValoracion = document.getElementById('valorarProducto');
+        var botonReportarProducto = document.getElementById('reportarProducto');
+
+        if(botonAnadirA) {
+            botonAnadirA.addEventListener('click', function () {
+            window.open('/anadirALista/{{producto.idProducto}}', 'anadirALista.html', 'width=600,height=250');
+            });
+        }
+
+        if(botonPedirPrestamo) {
+            botonPedirPrestamo.addEventListener('click', function () {
+            window.open('/pedirPrestamo/?id=p_{{producto.idProducto}}', 'solicitarProducto.html', 'width=500,height=500');
+            });
+        }
+
+        if(botonRealizarValoracion) {
+            botonRealizarValoracion.addEventListener('click', function () {
+            window.open('/realizarValoracion/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=550,height=550');
+            });
+        }
+
+        if(botonReportarProducto) {
+            botonReportarProducto.addEventListener('click', function () {
+            window.open('/realizarReporte/?id=p_{{producto.idProducto}}', 'formularioreporte.html', 'width=550,height=475');
+            });
+        }
     });
 </script>
 {% endblock body_data %}

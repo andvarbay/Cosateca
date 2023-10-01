@@ -182,10 +182,17 @@ nav {
     }
 }
 
+@media screen and (max-width: 1370px) {
+    .catalogo-header {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 1030px) and (min-width: 630px) {
     #container-listado-chats {
         max-height: 800px;
     }
+
 
     #container-registro-prestamos {
         max-height: 800px;
@@ -292,6 +299,11 @@ nav {
 .scrollable-options li {
     display: flex;
     align-items: center;
+}
+
+.fecha-producto-listado {
+    margin-top: 5%;
+    text-align: center;
 }
 
 /* 

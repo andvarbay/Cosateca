@@ -77,3 +77,4 @@ class NuevoProducto(View):
             fechaObtencion=datetime.now()
         )
         logrosu.save()
+        Notificacion.guardarNotificacion(idUsuario=usuario, tipo="desbloqueoLogro", concatenacion=str(logrosu.idLogro.nombre))

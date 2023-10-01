@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from CosatecaApp.models import Prestamo, Usuario
+from CosatecaApp.models import Prestamo, Usuario, Notificacion
 
 
 class FinalizarPrestamo(View):
@@ -35,7 +35,11 @@ class FinalizarPrestamo(View):
                 listaErrores.append('Solo puedes finalizar préstamos activos')
             if not listaErrores:
                 prestamo.estado = 'Finalizado'
+                prestamo.idProducto.disponibilidad = 1
+                prestamo.idProducto.save()
                 Prestamo.guardarPrestamo(prestamo)
+                Notificacion.guardarNotificacion(idUsuario = prestamo.idArrendador, tipo="finPrestamo", concatenacion=str(prestamo.idProducto.nombre))
+                Notificacion.guardarNotificacion(idUsuario = prestamo.idArrendatario, tipo="finPrestamo", concatenacion=str(prestamo.idProducto.nombre))
                 response_html = """
                 <html>
                 <head>

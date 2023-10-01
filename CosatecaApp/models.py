@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from django.db import models
 from django_minio_backend import MinioBackend, iso_date_prefix
@@ -146,7 +147,6 @@ class EstadisticaUsuario(models.Model):
 class Listado(models.Model):
     idListado = models.AutoField(db_column='idListado', primary_key=True)  
     nombre = models.CharField(max_length=20)
-    productos = models.CharField(blank=True, null=True, max_length=20)
     idPropietario = models.ForeignKey('Usuario', models.CASCADE, db_column='idPropietario') 
 
     class Meta:
@@ -155,7 +155,54 @@ class Listado(models.Model):
 
     def __str__(self):
         return self.nombre + ' de ' + str(self.idPropietario)
+    
+    @staticmethod
+    def getListasPersonalidazas(idUsuario):
+        favoritos=["Productos Favoritos", "Usuarios Favoritos"]
+        return Listado.objects.filter(idPropietario=idUsuario).exclude(nombre__in=favoritos)
 
+    @staticmethod
+    def getListadoProductosFavoritos(idUsuario):
+        return Listado.objects.get(idPropietario = idUsuario, nombre="Productos Favoritos")
+    
+    @staticmethod
+    def getListadoPorId(idListado):
+        return Listado.objects.get(idListado = idListado)
+    
+    @staticmethod
+    def getListadoUsuariosFavoritos(idUsuario):
+        return Listado.objects.get(idPropietario = idUsuario, nombre="Usuarios Favoritos")
+    
+class ListadoProducto(models.Model):
+    idListadoProducto = models.AutoField(db_column='idListadoProducto', primary_key=True) 
+    idListado = models.ForeignKey('Listado', models.CASCADE, db_column='idListado')  
+    idProducto = models.ForeignKey('Producto', models.CASCADE, db_column='idProducto', null=True, blank=True) 
+    idUsuario = models.ForeignKey('Usuario', models.CASCADE, db_column='idUsuario', null=True, blank=True) 
+    fechaAdicion = models.DateTimeField(db_column='fechaAdicion') 
+
+    class Meta:
+        managed = False
+        db_table = 'listadoproducto'
+
+    def __str__(self):
+        return str(self.idListadoProducto) + ': ' + str(self.idListado)
+    
+    @staticmethod
+    def getListadoItems(idListado):
+        return ListadoProducto.objects.filter(idListado = idListado)
+    
+    @staticmethod
+    def getListadoProductoPorId(idListadoProducto):
+        return ListadoProducto.objects.get(idListadoProducto = idListadoProducto)
+    
+    @staticmethod
+    def existenListadosIguales(idListado, idProducto, idUsuario):
+        try:
+            return ListadoProducto.objects.get(idListado = idListado, idProducto=idProducto, idUsuario=idUsuario)
+        except:
+            return False
+            
+    
 
 class Logro(models.Model):
     idLogro = models.AutoField(db_column='idLogro', primary_key=True) 
@@ -193,8 +240,6 @@ class LogroUsuario(models.Model):
         logrosObtenidos = LogroUsuario.objects.filter(idUsuario = idUsuario).values_list('idLogro', flat=True)
         return Logro.objects.exclude(idLogro__in=logrosObtenidos).order_by('idLogro')
 
-    
-
 
 class Mensaje(models.Model):
     idMensaje = models.AutoField(db_column='idMensaje', primary_key=True)  
@@ -223,6 +268,73 @@ class Notificacion(models.Model):
 
     def __str__(self):
         return str(self.idNotificacion) + ': ' + str(self.idUsuario.nombreUsuario) + ' a ' + str(self.fechaHora)
+    
+
+    @staticmethod
+    def getNotificacionesPorUsuario(idUsuario):
+        try:
+            return Notificacion.objects.filter(idUsuario=idUsuario)
+        except:
+            return []  
+          
+    @staticmethod
+    def guardarNotificacion(idUsuario, tipo, concatenacion) :
+        match tipo:
+            case "crearCuenta":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Tu cuenta ha sido creada con éxito. ¡Bienvenido a Cosateca!",
+                    fechaHora = datetime.now()
+                )
+            case "recibirSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Has recibido una solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "enviarSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Has enviado una solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "aceptarSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Se ha aceptado tu solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "rechazarSolicitudPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Se ha rechazado tu solicitud de préstamo para el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "finPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Ha finalizado el préstamo por el producto " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+            case "recordatorioFinPrestamo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Ha finalizado el préstamo por el producto " + concatenacion + ", pero no se ha cerrado.",
+                    fechaHora = datetime.now()
+                )
+            case "desbloqueoLogro":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "¡Has desbloqueado el logro " + concatenacion + "!",
+                    fechaHora = datetime.now()
+                )
+            case "mensajeNuevo":
+                notificacion = Notificacion(
+                    idUsuario = idUsuario,
+                    texto = "Has recibido un nuevo mensaje " + concatenacion,
+                    fechaHora = datetime.now()
+                )
+        notificacion.save()
 
 
 class Prestamo(models.Model):
@@ -263,6 +375,7 @@ class Prestamo(models.Model):
                 return prestamosArrendador
         except:
             return []
+        
     @staticmethod    
     def getRegistroPrestamosPorUsuario(idUsuario):
         try:
@@ -298,6 +411,24 @@ class Prestamo(models.Model):
         except:
             return False
         
+    @staticmethod    
+    def getPrestamosFinalizadosPendientesPorUsuario(idUsuario):
+        try:
+            prestamosArrendador = Prestamo.objects.filter(idArrendador=idUsuario, estado__in=['Aceptado'], fechaFin__lt=datetime.now()).order_by('-idPrestamo')
+            try: 
+                prestamosArrendatario = Prestamo.objects.filter(idArrendatario=idUsuario, estado__in=['Aceptado'], fechaFin__lt=datetime.now()).order_by('-idPrestamo')
+                return prestamosArrendador | prestamosArrendatario
+            except:
+                return prestamosArrendador
+        except:
+            return []
+    
+    @staticmethod
+    def comprobarPrestamosCaducados(idUsuario):
+        listadoPrestamosFinalizadosUsuario = Prestamo.getPrestamosFinalizadosPendientesPorUsuario(idUsuario)
+        for prestamo in listadoPrestamosFinalizadosUsuario:
+            Notificacion.guardarNotificacion(idUsuario=idUsuario, tipo="recordatorioFinPrestamo", concatenacion=str(prestamo.idProducto.nombre))
+
 
 class Producto(models.Model):
     idProducto = models.AutoField(db_column='idProducto', primary_key=True)

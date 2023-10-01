@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from CosatecaApp import views
+from CosatecaApp.anadirALista import AnadirALista
 from CosatecaApp.borrarPerfil import BorrarPerfil
 from CosatecaApp.borrarProducto import BorrarProducto
 from CosatecaApp.filtros import Filtros
 from CosatecaApp.finalizarPrestamo import FinalizarPrestamo
+from CosatecaApp.formularioListaPersonalizada import FormularioListaPersonalizada
 from CosatecaApp.formularioReporte import FormularioReporte
 from CosatecaApp.solicitudesPrestamo import SolicitudesPrestamo
 from CosatecaApp.pedirPrestamo import PedirPrestamo
@@ -63,5 +65,18 @@ urlpatterns = [
     path('logros/', views.logros, name='logros'),
     path('borrarProducto/', BorrarProducto.as_view(), name='borrarProducto'),
     path('borrarPerfil/', BorrarPerfil.as_view(), name='borrarPerfil'),
-    path('realizarReporte/', FormularioReporte.as_view(), name='realizarReporte')
+    path('realizarReporte/', FormularioReporte.as_view(), name='realizarReporte'),
+    path('listados/', views.listados, name='listados'),
+    path('productosFavoritos/', views.productosFavoritos, name='productosFavoritos'),
+    path('eliminarProductoDeFavoritos/<idListadoProducto>', views.eliminarProductoDeFavoritos, name='eliminarProductoDeListado'),
+    path('anadirProductoAFavoritos/<idProducto>', views.anadirProductoAFavoritos, name='anadirProductoAFavoritos'),
+    path('usuariosFavoritos/', views.usuariosFavoritos, name='usuariosFavoritos'),
+    path('eliminarUsuarioDeListado/<idListadoProducto>', views.eliminarUsuarioDeListado, name='eliminarUsuarioDeListado'),
+    path('anadirUsuarioAFavoritos/<idUsuario>', views.anadirUsuarioAFavoritos, name='anadirUsuarioAFavoritos'),
+    path('notificaciones', views.notificaciones, name='notificaciones')
+    path('eliminarProductoDeListaPersonalizada/<idListadoProducto>', views.eliminarProductoDeListaPersonalizada, name='eliminarProductoDeListado'),
+    path('anadirALista/<idProducto>', AnadirALista.as_view(), name='anadirALista'),
+    path('listasPersonalizadas', views.listadoListasPersonalizadas, name='listadoListasPersonalizadas'),
+    path('listaPersonalizada/<idListado>', views.listaPersonalizada, name='listaPersonalizada'),
+    path('nuevaListaPersonalizada', FormularioListaPersonalizada.as_view(), name='listaPersonalizada')
     ] 

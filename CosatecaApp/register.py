@@ -69,12 +69,18 @@ class Register (View):
                 fechaObtencion = datetime.now()
             )
             logrousu.save()
-            noti = Notificacion(
-                idUsuario = usuario,
-                texto = "Tu cuenta ha sido creada con éxito. ¡Bienvenido a Cosateca!",
-                fechaHora = datetime.now()
+            Notificacion.guardarNotificacion(idUsuario=usuario, tipo="crearCuenta", concatenacion=None)
+            productosFavoritos = Listado(
+                nombre = "Productos Favoritos",
+                idPropietario = usuario
             )
-            noti.save()
+            productosFavoritos.save()
+            usuariosFavoritos = Listado(
+                nombre = "Usuarios Favoritos",
+                idPropietario = usuario
+            )
+            usuariosFavoritos.save()
+
             return redirect('login')
         else:
             data = {

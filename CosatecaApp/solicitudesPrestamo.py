@@ -2,7 +2,7 @@ from datetime import datetime
 from django.shortcuts import redirect, render
 from django.views import View
 
-from CosatecaApp.models import Estadistica, EstadisticaUsuario, Logro, LogroUsuario, Prestamo, Usuario
+from CosatecaApp.models import Estadistica, EstadisticaUsuario, Logro, LogroUsuario, Prestamo, Usuario, Notificacion
 
 
 class SolicitudesPrestamo(View):
@@ -45,6 +45,10 @@ class SolicitudesPrestamo(View):
             return render (request, 'solicitudesPrestamo.html', data)
 
         Prestamo.guardarPrestamo(prestamo)
+        if prestamo.estado == 'Aceptado' :
+            Notificacion.guardarNotificacion(idUsuario=prestamo.idArrendatario, tipo="aceptarSolicitudPrestamo", concatenacion=str(prestamo.idProducto.nombre))
+        else :
+            Notificacion.guardarNotificacion(idUsuario=prestamo.idArrendatario, tipo="rechazarSolicitudPrestamo", concatenacion=str(prestamo.idProducto.nombre))
         participado = Estadistica.getEstadisticaPorNombre('Préstamos realizados')
         arrendador = Estadistica.getEstadisticaPorNombre('Préstamos como arrendador')
         arrendatario = Estadistica.getEstadisticaPorNombre('Préstamos como arrendatario')
@@ -115,3 +119,4 @@ class SolicitudesPrestamo(View):
             fechaObtencion=datetime.now()
         )
         logrosu.save()
+        Notificacion.guardarNotificacion(idUsuario=usuario, tipo="desbloqueoLogro", concatenacion=str(logrosu.idLogro.nombre))

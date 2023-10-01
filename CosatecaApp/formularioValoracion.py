@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from CosatecaApp.models import Estadistica, EstadisticaUsuario, Logro, LogroUsuario, Producto, Usuario, Valoracion
+from CosatecaApp.models import Estadistica, EstadisticaUsuario, Logro, LogroUsuario, Notificacion, Producto, Usuario, Valoracion
 
 
 class FormularioValoración(View):
@@ -198,6 +198,7 @@ class FormularioValoración(View):
             fechaObtencion=datetime.now()
         )
         logrosu.save()
+        Notificacion.guardarNotificacion(idUsuario=usuario, tipo="desbloqueoLogro", concatenacion=str(logrosu.idLogro.nombre))
 
     def LogroPublicarValoracion(self, valor, usuario):
         if valor == 1:
