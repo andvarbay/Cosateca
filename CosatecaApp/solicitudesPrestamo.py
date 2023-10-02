@@ -42,6 +42,8 @@ class SolicitudesPrestamo(View):
                 prestamo.idProducto.save()
         else:
             prestamo.estado = 'Denegado'
+            return render (request, 'solicitudesPrestamo.html', data)
+
         Prestamo.guardarPrestamo(prestamo)
         if prestamo.estado == 'Aceptado' :
             Notificacion.guardarNotificacion(idUsuario=prestamo.idArrendatario, tipo="aceptarSolicitudPrestamo", concatenacion=str(prestamo.idProducto.nombre))
@@ -66,11 +68,13 @@ class SolicitudesPrestamo(View):
         estusu = EstadisticaUsuario.getEstadisticaUsuario(arrendador, prestamo.idArrendador)
         estusu.valor += 1
         estusu.save()
+        self.LogroParticiparComoArrendador(estusu.valor, prestamo.idArrendador)
 
         #Logro participar como arrendatario
         estusu = EstadisticaUsuario.getEstadisticaUsuario(arrendatario, prestamo.idArrendatario)
         estusu.valor += 1
         estusu.save()
+        self.LogroParticiparComoArrendatario(estusu.valor, prestamo.idArrendatario)
 
 
 
@@ -96,15 +100,16 @@ class SolicitudesPrestamo(View):
         elif valor == 10:
             logro = Logro.GetLogroPorNombre('Arrendando que es gerundio')
             self.obtenerLogro(logro, usuario)
+
     def LogroParticiparComoArrendatario(self, valor, usuario):
         if valor == 1:
-            logro = Logro.GetLogroPorNombre('Arrendador primerizo')
+            logro = Logro.GetLogroPorNombre('Arrendatario primerizo')
             self.obtenerLogro(logro, usuario)
         elif valor == 5:
-            logro = Logro.GetLogroPorNombre('Arrendador ocasional')
+            logro = Logro.GetLogroPorNombre('Arrendatario ocasional')
             self.obtenerLogro(logro, usuario)
         elif valor == 10:
-            logro = Logro.GetLogroPorNombre('Arrendando que es gerundio')
+            logro = Logro.GetLogroPorNombre('Arrendatando que es gerundio')
             self.obtenerLogro(logro, usuario)
 
     def obtenerLogro(self, logro, usuario):

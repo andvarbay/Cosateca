@@ -9,7 +9,6 @@ class NuevoProducto(View):
         data = {}
         nombreUsuario = request.session.get('usuario')
         if nombreUsuario != None:
-            usuario = Usuario.getUsuarioPorNombreUsuario(nombreUsuario)
             categorias = Categoria.objects.all()
             data['categorias'] = categorias
             

@@ -2,16 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
-
 from CosatecaApp.models import Usuario
 
 
 class BorrarPerfil(View):
     return_url = None
-
-    def get(self, request):
-        return render(request, 'borrarPerfilConfirmar.html')
     
+    def get(self, request):
+        return render(request, 'borrarPerfilConfirmar.html')    
+
     def post(self, request):
         postData = request.POST
         respuesta = postData.get('respuesta')
@@ -48,7 +47,6 @@ class BorrarPerfil(View):
                     'errors': listaErrores,
                 }
                 return render(request, 'borrarPerfilConfirmar.html', data)
-            
         else:
             response_html = """
                 <html>
