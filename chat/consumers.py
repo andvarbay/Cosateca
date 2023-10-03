@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import json
 
 from asgiref.sync import sync_to_async
@@ -45,12 +45,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def crear_mensaje(self, mensaje, usuario, chat) :
-        mensaje = Mensaje(texto=mensaje, idEmisor=usuario, idChat=chat, fechaHora = datetime.datetime.now())
+        mensaje = Mensaje(texto=mensaje, idEmisor=usuario, idChat=chat, fechaHora = datetime.now())
         mensaje.save()
         if usuario == chat.idUsuarioArrendador:
-            notificacion = Notificacion(idUsuario=chat.idUsuarioArrendatario, texto="Has recibido un nuevo mensaje de " + str(usuario.nombre) + " en el chat por el producto " + str(chat.idProducto.nombre), fechaHora = datetime.datetime.now())
+            notificacion = Notificacion(idUsuario=chat.idUsuarioArrendatario, texto="Has recibido un nuevo mensaje de " + str(usuario.nombre) + " en el chat por el producto " + str(chat.idProducto.nombre), fechaHora = datetime.now())
         else :
-            notificacion = Notificacion(idUsuario=chat.idUsuarioArrendador, texto="Has recibido un nuevo mensaje de " + str(usuario.nombre) + " en el chat por el producto " + str(chat.idProducto.nombre), fechaHora = datetime.datetime.now())
+            notificacion = Notificacion(idUsuario=chat.idUsuarioArrendador, texto="Has recibido un nuevo mensaje de " + str(usuario.nombre) + " en el chat por el producto " + str(chat.idProducto.nombre), fechaHora = datetime.now())
         notificacion.save()
 
         return mensaje

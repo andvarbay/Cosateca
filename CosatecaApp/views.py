@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from django.shortcuts import redirect, render
 from CosatecaApp.models import *
 
@@ -243,7 +243,7 @@ def anadirProductoAFavoritos(request, idProducto) :
             idListado = listadoProductosFavoritos,
             idProducto = producto,
             idUsuario = None,
-            fechaAdicion = datetime.datetime.now()
+            fechaAdicion = datetime.now()
         )
         existenIguales = ListadoProducto.existenListadosIguales(listadoProductosFavoritos.idListado, producto.idProducto, None)
         if existenIguales:
@@ -293,7 +293,7 @@ def anadirUsuarioAFavoritos(request, idUsuario) :
             idListado = listadoUsuariosFavoritos,
             idProducto = None,
             idUsuario = usuarioAGuardar,
-            fechaAdicion = datetime.datetime.now()
+            fechaAdicion = datetime.now()
         )
         existenIguales = ListadoProducto.existenListadosIguales(listadoUsuariosFavoritos.idListado, None, usuarioAGuardar.idUsuario)
         if existenIguales:
