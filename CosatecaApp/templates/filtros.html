@@ -87,9 +87,7 @@
                 queryParams.delete('disponible');
             }
     
-            const parametroActual = queryParams.get('parametro');
-            
-            const newUrl = parametroActual ? `/${parametroActual}?${queryParams.toString()}` : `/?${queryParams.toString()}`;
+            const newUrl = `/?${queryParams.toString()}`;
             window.opener.location.href = newUrl;
             window.close();
         }

@@ -132,6 +132,17 @@
             }
           });
     
+
+        const textarea = document.getElementById('mensaje');
+        const maxLength = 200;
+    
+        textarea.addEventListener('input', function () {
+            const caracteresIngresados = textarea.value.length;
+    
+            if (caracteresIngresados > maxLength) {
+                textarea.value = textarea.value.slice(0, maxLength);
+            }
+        });
     </script>
 
 {% endblock %}
