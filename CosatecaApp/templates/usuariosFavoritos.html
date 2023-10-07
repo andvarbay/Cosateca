@@ -15,7 +15,7 @@
 
                     {% if usuario.fotoUsuario != None %}
                         <a href="/perfil/{{usuario.idUsuario.nombreUsuario}}">
-                        <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{usuario.idUsuario.nombreUsuario}}" alt="Foto {{MEDIA_URL}}{{usuario.idUsuario.nombreUsuario}}">
+                        <img class="card-img-top" src="http://localhost:9000/django-backend-dev-public/{{usuario.idUsuario.nombreUsuario}}" alt="Foto {{MEDIA_URL}}{{usuario.idUsuario.nombreUsuario}}">
                         </a>
                     {% else %}
                         <a href="/perfil/{{usuario.idUsuario.nombreUsuario}}">            
