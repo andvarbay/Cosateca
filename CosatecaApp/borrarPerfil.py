@@ -14,16 +14,12 @@ class BorrarPerfil(View):
     def post(self, request):
         postData = request.POST
         respuesta = postData.get('respuesta')
-        idUsuario = request.GET.get('id')
-        usuario = Usuario.getUsuarioPorId(idUsuario)
         current = Usuario.getUsuarioPorNombreUsuario(request.session.get('usuario'))
         listaErrores = None
         if respuesta == 'confirmar':
             listaErrores = []
-            if current != usuario:
-                listaErrores.append('Solo puedes borrar tu perfil si tienes iniciada sesión desde tu propia cuenta. Travieso.')
             if not listaErrores:
-                usuario.delete()
+                current.delete()
                 request.session.clear()
                 response_html = f"""
                 <html>
