@@ -34,13 +34,13 @@
     <div class="row" style="padding-left: 16px;">
         <div class="col-6" style="display: flex;">
             <a class="navbar-brand ms-3 text-dark" href="/#">
-            <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
+            <div class="image-container">
+                <img src="{% static 'Default_profile_pic.png' %}" class="rounded-image">
+            </div>
             <a class="nav-link" style="align-self: center;" href="/#">Invitado</a>
         </div>
         <div class ="col-6">
-            <div class="nav-item actived-none d-lg-inline">
-                <a class=" text-center " href="/#"><img class="mx-auto d-block logo-header" src="{% static 'LOGO.jpg' %}" style="width:250px;height:90px;margin-top: 15px;"><span class="sr-only">(current)</span></a>
-            </div>    
+                <a class=" text-center" href="/"><img class="mx-auto d-block logo-header" src="{% static 'LOGO.jpg' %}"><span class="sr-only">(current)</span></a>
         </div>
     </div>
     {% endif %}
