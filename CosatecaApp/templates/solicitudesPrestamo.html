@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Cosateca</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="width:100%;">
+        <h1 id="titulo-listado-chats">SOLICITUDES DE PRÉSTAMO </h1>
+    </div>
+    {% if error %}
+      <div class="col-12 text-center">
+        <div class="alert alert-danger" role="alert">
+          {{error}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    {% endif %}
+    <div class="container" id="container-registro-prestamos" style="background-color: #b6e5ac; margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;overflow: auto; resize: none;">
+    {% if prestamos %}   
+        {% for prestamo in prestamos %}
+        <style>
+          .impar {
+            background-color: #b6e5ac;
+          }
+          .par{
+            background-color: #d8facc;
+          }
+        </style>
+      <div class="cuadro-registro-prestamos row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}">
+        <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+            {% if prestamo.idProducto.fotoProducto != None %}
+                <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">
+                    <img class="card-img-top" style="width: 100%; height:auto; margin-top: 2.5%; margin-bottom: 2.5%" src="http://127.0.0.1:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
+                </a>
+            {% else %}  
+                <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">         
+                    <img class="card-img-top" style="width: 100%; height:auto;margin-top: 2.5%; margin-bottom: 2.5%;" src="{% static 'default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                </a>  
+            {% endif %}
+        </div>
+
+        <div class="elemento-registro-prestamos-texto col-lg-6 col-md-6 col-sm-6 col-12" style="text-align: center;align-self: center;">
+            <div class="row detalles-solicitud" style="display: flex;flex-direction: column;">
+                <div class="arrendatario-info col-lg-12 col-md-12 col-sm-12 col-12">                                
+                    El usuario {{ prestamo.idArrendatario.nombreUsuario }} quiere pedir prestado tu {{ prestamo.idProducto.nombre }}<br>del {{ prestamo.fechaInicio|date:"Y-m-d" }} al {{ prestamo.fechaFin|date:"Y-m-d" }}.<br><br> Detalles de la solicitud:
+                </div>
+                <div class="condiciones-arrendatario col-lg-12 col-md-12 col-sm-12 col-12">
+                    <textarea readonly spellcheck="false" class="condiciones" style="width: 100%; height: 100px;resize: none; border:2px solid #03650A;"> {{prestamo.condiciones}}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="botones-aceptar-denegar col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+            <form method="post">
+                {% csrf_token %}
+                    <input type="hidden" name="idPrestamo" value="{{prestamo.idPrestamo}}">
+                    <div class="col-aceptar col-lg-12 col-md-12 col-sm-12 col-12">
+                        <button type="submit"  name="respuesta" value="aceptar" class="btn profile-button mb-4" style="width:100%;">ACEPTAR</button>
+                    </div>
+                    <div class="col-denegar col-lg-12 col-md-12 col-sm-12 col-12">
+                        <button type="submit" name="respuesta" value="denegar" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">DENEGAR</button> 
+                </div>
+            </form>
+        </div>
+      </div>
+
+        {% endfor %}
+    {% else %}
+      <h2>Por desgracia... nadie ha solicitado ninguno de tus maravillosos productos todavía. 😅</h1>
+    {% endif %}  
+      </div>
+    </div>
+{% endblock body_data %}

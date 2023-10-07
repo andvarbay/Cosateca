@@ -3,42 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include Bootstrap CSS -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <title>This is the Header</title>
 </head>
 <body>
 
 <nav class="one-edge-shadow navbar navbar-light sticky-top navbar-expand-lg text-white">
-    <a class="navbar-brand ms-3 text-dark" href="/">
-        {% load static %}
-        <img src="{% static 'Default_profile_pic.png' %}" style="width:90px;height:90px;">
-    </a>
-    <a class="nav-link" href="/#">Anónimo</a>
+    {% load static %}
+    {% if request.session.usuario %}
+    <div class="row">
+        <div class="col-6" style="display: flex;padding: 0%;">
+          <a class="navbar-brand ms-3 text-dark" style="margin-right: 0; padding-left: 5px;" href="/perfil/{{request.session.usuario}}">
+            <div class="image-container">
+              {% if request.session.usuarioFoto == None %}
+                <img src="{% static 'Default_profile_pic.png' %}" class="rounded-image">
+              {% else %}
+                <img src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" class="rounded-image">
+              {% endif %}
+            </div>
+          </a>
+        </div>
+        <div class="col-6" style="display: flex;padding: 0%;">
+            <a class="nav-link nombreUsuario-header" style="align-self: center;" href="/perfil/{{request.session.usuario}}">{{request.session.usuario}}</a>
+        </div>
+        <div class="col-6">
+          <a class=" text-center" href="/"><img class="mx-auto d-block logo-header" src="{% static 'LOGO.jpg' %}"><span class="sr-only">(current)</span></a>
+        </div>
+      </div>
+      
+    {% else %}
+    <div class="row" style="padding-left: 16px;">
+        <div class="col-6" style="display: flex;">
+            <a class="navbar-brand ms-3 text-dark" href="/#">
+            <div class="image-container">
+                <img src="{% static 'Default_profile_pic.png' %}" class="rounded-image">
+            </div>
+            <a class="nav-link" style="align-self: center;" href="/#">Invitado</a>
+        </div>
+        <div class ="col-6">
+                <a class=" text-center" href="/"><img class="mx-auto d-block logo-header" src="{% static 'LOGO.jpg' %}"><span class="sr-only">(current)</span></a>
+        </div>
+    </div>
+    {% endif %}
 
-    <!-- Add the necessary data-toggle and data-target attributes for collapse -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Move the collapsible content outside of the form -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto" style="display: contents;">
-            <li class="nav-item active">
-                <a class="nav-link text-center" href="/#"><img class="mx-auto d-block" src="{% static 'LOGO.jpg' %}" style="width:250px;height:90px;"><span class="sr-only">(current)</span></a>
+            <li class="nav-item active ">
+                <a class="nav-link catalogo-header" href="/" style="color: #CCFF61;">Catálogo</a>
             </li>
             <li id="search-bar" class="col-lg-2" style="padding: 0;">
-                <input type="search" name="searchbar" class="form-control" placeholder="Buscar producto"/>
+                <input type="search" id="buscar" name="searchbar" class="form-control" placeholder="Buscar producto"/>
             </li>
             <li id="search-button">
-                <input class="btn btn-primary" type="submit" value="Buscar">
+                <input class="btn btn-primary" type="submit" value="Buscar" onclick="realizarBusqueda()">
             </li>
         </ul>
 
         <ul class="navbar-nav my-2 my-lg-0">
-            {% if request.session.cliente %}
+            {% if request.session.usuario %}
                 <li class="nav-item active ">
-                    <a class="nav-link" href="/perfil/{{request.session.cliente}}">Mi perfil</a>
+                    <a class="nav-link" href="/perfil/{{request.session.usuario}}">Mi perfil</a>
                 </li>
                 <li class="nav-item active ">
                     <a class="nav-link" href="/logout" style="color: #CCFF61;">Cerrar sesión</a>
@@ -59,5 +86,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script>
+    function realizarBusqueda() {
+        var searchText = document.getElementById("buscar").value;
+        var encodedSearchText = encodeURIComponent(searchText);
+        window.location.href = "/?buscar=" + encodedSearchText;
+        event.preventDefault();
+    }
+</script>
 </body>
 </html>

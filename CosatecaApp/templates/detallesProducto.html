@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>{{producto.nombre}}</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+<div class="container-detalles">
+    <div class="row">
+        <div class="col-12" style="display: flex; justify-content: end; font-size: 40px;margin-top: 5px;">
+            {% if request.session.usuario != None %}
+                {% if producto.idPropietario.nombreUsuario == request.session.usuario %}
+                        <button id="editar-producto-button" style="border: none;background-color: white;">
+                            <i class="fa-solid fa-pencil" style="margin-right: 5px;color: black;"></i>
+                        </button>
+                        <script>
+                            document.getElementById('editar-producto-button').addEventListener('click', function () {
+                                window.location.href = '{% url "editarProducto" %}?idProducto={{ producto.idProducto }}';
+                            });
+                        </script>
+                {% else %}
+                    {% if existeListadoProducto != True %}
+                        <a id="favoritos-producto-listado" style="border: none;background-color: white; color:#c20404 " href="/anadirProductoAFavoritos/{{producto.idProducto}}">
+                            <i class="fa-regular fa-heart" style="margin-right: 5px; background-color: white;"></i>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-5 detallesProducto-izquierda text-center" style="margin-left: 10px;">
+            <b style="font-size: 40px;">{{producto.nombre}}</b>
+            {% if producto.fotoProducto != None %}
+              <img class="card-img-top" style="margin-top: 10px;" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+            {% else %}
+              <img class="card-img-top" style="margin-top: 10px;" src="{% static 'Default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+            {% endif %}
+            <p class="texto-detalles" style="font-size: 30px;">Puntuación:  {{puntuacion}} / 5</p>
+            <p class="texto-detalles">CATEGORÍA/S: {{ categorias }}</p>
+            {% if producto.idPropietario.nombreUsuario != request.session.usuario %}
+                <div class="row">
+                    <div class="col-6">
+                        <div id="valorarProducto" class="btn profile-button mb-4" style="width:100%;">VALORAR</div>
+                    </div>
+                    <div class="col-6">
+                        <div id="reportarProducto" class="btn profile-button mb-4" style="width:100%;background-color: #980707;">REPORTAR</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5 detallesProducto-derecha text-left" style="margin-right: 10px;">
+            <a class="texto-detalles" href="/perfil/{{producto.idPropietario.nombreUsuario}}" style="color: black;"> DE: {{producto.idPropietario.nombreUsuario}}</a>   
+            <p class="texto-detalles"> DESCRIPCIÓN:</p>
+            <textarea spellcheck="false" style="width: 100%;height: 150px;vertical-align: top;resize: none;border:2px solid #03650A">{{producto.descripcion}}</textarea>
+            <p></p>
+            <p class="texto-detalles"> UBICACIÓN: {{producto.idPropietario.ubicacion}}</p>
+            <style>
+                .verde {color: #107F0E;}
+                .rojo {color: #980707;}
+            </style>
+            <p class="texto-detalles {% if producto.disponibilidad %}verde{% else %}rojo{% endif %}" style="font-size: x-large;">{% if producto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>
+            <br>
+            <br>
+            <br>
+            <div style="display: flex;flex-direction: column;">
+                {% if producto.idPropietario.nombreUsuario != request.session.usuario %}
+                    {% if producto.disponibilidad %}
+                        <a href="" id="pedir-prestamo" class="btn profile-button mb-4" >PEDIR PRÉSTAMO</a>
+                    {% endif %}
+                {% endif %}
+
+                    <div class="row justify-content-center">
+                {% if producto.idPropietario.nombreUsuario != request.session.usuario %}
+                        <div class="col-6">
+                            <a href="/crearChat/{{producto.idProducto}}" class="btn profile-button mb-4" style="width: 100%;">CONTACTAR</a>
+                        </div>
+                {% endif %}
+                        <div class="col-6">
+                            <a href="" id="anadir-a" class="btn profile-button mb-4" style="width: 100%;">AÑADIR A...</a>
+                        </div>
+                    </div>
+            </div>    
+        </div>
+
+    </div>
+    <br>
+    <br>
+    {% if valoraciones.count != 0 %}
+        <div style="display: flex; justify-content: center;">
+            <h1>VALORACIONES DE ESTE PRODUCTO</h1>
+        </div>
+    {% endif %}
+
+    <div class="cuadro row justify-content-center" style="margin: 3px;margin-bottom: 5px;">
+        {% for valoracion in valoraciones %}
+            <div class="col-11 valoracion ">
+                <div class="row detalle-valoracion">
+                    <div class="col-3" style="padding-top: 5px;padding-bottom: 5px;">
+                        <div class="row detalle-valoracion">
+                            <div class="col-6">
+                                <a href="/perfil/{{valoracion.idEmisor.nombreUsuario}}">
+                                    <div class="image-container-valoracion">
+                                        {% if valoracion.idEmisor.fotoPerfil == None %}
+                                          <img src="{% static 'Default_profile_pic.png' %}" class="rounded-image">
+                                        {% else %}
+                                          <img src="http://127.0.0.1:9000/django-backend-dev-public/{{valoracion.idEmisor.fotoPerfil}}" class="rounded-image">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-6" style="align-self: center;">
+                                    <p style="align-self: center;margin: 0; font-size: larger;font-weight: 500;color:black">{{valoracion.idEmisor.nombreUsuario}}</p>
+                                    </div>
+                                </a>    
+                            </div>
+                            <div class="col-6" style="display: flex;justify-content: center;">
+                                <p style="font-size: xx-large;align-self: center;font-weight: 500;">{{valoracion.puntuacion}}/5</p>
+                            </div>
+                        </div>
+                        <div class="row detalle-valoracion">
+                            
+                        </div>
+                    </div>
+                    <div class="col-9" style="padding-right: 0;">
+                        <textarea readonly spellcheck="false" style="width: 100%;height: -webkit-fill-available;vertical-align: top;resize: none;border-right:2px solid #03650A;border-left:2px solid #03650A;">{{valoracion.comentario}}</textarea>
+                    </div>
+                </div>                
+            </div>
+        {% endfor %}
+    </div>    
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var botonAnadirA = document.getElementById('anadir-a');
+        var botonPedirPrestamo = document.getElementById('pedir-prestamo');
+        var botonRealizarValoracion = document.getElementById('valorarProducto');
+        var botonReportarProducto = document.getElementById('reportarProducto');
+
+        if(botonAnadirA) {
+            botonAnadirA.addEventListener('click', function () {
+            window.open('/anadirALista/{{producto.idProducto}}', 'anadirALista.html', 'width=600,height=250');
+            });
+        }
+
+        if(botonPedirPrestamo) {
+            botonPedirPrestamo.addEventListener('click', function () {
+            window.open('/pedirPrestamo/?id=p_{{producto.idProducto}}', 'solicitarProducto.html', 'width=500,height=500');
+            });
+        }
+
+        if(botonRealizarValoracion) {
+            botonRealizarValoracion.addEventListener('click', function () {
+            window.open('/realizarValoracion/?id=p_{{producto.idProducto}}', 'formulariovaloracion.html', 'width=550,height=550');
+            });
+        }
+
+        if(botonReportarProducto) {
+            botonReportarProducto.addEventListener('click', function () {
+            window.open('/realizarReporte/?id=p_{{producto.idProducto}}', 'formularioreporte.html', 'width=550,height=475');
+            });
+        }
+    });
+</script>
+{% endblock body_data %}

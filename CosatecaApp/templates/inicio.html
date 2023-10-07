@@ -1,28 +1,76 @@
 {% extends 'base.html' %}
 {% block title %}
-  <title id="titulo-cosateca">Cosateca</title>
+  <title>Cosateca</title>
 {% endblock title %}
 {% block body_data %}
 {% load static %}
-  <!-- <a> Aquí irá el catálogo. </a> -->
-  <!-- <div id='productos' class="col-lg-12"> -->
-    <div class="row justify-content-center" style="margin-bottom: 7.5%;width:100%" id="game-cards">
-      {% for producto in productos %}
-        {% for product in productos %}
-          <div class="col-lg-3 col-md-5 col-sm-11 product-card">      
+<style>
+  .verde {color: #107F0E;}
+  .rojo {color: #980707;}
+</style>
+    <div class="row justify-content-center" style="width:100%" id="product-cards">
+        <div class="col-9">
+          <div class="row" style="display: flex; justify-content: center;">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div id="filtros" class="btn profile-button mb-4" style="width:100%;margin-top: 1.5rem;">Filtros</div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div id="ordenarNuevos" class="btn profile-button mb-4" style="width:100%;margin-top: 1.5rem;">Más nuevos primero</div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <a href="/" class="btn profile-button mb-4" style="width:100%;margin-top: 1.5rem;">Borrar filtros</a>
+            </div>
+          </div>
+        </div>
+        {% for producto in productos %}
+          <div class="col-lg-3 col-md-5 col-sm-11 product-card" style="margin-bottom: 2.5%;margin-top: 0;">      
             <div producto="card mx-productos mb-3" id={{producto.idProducto}}>
-              <img class="card-img-top" src="{% static 'default_profile_pic.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
-              <div class="card-body">
-                <a href="/#">
-                  <p class="card-title">{{producto.nombre}}</p>
+              <p hidden class="fecha-subida" dataFecha="{{producto.fechaSubida}}">{{producto.fechaSubida}}</p>
+
+              {% if producto.fotoProducto != None %}
+                <a href="/detallesProducto/{{producto.idProducto}}">
+                  <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
                 </a>
-                <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
-                <p class="card-text">{{producto.idPropietario.nombreUsuario}}</p>                
+              {% else %}
+                <a href="/detallesProducto/{{producto.idProducto}}">            
+                  <img class="card-img-top" src="{% static 'Default_producto_picture.png' %}" alt="Foto {{MEDIA_URL}}{{producto.nombre}}">
+                </a>
+              {% endif %}
+              <div class="card-body">
+                <a href="/detallesProducto/{{producto.idProducto}}">
+                  <p class="card-text" style="font-size: 25px;">{{producto.nombre}}</p>
+                </a>
+                <br>
+                <a href="/perfil/{{producto.idPropietario.nombreUsuario}}">
+                  <p class="card-text"><b>{{producto.idPropietario.nombreUsuario}}</b></p>
+                </a>
+                <p class="card-text">{{producto.idPropietario.ubicacion}}</p>
+                <p class="texto-detalles {% if producto.disponibilidad %}verde{% else %}rojo{% endif %}">{% if producto.disponibilidad %}DISPONIBLE{% else %}NO DISPONIBLE{% endif %}</p>
               </div>
             </div>
           </div>
-          {% endfor %}
-        {% endfor %}
+      {% endfor %}
       </div>
-  <!-- </div> -->
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+            $("#ordenarNuevos").click(function () {
+                var currentUrl = window.location.href;
+                if (currentUrl.includes("orden=nuevos")) {
+                    return;
+                }
+                var separator = currentUrl.includes("?") ? "&" : "?";
+                var newUrl = currentUrl + separator + "orden=nuevos";
+                window.location.href = newUrl;
+            });
+        });
+     </script>
+<script>
+  document.getElementById('filtros').addEventListener('click', function () {
+      var parametrosActuales = window.location.search;
+      window.open('/filtros' + parametrosActuales, 'formulariovaloracion.html', 'width=650,height=450');
+  });
+</script>
+
 {% endblock body_data %}

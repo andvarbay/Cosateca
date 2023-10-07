@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Logros</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+    <div class="row justify-content-center" style="width:100%;">
+        <h1 id="titulo-listado-chats">LOGROS</h1>
+    </div>
+    <div class="container" id="container-listado-chats" style="margin-left: 5px; margin-right: 5px;border: 1px solid #065104; width:auto; margin: auto; text-align: center;max-height: none;">
+    <style>
+      .impar {
+        background-color: #d8facc;
+      }
+      .par{
+        background-color: #b6e5ac;
+      }
+      .noCompletado {
+        background-color: #5e795e80;
+      }
+    </style>
+            <div class="row justify-content-center par" style="border-bottom: 2px solid #065104;padding-top: 10px;padding-bottom: 10px;">
+                <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+                    <div style="text-align: center">TÍTULO</div>
+                </div>
+                <div class="elemento-lista-chats col-lg-6 col-md-6 col-sm-6 col-12" style="align-self: center;">
+                    <div style="text-align: center">DESCRIPCIÓN</div>
+                </div>
+                <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+                    <div style="text-align: center">FECHA DE OBTENCIÓN</div>
+                </div>
+            </div>
+
+            {% for logro in completados %}
+            <div class="row justify-content-center {% if forloop.counter|divisibleby:2 %}par{% else %}impar{% endif %}" style="padding-top: 10px;padding-bottom: 10px;">
+                <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+                    <div style="text-align: center">{{logro.idLogro.nombre }}</div>
+                </div>
+                <div class="elemento-lista-chats col-lg-6 col-md-6 col-sm-6 col-12" style="align-self: center;border-left: 1px solid #065104; border-right: 1px solid #065104;">
+                    <div style="text-align: center">{{logro.idLogro.descripcion}}</div>
+                </div>
+                <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+                    <div style="text-align: center">{{ logro.fechaObtencion|date:"d/m/y H:i" }}</div>
+                </div>
+            </div>
+        {% endfor %}
+        {% for logro in noCompletados %}
+            <div class="row justify-content-center noCompletado" style="padding-top: 10px;padding-bottom: 10px;">
+                <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+                    <div style="text-align: center">{{logro.nombre }}</div>
+                </div>
+                <div class="elemento-lista-chats col-lg-6 col-md-6 col-sm-6 col-12" style="align-self: center;border-left: 1px solid #065104; border-right: 1px solid #065104;">
+                    <div style="text-align: center">{{logro.descripcion}}</div>
+                </div>
+                <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
+                    <div style="text-align: center">No completado</div>
+                </div>
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+{% endblock body_data %}

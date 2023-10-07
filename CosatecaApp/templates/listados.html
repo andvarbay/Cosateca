@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>Cosateca</title>
+{% endblock title %}
+{% block body_data %}
+{% load static %}
+
+<div class="container" style=" margin: auto;align-self: center; margin-top: 15vh;">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <a href="/productosFavoritos" class="btn profile-button mb-4" style="width: 100%; align-self: center;font-size: larger;">PRODUCTOS FAVORITOS</a>
+        </div>
+        <div class="col-8">
+            <a href="/usuariosFavoritos" class="btn profile-button mb-4" style="width: 100%; align-self: center;font-size: larger;margin-top: 5vh;">USUARIOS FAVORITOS</a>
+        </div>
+        <div class="col-8">
+            <a href="/listasPersonalizadas" class="btn profile-button mb-4" style="width: 100%; align-self: center;font-size: larger;margin-top: 5vh;">LISTAS PERSONALIZADAS</a>
+        </div>
+    </div>
+</div>
+
+{% endblock body_data %}
