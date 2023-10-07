@@ -20,7 +20,7 @@
 
                 {% if producto.fotoProducto != None %}
                     <a href="/detallesProducto/{{producto.idProducto.idProducto}}">
-                    <img class="card-img-top" src="http://127.0.0.1:9000/django-backend-dev-public/{{producto.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.idProducto.nombre}}">
+                    <img class="card-img-top" src="http://localhost:9000/django-backend-dev-public/{{producto.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{producto.idProducto.nombre}}">
                     </a>
                 {% else %}
                     <a href="/detallesProducto/{{producto.idProducto.idProducto}}">            

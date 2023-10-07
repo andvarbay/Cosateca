@@ -17,7 +17,7 @@
               {% if request.session.usuarioFoto == None %}
                 <img src="{% static 'Default_profile_pic.png' %}" class="rounded-image">
               {% else %}
-                <img src="http://127.0.0.1:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" class="rounded-image">
+                <img src="http://localhost:9000/django-backend-dev-public/{{request.session.usuarioFoto}}" class="rounded-image">
               {% endif %}
             </div>
           </a>

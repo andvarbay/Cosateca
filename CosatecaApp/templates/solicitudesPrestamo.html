@@ -32,7 +32,7 @@
         <div class="elemento-lista-chats col-lg-3 col-md-3 col-sm-3 col-12" style="align-self: center;">
             {% if prestamo.idProducto.fotoProducto != None %}
                 <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">
-                    <img class="card-img-top" style="width: 100%; height:auto; margin-top: 2.5%; margin-bottom: 2.5%" src="http://127.0.0.1:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
+                    <img class="card-img-top" style="width: 100%; height:auto; margin-top: 2.5%; margin-bottom: 2.5%" src="http://localhost:9000/django-backend-dev-public/{{prestamo.idProducto.fotoProducto}}" alt="Foto {{MEDIA_URL}}{{prestamo.idProducto.nombreproducto.nombre}}">
                 </a>
             {% else %}  
                 <a href="/detallesProducto/{{prestamo.idProducto.idProducto}}">         
