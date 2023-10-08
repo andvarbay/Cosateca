@@ -10,3 +10,6 @@ cosateca/static
 *.log
 .env
 CosatecaApp/static/inicio.js
+volumes
+tests/__pycache__/*
+.pytest_cache
